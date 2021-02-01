@@ -1,12 +1,11 @@
-﻿
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using System;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-
+[InitializeOnLoad]
 public class AutoSave
 {
     private static DateTime nextSaveTime;
@@ -14,7 +13,7 @@ public class AutoSave
 
     static AutoSave()
     {
-            EditorApplication.playModeStateChanged += (PlayModeStateChange state) => {
+        EditorApplication.playModeStateChanged += (PlayModeStateChange state) => {
 
             if (!EditorApplication.isPlayingOrWillChangePlaymode || EditorApplication.isPlaying) return;
 
@@ -30,7 +29,7 @@ public class AutoSave
 
     private static void Update()
     {
-        if (nextSaveTime > DateTime.Now || EditorApplication.isPlayingOrWillChangePlaymode) return;
+        if (nextSaveTime > DateTime.Now && EditorApplication.isPlayingOrWillChangePlaymode) return;
 
         nextSaveTime = nextSaveTime.AddMinutes(1);
 

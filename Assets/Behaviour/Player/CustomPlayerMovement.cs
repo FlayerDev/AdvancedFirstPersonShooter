@@ -66,8 +66,8 @@ public class CustomPlayerMovement : MonoBehaviour
             //Planar Movement
             var vec = ((transform.position - LastLocation) / Time.deltaTime);
             var vecmag = vec.magnitude / 10;
-            var angle = (Quaternion.LookRotation(
-                vec, Vector3.up).eulerAngles.y * Mathf.Deg2Rad) - (transform.rotation.eulerAngles.y * Mathf.Deg2Rad);
+            var angle = (Quaternion.LookRotation(vec, Vector3.up).eulerAngles.y * Mathf.Deg2Rad) 
+                - (transform.rotation.eulerAngles.y * Mathf.Deg2Rad);
             var movDir = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * (vecmag > .1 ? vecmag : 0);
             /*
             var angle = Vector3.SignedAngle(transform.position, vec, Vector3.up);
