@@ -4,18 +4,9 @@ using System.Collections.Generic;
 using System.Threading;
 using Unity.Flayer.InputSystem;
 [RequireComponent(typeof(Item))]
-public class Weapon : MonoBehaviour
+public class Weapon : WeaponBehaviour
 {
     #region Properties
-    #region Decals
-    [Header("Decals")]
-    public GameObject woodDecal;
-    public GameObject metalDecal;
-    public GameObject cobbleDecal;
-    public GameObject syntheticDecal;
-    public GameObject concreteDecal;
-    public GameObject defaultDecal;
-    #endregion
     #region Generic Options
     [Header("Basic Settings")]
     public bool isWeaponAutomatic = true; //While enabled the weapon will automatically fire when the Shoot button is held
@@ -46,11 +37,7 @@ public class Weapon : MonoBehaviour
     #endregion
     #region Mag
     [Header("Ammunition")]
-    public int ammo;
-    public int inventoryCapacity = 90;
-    public int magSize = 30;
-    public int reloadAmount = 30;
-    public float reloadTime = 2500f;
+    public Mag mag;
     #endregion
     #endregion
     #region others
@@ -59,7 +46,8 @@ public class Weapon : MonoBehaviour
     #endregion
     private void Awake()
     {
-        ammo = magSize;
+        mag = GetComponent<Mag>();
+        mag.ammo = mag.Capacity;
         muzzle = LocalInfo.muzzle;
         update += isWeaponAutomatic
             ? update += () => { if (InputManager.GetBind("Primary")) fire(); }
@@ -84,7 +72,7 @@ public class Weapon : MonoBehaviour
     public void fire()
     {
         if (!isArmed) return;
-        if (ammo > 0) ammo--; else return;
+        if (mag.ammo > 0) mag.ammo--; else return;
         rearm();
         float dmg = baseDamage;
         calculateRecoil();
@@ -96,7 +84,7 @@ public class Weapon : MonoBehaviour
         {
             if (item.collider.gameObject.TryGetComponent(out IDamageable dmgable)) applyDamage(dmgable, dmg);
             if (item.collider.gameObject.TryGetComponent(out Rigidbody rb)) rb.AddForce((rb.position - muzzle.transform.position).normalized * bulletWeight);
-            dmg = calculateDamage(dmg, item);
+            dmg = calculateDamage(dmg, item, muzzle, effectiveRange, PenetrationPower);
         }
     }
     #region Fire Functions
@@ -112,20 +100,9 @@ public class Weapon : MonoBehaviour
             currentRecoil.y -= HorizontalRecoil * HorizontalMultiplierOnMaxVertical;
         }
     }
-    float calculateDamage(float dmg, RaycastHit hit)
+    void applyDamage(IDamageable dmgable, float amount)
     {
-        if (dmg == 0) return 0;
-        Vector3 returnPoint = muzzle.transform.position + (hit.point - muzzle.transform.position).normalized * effectiveRange;
-        hit.collider.Raycast(new Ray(returnPoint, (muzzle.transform.position - returnPoint).normalized)
-            , out RaycastHit outhit, effectiveRange * 2);
-        Vector3 inpoint = hit.point; Vector3 outpoint = outhit.point; // Gets coordinates of hit positions
-        printBulletDecal(hit, outhit, inpoint, outpoint);
-        float dropvalue = 0f;
-        if (TryGetComponent(out ObjectValueOverride valueOverride)) dropvalue = valueOverride.wallbangDamageDropoff;
-        else if (!DamageDropoffPerMaterial.MaterialValue.TryGetValue(hit.collider.gameObject.tag, out dropvalue)) return 0f;
-        dmg -= Vector3.Distance(inpoint, outpoint) * (dropvalue / PenetrationPower);
-        dmg = dmg < 999f && dmg > 0f ? dmg : (dmg > 999f ? 999f : 0f);
-        return dmg;
+        dmgable.damage(amount, gameObject);
     }
     //static RaycastHit findOppositeSide(Ray ray, GameObject gO)
     //{
@@ -133,33 +110,8 @@ public class Weapon : MonoBehaviour
     //    foreach (RaycastHit item in res) if (item.collider.gameObject == gO) return item;
     //    return new RaycastHit();
     //}
-    void printBulletDecal(RaycastHit hit, RaycastHit outhit, Vector3 inpoint, Vector3 outpoint)
-    {
-        if (hit.collider.gameObject.CompareTag("Player")) return;
-        var decal = decalDictionary(hit.collider.gameObject.tag) ?? defaultDecal;
-        if (TryGetComponent(out ObjectValueOverride valueOverride)) decal = valueOverride.bulletDecal ?? decal;
-        Instantiate(decal, inpoint, Quaternion.LookRotation(hit.normal));
-        Instantiate(decal, outpoint, Quaternion.LookRotation(outhit.normal));
-    }
-    void applyDamage(IDamageable dmgable, float amount)
-    {
-        dmgable.damage(amount, gameObject);
-    }
     #endregion
-    #region Dictionaries And Enums
-    GameObject decalDictionary(string decal)
-    {
-        Dictionary<string, GameObject> decalDictionary = new Dictionary<string, GameObject>
-        {
-        {"SYNTHETIC", syntheticDecal},
-        {"WOOD" , woodDecal},
-        {"METAL", metalDecal},
-        {"COBBLE", cobbleDecal},
-        {"CONCRETE", concreteDecal}
-        };
-        if (decalDictionary.TryGetValue(decal, out GameObject returnObj)) return returnObj;
-        else return null;
-    }
+
 }
 static class DamageDropoffPerMaterial
 {
@@ -174,4 +126,3 @@ static class DamageDropoffPerMaterial
     };
 }
 
-#endregion

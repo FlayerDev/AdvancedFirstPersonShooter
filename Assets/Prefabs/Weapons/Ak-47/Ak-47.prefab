@@ -108,7 +108,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 319120377766980121}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_Children:
@@ -130,18 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aacfbcf6e7574724aa03a1cfa8d88775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  woodDecal: {fileID: 2601721796434259972, guid: 0b98e0980826b6341b7244ab15e80085,
-    type: 3}
-  metalDecal: {fileID: 2601721796434259972, guid: 0b98e0980826b6341b7244ab15e80085,
-    type: 3}
-  cobbleDecal: {fileID: 2601721796434259972, guid: 0b98e0980826b6341b7244ab15e80085,
-    type: 3}
-  syntheticDecal: {fileID: 2601721796434259972, guid: 0b98e0980826b6341b7244ab15e80085,
-    type: 3}
-  concreteDecal: {fileID: 2601721796434259972, guid: 0b98e0980826b6341b7244ab15e80085,
-    type: 3}
-  defaultDecal: {fileID: 2601721796434259972, guid: 0b98e0980826b6341b7244ab15e80085,
-    type: 3}
+  decalPrefabs: {fileID: 11400000, guid: 39bb95250f7fed246a322d150f01449c, type: 2}
   isWeaponAutomatic: 1
   baseDamage: 32
   effectiveRange: 500
@@ -158,11 +147,7 @@ MonoBehaviour:
   HorizontalRecoil: 0.15
   HorizontalMultiplierOnMaxVertical: 0.3
   MaxNegativeHorizontalRecoil: 2
-  ammo: 0
-  inventoryCapacity: 90
-  magSize: 30
-  reloadAmount: 30
-  reloadTime: 2500
+  mag: {fileID: 0}
 --- !u!114 &8811047272426347716
 MonoBehaviour:
   m_ObjectHideFlags: 0

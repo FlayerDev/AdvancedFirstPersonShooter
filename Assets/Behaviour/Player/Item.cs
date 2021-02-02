@@ -44,3 +44,12 @@ public enum WeaponType
     Secondary,
     Utility
 }
+public enum ItemType
+{
+    None,
+    Melee,
+    Pistol,
+    Rifle,
+    Shotgun,
+
+}
