@@ -23,6 +23,26 @@ public static class GenericUtilities
             return (T)formatter.Deserialize(stream);
         }
     }
+    public static T CopyTo<T>(this T original, T copy)
+    {
+        System.Type type = original.GetType();
+        System.Reflection.FieldInfo[] fields = type.GetFields();
+        foreach (System.Reflection.FieldInfo field in fields)
+        {
+            field.SetValue(copy, field.GetValue(original));
+        }
+        return copy;
+    }
+    public static T CopyFrom<T>(this T copy, T original)
+    {
+        System.Type type = original.GetType();
+        System.Reflection.FieldInfo[] fields = type.GetFields();
+        foreach (System.Reflection.FieldInfo field in fields)
+        {
+            field.SetValue(copy, field.GetValue(original));
+        }
+        return copy;
+    }
     public static float ToPercent01(float min, float max, float value)
     {
         float range = max - min;

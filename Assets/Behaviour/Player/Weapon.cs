@@ -113,16 +113,4 @@ public class Weapon : WeaponBehaviour
     #endregion
 
 }
-static class DamageDropoffPerMaterial
-{
-    public static Dictionary<string, float> MaterialValue = new Dictionary<string, float>
-    {
-        {"SYNTHETIC", 8f},
-        {"WOOD" , 16f},
-        {"METAL", 32f},
-        {"COBBLE", 40f},
-        {"CONCRETE", 60f},
-        {"Player", 20f}
-    };
-}
 
