@@ -43,7 +43,7 @@ public class CustomPlayerMovement : MonoBehaviour
         if (InputManager.GetBindDown("Jump") && isGrounded && !LocalInfo.IsPaused)
         {
             velocity.y = Mathf.Sqrt(jumpForce * -2 * gravity);
-            CtrlAnimationMovementParameters.Singleton.Jump = true;
+            if (CtrlAnimationMovementParameters.Singleton != null) CtrlAnimationMovementParameters.Singleton.Jump = true; 
         }
         controller.Move(velocity * Time.deltaTime);
 
@@ -76,7 +76,7 @@ public class CustomPlayerMovement : MonoBehaviour
             CtrlAnimationMovementParameters.Singleton.MoveDirection = movDir;
             CtrlAnimationMovementParameters.Singleton.MoveSpeed = vec.magnitude * AnimationSpeedMultiplier * Time.deltaTime;
             CtrlAnimationMovementParameters.Singleton.PlayerAlt = GenericUtilities.ToPercent01(CrouchedHeight, UprightHeight, HeightBuffer);
-            CtrlAnimationMovementParameters.Singleton.Grounded = isGrounded;
+            //CtrlAnimationMovementParameters.Singleton.Grounded = isGrounded;
 
             LastLocation = transform.position;
 

@@ -10,7 +10,7 @@ public class CtrlAnimationMovementParameters : StateMachineBehaviour
     Vector2 moveDirection = new Vector2(0, 0);
     [Range(1f,2f)]public float SmoothDamp = 1.5f;
     public float PlayerAlt = 1f;
-    public bool Grounded = true;
+    //public bool Grounded = true;
     public bool Jump = false;
 
     public Vector2 MoveDirection { get => moveDirection; set {
@@ -24,7 +24,7 @@ public class CtrlAnimationMovementParameters : StateMachineBehaviour
     {
         animator.SetFloat("Y_Velocity", moveDirection.y);
         animator.SetFloat("X_Velocity", moveDirection.x);
-        animator.SetBool("Grounded", Grounded);
+        //animator.SetBool("Grounded", Grounded);
         animator.SetFloat("PlayerAlt", PlayerAlt);
         if (Jump)
         {

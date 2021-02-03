@@ -6,14 +6,14 @@ public class Item : MonoBehaviour, IUsable
     [SerializeField] MonoBehaviour[] DisableOnDrop;
     [SerializeField] bool RigidBodyOnDrop = true;
     [SerializeField] Collider objCollider;
+
+    public GameObject pickupPrefab;
     
     public void drop()
     {
-        gameObject.transform.parent = null;
-        if (RigidBodyOnDrop) gameObject.AddComponent<Rigidbody>();
-        objCollider.enabled = true;
-        if (DisableOnDrop.Length > 0) foreach (MonoBehaviour obj in DisableOnDrop) obj.enabled = false;
-        GenericUtilities.ChangeLayer(gameObject, 0, true);
+        var drop_item = Instantiate<GameObject>(pickupPrefab, transform.position, Quaternion.identity);
+        drop_item.CopyComponent(GetComponent<Mag>());
+        drop_item.GetComponent<ItemPickup>().weaponType = weaponType;
     }
     public void pickup(Inventory inventory, bool overtake_slot = true)
     {
@@ -26,7 +26,6 @@ public class Item : MonoBehaviour, IUsable
         objCollider.enabled = false;
         if (RigidBodyOnDrop) Destroy(gameObject.GetComponent<Rigidbody>());
         if (DisableOnDrop.Length > 0) foreach (MonoBehaviour obj in DisableOnDrop) obj.enabled = true;
-        GenericUtilities.ChangeLayer(gameObject, 9, true);
         gameObject.transform.localPosition = Vector3.zero;
         gameObject.transform.localRotation = Quaternion.identity;
     }
