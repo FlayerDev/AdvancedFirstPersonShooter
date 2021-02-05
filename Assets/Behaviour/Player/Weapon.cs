@@ -83,7 +83,7 @@ public class Weapon : WeaponBehaviour
         foreach (RaycastHit item in hitarr)
         {
             if (item.collider.gameObject.TryGetComponent(out IDamageable dmgable)) applyDamage(dmgable, dmg);
-            if (item.collider.gameObject.TryGetComponent(out Rigidbody rb)) rb.AddForce((rb.position - muzzle.transform.position).normalized * bulletWeight);
+            //if (item.collider.gameObject.TryGetComponent(out Rigidbody rb)) rb.AddForce((rb.position - muzzle.transform.position).normalized * bulletWeight);
             dmg = calculateDamage(dmg, item, muzzle, effectiveRange, PenetrationPower);
         }
     }

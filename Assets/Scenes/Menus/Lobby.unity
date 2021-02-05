@@ -2527,7 +2527,7 @@ MonoBehaviour:
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
-  playerPrefab: {fileID: 7696262120978184296, guid: ec837340ea24d0845b088b9c14efdd10,
+  playerPrefab: {fileID: 5229979237513573648, guid: b6bef4b15db07474c825abaaed3c5bd7,
     type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0
@@ -2546,7 +2546,7 @@ MonoBehaviour:
   roomPlayerPrefab: {fileID: 7696262120978184303, guid: ec837340ea24d0845b088b9c14efdd10,
     type: 3}
   RoomScene: Assets/Scenes/Menus/Lobby.unity
-  GameplayScene: Assets/Scenes/Maps/Dust2.unity
+  GameplayScene: Assets/Scenes/DevRoom/Movement.unity
   allPlayersReady: 0
   roomSlots: []
 --- !u!1 &1618323378

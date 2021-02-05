@@ -13,4 +13,5 @@ public static class LocalInfo
         get => Physics.RaycastAll(muzzle.transform.position, muzzle.transform.forward, useDistance)[0];
         set => useDistance = (float)value;
     }
+    public static float PlayerHealth = 100f;
 }
