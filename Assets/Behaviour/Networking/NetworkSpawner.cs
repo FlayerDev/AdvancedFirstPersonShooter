@@ -1,15 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Mirror;
+using UnityEngine;
 
 public class NetworkSpawner
 {
-    public void ServerSpawn(GameObject obj , Vector3 position , Quaternion rotation)
+    [Command]
+    public GameObject CmdInstantiate(GameObject obj)
     {
         GameObject gameObject = Object.Instantiate(obj);
-        gameObject.transform.position = position;
-        gameObject.transform.rotation = rotation;
         NetworkServer.Spawn(gameObject);
+        return gameObject;
+    }
+    [Command]
+    public GameObject CmdInstantiate(GameObject obj, Vector3 position, Quaternion rotation)
+    {
+        GameObject gameObject = Object.Instantiate(obj, position, rotation);
+        NetworkServer.Spawn(gameObject);
+        return gameObject;
+    }
+    [Command]
+    public GameObject CmdInstantiate(GameObject obj, Vector3 position, Quaternion rotation, Transform parent)
+    {
+        GameObject gameObject = Object.Instantiate(obj, position, rotation, parent);
+        NetworkServer.Spawn(gameObject);
+        return gameObject;
+    }
+    [Command]
+    public GameObject CmdInstantiate(GameObject obj, Transform parent, bool instantiateInWorldSpace = false)
+    {
+        GameObject gameObject = Object.Instantiate(obj, parent, instantiateInWorldSpace);
+        NetworkServer.Spawn(gameObject);
+        return gameObject;
     }
 }

@@ -67,3 +67,22 @@ public static class GenericUtilities
         return copy;
     }
 }
+public class trigger
+{
+    bool intbool;
+    public bool boolean
+    {
+        get
+        {
+            var buff = intbool;
+            intbool = false;
+            return buff;
+        }
+        set
+        {
+            intbool = value;
+        }
+    }
+    public static implicit operator bool(trigger trig) => trig.boolean;
+    public static implicit operator trigger(bool boolean) => new trigger { boolean = boolean };
+}

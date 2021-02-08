@@ -5,9 +5,11 @@ using UnityEngine.UI;
 
 public class LobbyManager : MonoBehaviour
 {
+    public static LobbyManager Singleton;
     NobleNetworkManager networkManager;
     void Start()
     {
+        Singleton = this;
         networkManager = (NobleNetworkManager)NetworkManager.singleton;
         networkManager.InitClient();
     }

@@ -36,10 +36,6 @@ namespace Mirror
         [SyncVar]
         public int index;
 
-        #region Ext
-        public string Name { get; set; } = "";
-        #endregion
-
         #region Unity Callbacks
 
         /// <summary>
