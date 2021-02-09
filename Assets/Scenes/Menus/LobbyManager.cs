@@ -1,14 +1,27 @@
 using Mirror;
 using NobleConnect.Mirror;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LobbyManager : MonoBehaviour
+public class LobbyManager : NobleRoomManager
 {
     public static LobbyManager Singleton;
     NobleNetworkManager networkManager;
-    void Start()
+    public ExtendedRoomPlayer LocalRoomPlayer
     {
+        get
+        {
+            foreach (var item in roomSlots)
+            {
+                if (item.isLocalPlayer) return item;
+            }
+            return null;
+        }
+    }
+    override public void Start()
+    {
+        base.Start();
         Singleton = this;
         networkManager = (NobleNetworkManager)NetworkManager.singleton;
         networkManager.InitClient();
@@ -16,8 +29,12 @@ public class LobbyManager : MonoBehaviour
     public GameObject MainHUD;
     public GameObject LobbyHUD;
 
+    public GameObject nameError;
+    public string localName;
+
     public InputField ipField;
     public InputField portField;
+    public InputField nameField;
     public Text ipText;
     public Text portText;
     public string IP = "";
@@ -27,16 +44,26 @@ public class LobbyManager : MonoBehaviour
 
 
     // Update is called once per frame
-    void Update()
+    override public void Update()
     {
+        base.Update();
         if (networkManager.HostEndPoint != null)
         {
             ipText.text = $"IP: {networkManager.HostEndPoint.Address}";
             portText.text = $"PORT: {networkManager.HostEndPoint.Port}";
         }
     }
+
     public void GUI_Refresh()
     {
+        var nameBuffer = nameField.text;
+        if (Regex.IsMatch(nameBuffer, "[^A-Za-z1-9_]") || nameField.text.Length < 4) nameError.SetActive(true);
+        else
+        {
+            localName = nameBuffer;
+            nameError.SetActive(false);
+        }
+
         IP = ipField.text;
         PORT = portField.text;
     }
@@ -47,15 +74,19 @@ public class LobbyManager : MonoBehaviour
     }
     public void Lobby_Join()
     {
-        networkManager.networkAddress = IP;
-        networkManager.networkPort = ushort.Parse(PORT);
-        networkManager.StartClient();
+        if (nameError.activeInHierarchy) return;
+        LocalRoomPlayer.ClientName = localName;
+        networkAddress = IP;
+        networkPort = ushort.Parse(PORT);
+        StartClient();
         lobbyState = LobbyState.Client;
         GUI_State(true);
     }
     public void Lobby_Host()
     {
-        networkManager.StartHost();
+        if (nameError.activeInHierarchy) return;
+        LocalRoomPlayer.ClientName = localName;
+        StartHost();
         lobbyState = LobbyState.Host;
         GUI_State(true);
     }
@@ -66,11 +97,11 @@ public class LobbyManager : MonoBehaviour
             case LobbyState.None:
                 break;
             case LobbyState.Client:
-                networkManager.StopClient();
+                StopClient();
                 lobbyState = LobbyState.None;
                 break;
             case LobbyState.Host:
-                networkManager.StopHost();
+                StopHost();
                 lobbyState = LobbyState.None;
                 break;
             default:
@@ -78,6 +109,7 @@ public class LobbyManager : MonoBehaviour
         }
         GUI_State(false);
     }
+    
 }
 public enum LobbyState
 {

@@ -42,7 +42,7 @@ namespace Mirror
         [FormerlySerializedAs("m_RoomPlayerPrefab")]
         [SerializeField]
         [Tooltip("Prefab to use for the Room Player")]
-        protected NobleRoomPlayer roomPlayerPrefab;
+        protected ExtendedRoomPlayer roomPlayerPrefab;
 
         /// <summary>
         /// The scene to use for the room. This is similar to the offlineScene of the NetworkManager.
@@ -75,7 +75,7 @@ namespace Mirror
         /// <para>The slotId on players is global to the game - across all players.</para>
         /// </summary>
         [Tooltip("List of Room Player objects")]
-        public List<NobleRoomPlayer> roomSlots = new List<NobleRoomPlayer>();
+        public List<ExtendedRoomPlayer> roomSlots = new List<ExtendedRoomPlayer>();
 
         public override void OnValidate()
         {
@@ -106,7 +106,7 @@ namespace Mirror
             int CurrentPlayers = 0;
             int ReadyPlayers = 0;
 
-            foreach (NobleRoomPlayer item in roomSlots)
+            foreach (ExtendedRoomPlayer item in roomSlots)
             {
                 if (item != null)
                 {
@@ -137,7 +137,7 @@ namespace Mirror
                 GameObject roomPlayer = conn.identity.gameObject;
 
                 // if null or not a room player, dont replace it
-                if (roomPlayer != null && roomPlayer.GetComponent<NobleRoomPlayer>() != null)
+                if (roomPlayer != null && roomPlayer.GetComponent<ExtendedRoomPlayer>() != null)
                     SceneLoadedForPlayer(conn, roomPlayer);
             }
         }
@@ -182,7 +182,7 @@ namespace Mirror
             if (!IsSceneActive(RoomScene))
                 return;
 
-            if (minPlayers > 0 && NetworkServer.connections.Count(conn => conn.Value != null && conn.Value.identity.gameObject.GetComponent<NobleRoomPlayer>().readyToBegin) < minPlayers)
+            if (minPlayers > 0 && NetworkServer.connections.Count(conn => conn.Value != null && conn.Value.identity.gameObject.GetComponent<ExtendedRoomPlayer>().readyToBegin) < minPlayers)
             {
                 allPlayersReady = false;
                 return;
@@ -196,7 +196,7 @@ namespace Mirror
         void CallOnClientEnterRoom()
         {
             OnRoomClientEnter();
-            foreach (NobleRoomPlayer player in roomSlots)
+            foreach (ExtendedRoomPlayer player in roomSlots)
                 if (player != null)
                 {
                     player.OnClientEnterRoom();
@@ -206,7 +206,7 @@ namespace Mirror
         void CallOnClientExitRoom()
         {
             OnRoomClientExit();
-            foreach (NobleRoomPlayer player in roomSlots)
+            foreach (ExtendedRoomPlayer player in roomSlots)
                 if (player != null)
                 {
                     player.OnClientExitRoom();
@@ -248,14 +248,14 @@ namespace Mirror
         {
             if (conn.identity != null)
             {
-                NobleRoomPlayer roomPlayer = conn.identity.GetComponent<NobleRoomPlayer>();
+                ExtendedRoomPlayer roomPlayer = conn.identity.GetComponent<ExtendedRoomPlayer>();
 
                 if (roomPlayer != null)
                     roomSlots.Remove(roomPlayer);
 
                 foreach (NetworkIdentity clientOwnedObject in conn.clientOwnedObjects)
                 {
-                    roomPlayer = clientOwnedObject.GetComponent<NobleRoomPlayer>();
+                    roomPlayer = clientOwnedObject.GetComponent<ExtendedRoomPlayer>();
                     if (roomPlayer != null)
                         roomSlots.Remove(roomPlayer);
                 }
@@ -263,10 +263,10 @@ namespace Mirror
 
             allPlayersReady = false;
 
-            foreach (NobleRoomPlayer player in roomSlots)
+            foreach (ExtendedRoomPlayer player in roomSlots)
             {
                 if (player != null)
-                    player.GetComponent<NobleRoomPlayer>().readyToBegin = false;
+                    player.GetComponent<ExtendedRoomPlayer>().readyToBegin = false;
             }
 
             if (IsSceneActive(RoomScene))
@@ -322,7 +322,7 @@ namespace Mirror
         {
             if (newSceneName == RoomScene)
             {
-                foreach (NobleRoomPlayer roomPlayer in roomSlots)
+                foreach (ExtendedRoomPlayer roomPlayer in roomSlots)
                 {
                     if (roomPlayer == null)
                         continue;
@@ -333,7 +333,7 @@ namespace Mirror
                     if (NetworkServer.active)
                     {
                         // re-add the room object
-                        roomPlayer.GetComponent<NobleRoomPlayer>().readyToBegin = false;
+                        roomPlayer.GetComponent<ExtendedRoomPlayer>().readyToBegin = false;
                         NobleServer.ReplacePlayerForConnection(identity.connectionToClient, roomPlayer.gameObject);
                     }
                 }

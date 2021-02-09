@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if UNITY_EDITOR
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -124,3 +125,4 @@ public class SerializableDictionary<TKey, TValue, TValueStorage> : SerializableD
 		storage[i].data = value;
 	}
 }
+#endif
