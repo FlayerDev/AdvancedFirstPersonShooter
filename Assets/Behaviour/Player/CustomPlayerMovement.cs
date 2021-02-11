@@ -31,15 +31,10 @@ public class CustomPlayerMovement : MonoBehaviour
 
     Vector3 LastLocation = new Vector2(0, 0);
 
-    private void Awake()
-    {
-        InputManager.InitAxis();
-    }
-
     void Update()
     {
-        float x = InputManager.GetBindedAxis("Horizontal");      // X- = A ,X+ = D
-        float z = InputManager.GetBindedAxis("Vertical");        // Z- = S ,Z+ = W
+        float x = Input.GetAxis("Horizontal");      // X- = A ,X+ = D
+        float z = Input.GetAxis("Vertical");        // Z- = S ,Z+ = W
 
         Vector3 move = transform.right * x + transform.forward * z;
         controller.Move(move.normalized * speed * Time.deltaTime);
