@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Unity.Flayer.InputSystem;
 using UnityEngine;
-using System;
-using Unity.Flayer.InputSystem;
+using static UnityEngine.Mathf;
 
 public class CustomPlayerMovement : MonoBehaviour
 {
@@ -22,7 +20,8 @@ public class CustomPlayerMovement : MonoBehaviour
 
     [Header("Others")]
     public GameObject groundCheckSphere;
-    public float AnimationSpeedMultiplier = 1f;
+    public float AnimationSpeedMultiplier = 3f;
+    public float CrouchSpeedMultiplier = 5f;
 
     [Header("Runtime")]
     public bool isGrounded = false;
@@ -30,20 +29,25 @@ public class CustomPlayerMovement : MonoBehaviour
     public float HeightBuffer = 1.8f;
     public float stamina = 1f;
 
-    Vector3 LastLocation = new Vector2(0,0);
+    Vector3 LastLocation = new Vector2(0, 0);
+
+    private void Awake()
+    {
+        InputManager.InitAxis();
+    }
 
     void Update()
     {
-        float x = Input.GetAxis("Horizontal");      // X- = A ,X+ = D
-        float z = Input.GetAxis("Vertical");        // Z- = S ,Z+ = W
+        float x = InputManager.GetBindedAxis("Horizontal");      // X- = A ,X+ = D
+        float z = InputManager.GetBindedAxis("Vertical");        // Z- = S ,Z+ = W
 
         Vector3 move = transform.right * x + transform.forward * z;
         controller.Move(move.normalized * speed * Time.deltaTime);
 
         if (InputManager.GetBindDown("Jump") && isGrounded && !LocalInfo.IsPaused)
         {
-            velocity.y = Mathf.Sqrt(jumpForce * -2 * gravity);
-            if (CtrlAnimationMovementParameters.Singleton != null) CtrlAnimationMovementParameters.Singleton.Jump = true; 
+            velocity.y = Sqrt(jumpForce * -2 * gravity);
+            if (CtrlAnimationMovementParameters.Singleton != null) CtrlAnimationMovementParameters.Singleton.Jump = true;
         }
         controller.Move(velocity * Time.deltaTime);
 
@@ -51,11 +55,13 @@ public class CustomPlayerMovement : MonoBehaviour
 
         if (InputManager.GetBind("Crouch"))
         {
-            HeightBuffer = Mathf.Clamp(HeightBuffer - (AnimationSpeedMultiplier * Time.deltaTime * stamina), CrouchedHeight, UprightHeight);
+            HeightBuffer = Clamp(HeightBuffer - ((CrouchSpeedMultiplier * 5) * Time.deltaTime * stamina), CrouchedHeight, UprightHeight);
+            stamina = Clamp01(stamina + (StaminaGainPerSecond / 3) * Time.deltaTime);
         }
         else
         {
-            HeightBuffer = Mathf.Clamp(HeightBuffer + (AnimationSpeedMultiplier * Time.deltaTime), CrouchedHeight, UprightHeight);
+            HeightBuffer = Clamp(HeightBuffer + ((CrouchSpeedMultiplier * 5) * Time.deltaTime), CrouchedHeight, UprightHeight);
+            stamina = Clamp01(stamina + StaminaGainPerSecond * Time.deltaTime);
         }
     }
 
@@ -66,15 +72,15 @@ public class CustomPlayerMovement : MonoBehaviour
             //Planar Movement
             var vec = ((transform.position - LastLocation) / Time.deltaTime);
             var vecmag = vec.magnitude / 10;
-            var angle = (Quaternion.LookRotation(vec, Vector3.up).eulerAngles.y * Mathf.Deg2Rad) 
-                - (transform.rotation.eulerAngles.y * Mathf.Deg2Rad);
-            var movDir = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * (vecmag > .1 ? vecmag : 0);
+            var angle = Atan2(vec.x, vec.z) - (transform.rotation.eulerAngles.y * Mathf.Deg2Rad);
+            var movDir = new Vector2(Cos(angle), Sin(angle)) * (vecmag > .1 ? vecmag : 0);
+            //var moveDir = new Vector2((transform.right * vec.x).x, (transform.forward * vec.z).z);
             /*
             var angle = Vector3.SignedAngle(transform.position, vec, Vector3.up);
             var movDir = Quaternion.AngleAxis(angle, Vector3.up) * Vector3.zero;
             */
             CtrlAnimationMovementParameters.Singleton.MoveDirection = movDir;
-            CtrlAnimationMovementParameters.Singleton.MoveSpeed = vec.magnitude * AnimationSpeedMultiplier * Time.deltaTime;
+            CtrlAnimationMovementParameters.Singleton.MoveSpeed = vec.magnitude * (AnimationSpeedMultiplier / 10);
             CtrlAnimationMovementParameters.Singleton.PlayerAlt = GenericUtilities.ToPercent01(CrouchedHeight, UprightHeight, HeightBuffer);
             //CtrlAnimationMovementParameters.Singleton.Grounded = isGrounded;
 
@@ -88,13 +94,13 @@ public class CustomPlayerMovement : MonoBehaviour
     {
         if (groundCheckSphere.GetComponent<GroundTracer>().isGrounded)
         {
-            velocity.y /= 1.1f ;
+            velocity.y /= 1.1f;
             isGrounded = true;
-        } else
+        }
+        else
         {
             velocity.y += gravity * Time.fixedDeltaTime;
             isGrounded = false;
         }
-        stamina = Mathf.Clamp01(stamina + StaminaGainPerSecond * Time.fixedDeltaTime);
     }
 }

@@ -10,9 +10,21 @@ public class ExtendedRoomPlayer : NobleRoomPlayer
     public string ClientName;
 
     LobbyManager lobbyManager = LobbyManager.Singleton;
+
+    public override void OnClientEnterRoom()
+    {
+
+    }
+
+    public override void OnClientExitRoom()
+    {
+
+    }
+
     private void Awake()
     {
         if(lobbyManager.lobbyState.Equals(LobbyState.Client))readyToBegin = true;
+        ClientName = lobbyManager.localName;
     }
     public void Start()
     {

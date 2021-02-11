@@ -74,8 +74,8 @@ public class LobbyManager : NobleRoomManager
     }
     public void Lobby_Join()
     {
+        GUI_Refresh();
         if (nameError.activeInHierarchy) return;
-        LocalRoomPlayer.ClientName = localName;
         networkAddress = IP;
         networkPort = ushort.Parse(PORT);
         StartClient();
@@ -84,8 +84,8 @@ public class LobbyManager : NobleRoomManager
     }
     public void Lobby_Host()
     {
+        GUI_Refresh();
         if (nameError.activeInHierarchy) return;
-        LocalRoomPlayer.ClientName = localName;
         StartHost();
         lobbyState = LobbyState.Host;
         GUI_State(true);

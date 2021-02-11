@@ -2261,7 +2261,8 @@ MonoBehaviour:
   StaminaLossPerCrouch: 0.5
   StaminaGainPerSecond: 0.33
   groundCheckSphere: {fileID: 5229979237538529092}
-  AnimationSpeedMultiplier: 15
+  AnimationSpeedMultiplier: 3
+  CrouchSpeedMultiplier: 5
   isGrounded: 0
   velocity: {x: 0, y: 0, z: 0}
   HeightBuffer: 1.8
