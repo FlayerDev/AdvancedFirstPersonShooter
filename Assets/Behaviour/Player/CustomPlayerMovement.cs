@@ -2,7 +2,7 @@
 using UnityEngine;
 using static UnityEngine.Mathf;
 
-public class CustomPlayerMovement : MonoBehaviour
+public class CustomPlayerMovement : Mirror.NetworkBehaviour
 {
     public CharacterController controller;
 
@@ -29,15 +29,17 @@ public class CustomPlayerMovement : MonoBehaviour
     public float HeightBuffer = 1.8f;
     public float stamina = 1f;
 
-    Vector3 LastLocation = new Vector2(0, 0);
+    Vector3 LastLocation = Vector3.zero;
 
     void Update()
     {
+        if (!isLocalPlayer) return;
         float x = Input.GetAxis("Horizontal");      // X- = A ,X+ = D
         float z = Input.GetAxis("Vertical");        // Z- = S ,Z+ = W
 
         Vector3 move = transform.right * x + transform.forward * z;
-        controller.Move(move.normalized * speed * Time.deltaTime);
+        if (move.magnitude > 1) move.Normalize();
+        controller.Move(move.normalized * move.magnitude * speed * Time.deltaTime);
 
         if (InputManager.GetBindDown("Jump") && isGrounded && !LocalInfo.IsPaused)
         {
@@ -62,13 +64,14 @@ public class CustomPlayerMovement : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (!isLocalPlayer) return;
         if (CtrlAnimationMovementParameters.Singleton != null)
         {
             //Planar Movement
             var vec = ((transform.position - LastLocation) / Time.deltaTime);
             var vecmag = vec.magnitude / 10;
             var angle = Atan2(vec.x, vec.z) - (transform.rotation.eulerAngles.y * Mathf.Deg2Rad);
-            var movDir = new Vector2(Cos(angle), Sin(angle)) * (vecmag > .1 ? vecmag : 0);
+            var movDir = new Vector2(Cos(angle), Sin(angle)) * (vecmag > .01 ? vecmag : 0);
             //var moveDir = new Vector2((transform.right * vec.x).x, (transform.forward * vec.z).z);
             /*
             var angle = Vector3.SignedAngle(transform.position, vec, Vector3.up);
@@ -87,6 +90,7 @@ public class CustomPlayerMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (!isLocalPlayer) return;
         if (groundCheckSphere.GetComponent<GroundTracer>().isGrounded)
         {
             velocity.y /= 1.1f;

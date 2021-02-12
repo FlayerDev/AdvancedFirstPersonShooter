@@ -7,7 +7,7 @@ using UnityEngine.Assertions.Must;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using Unity.Flayer.InputSystem;
-public class ConsoleUIController : MonoBehaviour
+public class ConsoleUIController : Mirror.NetworkBehaviour
 {
     public bool isConsoleActive = false;
     public TextMeshProUGUI consoleTMPUGUI;
@@ -18,6 +18,7 @@ public class ConsoleUIController : MonoBehaviour
     //private void Start() => consoleTMPUGUI.autoSizeTextContainer = true;
     void Update()
     {
+        if (!isLocalPlayer) return;
         if (InputManager.GetBindDown("Console")) counterState();
         consoleCanvas.SetActive(isConsoleActive);
         if (isConsoleActive) consoleUpdate();

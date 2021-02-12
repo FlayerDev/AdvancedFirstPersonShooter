@@ -14,7 +14,7 @@ public class CtrlAnimationMovementParameters : StateMachineBehaviour
     public bool Jump = false;
 
     public Vector2 MoveDirection { get => moveDirection; set {
-            if (moveDirection.sqrMagnitude < .1f && moveDirection.sqrMagnitude > value.sqrMagnitude) moveDirection = Vector2.zero;
+            if (moveDirection.sqrMagnitude < .01f && moveDirection.sqrMagnitude > value.sqrMagnitude) moveDirection = Vector2.zero;
             else moveDirection = ((moveDirection + value) / SmoothDamp);
         } 
     }

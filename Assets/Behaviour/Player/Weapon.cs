@@ -46,6 +46,7 @@ public class Weapon : WeaponBehaviour
     #endregion
     private void Awake()
     {
+        if (!isLocalPlayer) return;
         mag = GetComponent<Mag>();
         mag.ammo = mag.Capacity;
         muzzle = LocalInfo.muzzle;
@@ -54,9 +55,14 @@ public class Weapon : WeaponBehaviour
         : () => { if (InputManager.GetBindDown("Primary")) fire(); };
         //if (allowADS) update += () => { // };
     }
-    public void Update() => update();
+    public void Update() 
+    {
+        if (!isLocalPlayer) return;
+        update();
+    }
     private void FixedUpdate()
     {
+        if (!isLocalPlayer) return;
         currentRecoil.y /= 1f + recoilReturnSpeed * Time.fixedDeltaTime;
         currentRecoil.x /= 1f + recoilReturnSpeed * Time.fixedDeltaTime;
     }

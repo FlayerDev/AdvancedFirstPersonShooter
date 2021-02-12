@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraRotation : MonoBehaviour
+public class CameraRotation : Mirror.NetworkBehaviour
 {
     [Header("ReferencedObjects")]
     public GameObject cameraObj;
@@ -21,6 +21,7 @@ public class CameraRotation : MonoBehaviour
 
     void Update()
     {
+        if (!isLocalPlayer) return;
         if (!LocalInfo.IsPaused)
         {
             float mouseX, mouseY;

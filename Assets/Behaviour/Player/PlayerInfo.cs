@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerInfo : NetworkBehaviour, IDamageable
 {
-    [SerializeField] [SyncVar] private float health = 100;
+    [SerializeField, SyncVar] private float health = 100;
     public float hp { get => health; }
     public List<(GameObject, float)> damageHistory = new List<(GameObject, float)>();
 
@@ -14,6 +14,7 @@ public class PlayerInfo : NetworkBehaviour, IDamageable
     }
     private void Update()
     {
+        if (!isLocalPlayer) return;
         if (GetComponent<NetworkIdentity>().isLocalPlayer)
         {
             LocalInfo.PlayerHealth = hp;

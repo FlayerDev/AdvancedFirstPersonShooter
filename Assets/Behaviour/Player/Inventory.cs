@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Unity.Flayer.InputSystem;
 
-public class Inventory : MonoBehaviour
+public class Inventory : Mirror.NetworkBehaviour
 {
     public GameObject[] weaponHolders = new GameObject[3];
     public int enabledIndex = 0;
@@ -9,12 +9,14 @@ public class Inventory : MonoBehaviour
     public bool allowBombPickup = false;
     void Start()
     {
+        if (!isLocalPlayer) return;
         setIndex(0);
     }
 
 
     void Update()
     {
+        if (!isLocalPlayer) return;
         if (InputManager.GetBindDown("Use") && !LocalInfo.IsPaused) use();
         if (InputManager.GetBindDown("Drop") && !LocalInfo.IsPaused) drop();
         float scrollValue = Input.GetAxis("Mouse ScrollWheel");

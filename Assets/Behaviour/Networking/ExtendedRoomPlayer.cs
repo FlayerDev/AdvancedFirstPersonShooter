@@ -23,7 +23,8 @@ public class ExtendedRoomPlayer : NobleRoomPlayer
 
     private void Awake()
     {
-        if(lobbyManager.lobbyState.Equals(LobbyState.Client))readyToBegin = true;
+        if (!isLocalPlayer) return;
+        if (lobbyManager.lobbyState.Equals(LobbyState.Client))readyToBegin = true;
         ClientName = lobbyManager.localName;
     }
     public void Start()

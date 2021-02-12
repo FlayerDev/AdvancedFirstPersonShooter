@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraMounter : MonoBehaviour
+public class CameraMounter : Mirror.NetworkBehaviour
 {
     Camera MainCamera;
 
@@ -13,6 +13,7 @@ public class CameraMounter : MonoBehaviour
     // Start is called before the first frame update
     public void Start()
     {
+        if (!isLocalPlayer) return;
         MainCamera.transform.parent = transform;
         transform.parent.GetComponent<CameraRotation>().playerBody = transform.parent.gameObject;
         transform.parent.GetComponent<CameraRotation>().cameraObj = MainCamera.gameObject;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponBehaviour : MonoBehaviour
+public class WeaponBehaviour : Mirror.NetworkBehaviour
 {
     public SurfacePropertyLibrary surfacePropertyLibrary;
     protected float calculateDamage(float dmg, RaycastHit hit, GameObject muzzle, float effectiveRange, float PenetrationPower)

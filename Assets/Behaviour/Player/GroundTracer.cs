@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GroundTracer : MonoBehaviour
+public class GroundTracer : Mirror.NetworkBehaviour
 {
     public float minimumDamageSpeed = 15f;
     public float fallDamageMultiplier = 1f;
@@ -16,6 +16,7 @@ public class GroundTracer : MonoBehaviour
     }
     void damagePlayer(float amount)
     {
+        if (!isLocalPlayer) return;
         transform.parent.GetComponent<IDamageable>().damage(amount, transform.parent.gameObject);
     }
 }

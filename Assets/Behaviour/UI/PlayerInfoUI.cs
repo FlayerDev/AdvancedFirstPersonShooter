@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class PlayerInfoUI : MonoBehaviour
+public class PlayerInfoUI : Mirror.NetworkBehaviour
 {
     public Gradient HpGradient;
     public Gradient TextGradient;
@@ -14,10 +14,12 @@ public class PlayerInfoUI : MonoBehaviour
 
     private void Awake()
     {
+        if (!isLocalPlayer) return;
         hpBarParent = HealthBar.transform.parent;
     }
     private void Update()
     {
+        if (!isLocalPlayer) return;
         hpText.text = Mathf.CeilToInt(LocalInfo.PlayerHealth).ToString();
         hpText.color = TextGradient.Evaluate(GenericUtilities.ToPercent01(0, 100, LocalInfo.PlayerHealth));
         HealthBar.GetComponent<Image>().color = HpGradient.Evaluate(GenericUtilities.ToPercent01(0, 100, LocalInfo.PlayerHealth));
