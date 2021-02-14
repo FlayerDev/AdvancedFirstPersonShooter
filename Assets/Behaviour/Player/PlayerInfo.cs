@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerInfo : NetworkBehaviour, IDamageable
 {
-    [SerializeField, SyncVar] private float health = 100;
+    [SerializeField, Range(0, 100), SyncVar] private float health = 100;
     public float hp { get => health; }
     public List<(GameObject, float)> damageHistory = new List<(GameObject, float)>();
 

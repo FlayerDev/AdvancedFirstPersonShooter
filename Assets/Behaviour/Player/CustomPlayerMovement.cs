@@ -86,7 +86,7 @@ public class CustomPlayerMovement : Mirror.NetworkBehaviour
 
 
         }
-        else if (JumpParameterMachine.Singleton != null) JumpParameterMachine.Singleton.Grounded = isGrounded;
+        if (JumpParameterMachine.Singleton != null) JumpParameterMachine.Singleton.Grounded = isGrounded;
     }
     private void FixedUpdate()
     {

@@ -2166,8 +2166,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.1
-  clientAuthority: 0
+  syncInterval: 0
+  clientAuthority: 1
   localPositionSensitivity: 0.01
   localRotationSensitivity: 0.01
   localScaleSensitivity: 0.01
@@ -2218,6 +2218,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aef07a4f44b8bb940b64d1b9cbc16dda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   cameraObj: {fileID: 0}
   playerBody: {fileID: 5229979237513573648}
   mouseSensitivity: 10
@@ -2251,6 +2253,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d24554e8c7dfdc74b91a9ce9b2d28b93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   controller: {fileID: 5229979237513573653}
   speed: 5
   gravity: -25

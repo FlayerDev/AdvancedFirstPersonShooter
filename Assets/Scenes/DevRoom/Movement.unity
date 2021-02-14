@@ -3132,7 +3132,7 @@ MonoBehaviour:
     key0: {r: 1, g: 0, b: 0, a: 1}
     key1: {r: 1, g: 0.45313016, b: 0, a: 1}
     key2: {r: 0.92993367, g: 1, b: 0, a: 1}
-    key3: {r: 0, g: 1, b: 0, a: 0}
+    key3: {r: 0, g: 0.9019608, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
@@ -3238,7 +3238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 1, b: 0, a: 1}
+  m_Color: {r: 0, g: 0.9019608, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3662,6 +3662,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -6939396587316103669, guid: 4641e807cc2ca9545b65a7c7405dfe68,
+        type: 3}
+      propertyPath: sceneId
+      value: 2302192177
+      objectReference: {fileID: 0}
     - target: {fileID: 8326538601796898720, guid: 4641e807cc2ca9545b65a7c7405dfe68,
         type: 3}
       propertyPath: commandField

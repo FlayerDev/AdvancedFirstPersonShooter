@@ -32,8 +32,8 @@ public class LobbyManager : NobleRoomManager
     public GameObject nameError;
     public string localName;
 
-    public InputField ipField;
-    public InputField portField;
+    public TMPro.TMP_InputField ipField;
+    public TMPro.TMP_InputField portField;
     public InputField nameField;
     public Text ipText;
     public Text portText;
