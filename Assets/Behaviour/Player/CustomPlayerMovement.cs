@@ -5,6 +5,7 @@ using static UnityEngine.Mathf;
 public class CustomPlayerMovement : Mirror.NetworkBehaviour
 {
     public CharacterController controller;
+    public AnimatorParameterSync anim;
 
     [Header("Movement")]
     public float speed = 10f;
@@ -28,9 +29,15 @@ public class CustomPlayerMovement : Mirror.NetworkBehaviour
     public Vector3 velocity;
     public float HeightBuffer = 1.8f;
     public float stamina = 1f;
+    Vector3 PlanarMovement = Vector3.zero;
 
     Vector3 LastLocation = Vector3.zero;
-
+    private void Awake()
+    {
+        LocalInfo.localIdentity = base.netIdentity;
+        anim = GetComponent<AnimatorParameterSync>();
+        groundTracer = groundCheckSphere.GetComponent<GroundTracer>();
+    }
     void Update()
     {
         if (!isLocalPlayer) return;
@@ -44,7 +51,7 @@ public class CustomPlayerMovement : Mirror.NetworkBehaviour
         if (InputManager.GetBindDown("Jump") && isGrounded && !LocalInfo.IsPaused)
         {
             velocity.y = Sqrt(jumpForce * -2 * gravity);
-            if (CtrlAnimationMovementParameters.Singleton != null) CtrlAnimationMovementParameters.Singleton.Jump = true;
+            if (anim != null) anim.Jump = true;
         }
         controller.Move(velocity * Time.deltaTime);
 
@@ -65,35 +72,35 @@ public class CustomPlayerMovement : Mirror.NetworkBehaviour
     private void LateUpdate()
     {
         if (!isLocalPlayer) return;
-        if (CtrlAnimationMovementParameters.Singleton != null)
+        if (anim != null)
         {
             //Planar Movement
-            var vec = ((transform.position - LastLocation) / Time.deltaTime);
-            var vecmag = vec.magnitude / 10;
-            var angle = Atan2(vec.x, vec.z) - (transform.rotation.eulerAngles.y * Mathf.Deg2Rad);
+            PlanarMovement = ((transform.position - LastLocation) / Time.deltaTime);
+            var vecmag = PlanarMovement.magnitude / 10;
+            var angle = Atan2(PlanarMovement.x, PlanarMovement.z) - (transform.rotation.eulerAngles.y * Mathf.Deg2Rad);
             var movDir = new Vector2(Cos(angle), Sin(angle)) * (vecmag > .01 ? vecmag : 0);
             //var moveDir = new Vector2((transform.right * vec.x).x, (transform.forward * vec.z).z);
             /*
             var angle = Vector3.SignedAngle(transform.position, vec, Vector3.up);
             var movDir = Quaternion.AngleAxis(angle, Vector3.up) * Vector3.zero;
             */
-            CtrlAnimationMovementParameters.Singleton.MoveDirection = movDir;
-            CtrlAnimationMovementParameters.Singleton.MoveSpeed = vec.magnitude * (AnimationSpeedMultiplier / 10);
-            CtrlAnimationMovementParameters.Singleton.PlayerAlt = GenericUtilities.ToPercent01(CrouchedHeight, UprightHeight, HeightBuffer);
-            //CtrlAnimationMovementParameters.Singleton.Grounded = isGrounded;
+            anim.MoveDirection = movDir;
+            anim.MoveSpeed = PlanarMovement.magnitude * (AnimationSpeedMultiplier / 10);
+            anim.PlayerAlt = GenericUtilities.ToPercent01(CrouchedHeight, UprightHeight, HeightBuffer);
+            anim.Grounded = isGrounded;
 
             LastLocation = transform.position;
-
-
         }
-        if (JumpParameterMachine.Singleton != null) JumpParameterMachine.Singleton.Grounded = isGrounded;
+        //if (JumpParameterMachine.Singleton != null) 
+        //    JumpParameterMachine.Singleton.Grounded = isGrounded;
     }
+    private GroundTracer groundTracer;
     private void FixedUpdate()
     {
         if (!isLocalPlayer) return;
-        if (groundCheckSphere.GetComponent<GroundTracer>().isGrounded)
+        if (groundTracer.isGrounded)
         {
-            velocity.y /= 1.1f;
+            velocity.y /= 1 + (.02f / new Vector2(PlanarMovement.x,PlanarMovement.z).magnitude); //Abs(velocity.y > 0f ? 1f : velocity.y));
             isGrounded = true;
         }
         else

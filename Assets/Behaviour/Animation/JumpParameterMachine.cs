@@ -8,11 +8,14 @@ public class JumpParameterMachine : StateMachineBehaviour
 
     public bool Grounded = true;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) => Singleton = this;
+    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+        Singleton = this;
+    }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        //if (!LocalInfo.localIdentity.isLocalPlayer) return;
         animator.SetBool("Grounded", Grounded);
     }
 

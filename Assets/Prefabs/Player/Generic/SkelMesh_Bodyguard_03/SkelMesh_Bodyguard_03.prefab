@@ -2100,8 +2100,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5229979237513799984}
+  - component: {fileID: 4542673909608525365}
   - component: {fileID: 5229979237513573663}
-  - component: {fileID: 5229979237513573661}
+  - component: {fileID: 6688255992891348807}
   - component: {fileID: 5229979237506303818}
   - component: {fileID: 5229979237513573657}
   - component: {fileID: 5229979237513573659}
@@ -2137,6 +2138,46 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &4542673909608525365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5229979237513573648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 741bbe11f5357b44593b15c0d11b16bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.001
+  clientAuthority: 1
+  excludeOwnerUpdate: 0
+  syncPosition: 1
+  syncRotation: 1
+  syncScale: 1
+  interpolatePosition: 1
+  interpolateRotation: 1
+  interpolateScale: 1
+  localPositionSensitivity: 0.001
+  localRotationSensitivity: 0.001
+  localScaleSensitivity: 0.01
+  lastPosition: {x: 0, y: 0, z: 0}
+  lastRotation: {x: 0, y: 0, z: 0, w: 0}
+  lastScale: {x: 0, y: 0, z: 0}
+  start:
+    timeStamp: 0
+    localPosition: {x: 0, y: 0, z: 0}
+    localRotation: {x: 0, y: 0, z: 0, w: 0}
+    localScale: {x: 0, y: 0, z: 0}
+    movementSpeed: 0
+  goal:
+    timeStamp: 0
+    localPosition: {x: 0, y: 0, z: 0}
+    localRotation: {x: 0, y: 0, z: 0, w: 0}
+    localScale: {x: 0, y: 0, z: 0}
+    movementSpeed: 0
 --- !u!114 &5229979237513573663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2153,7 +2194,7 @@ MonoBehaviour:
   serverOnly: 0
   m_AssetId: 
   hasSpawned: 0
---- !u!114 &5229979237513573661
+--- !u!114 &6688255992891348807
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2162,15 +2203,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 5229979237513573648}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
+  m_Script: {fileID: 11500000, guid: a3ab553832c95bb4d8d6cee3cf8f54bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0
-  clientAuthority: 1
-  localPositionSensitivity: 0.01
-  localRotationSensitivity: 0.01
-  localScaleSensitivity: 0.01
+  syncInterval: 0.1
+  networkAnimator: {fileID: 0}
+  animator: {fileID: 0}
+  MoveSpeed: 1
+  SmoothDamp: 1.5
+  PlayerAlt: 1
+  Jump: 0
+  Grounded: 1
 --- !u!95 &5229979237506303818
 Animator:
   serializedVersion: 3
@@ -2256,6 +2300,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   controller: {fileID: 5229979237513573653}
+  anim: {fileID: 0}
   speed: 5
   gravity: -25
   jumpForce: 2
@@ -3031,7 +3076,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5229979237538529092}
   m_LocalRotation: {x: -0, y: -0.7071057, z: -0, w: 0.7071079}
-  m_LocalPosition: {x: 0, y: 0.141, z: 0}
+  m_LocalPosition: {x: 0, y: 0.12, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5229979237513799984}

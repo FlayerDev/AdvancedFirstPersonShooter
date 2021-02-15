@@ -3801,7 +3801,8 @@ MonoBehaviour:
     type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0
-  spawnPrefabs: []
+  spawnPrefabs:
+  - {fileID: 5229979237513573648, guid: b6bef4b15db07474c825abaaed3c5bd7, type: 3}
   networkPort: 0
   region: 0
   forceRelayConnection: 0

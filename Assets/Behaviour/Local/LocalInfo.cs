@@ -14,4 +14,5 @@ public static class LocalInfo
         set => useDistance = (float)value;
     }
     public static float PlayerHealth = 100f;
+    public static Mirror.NetworkIdentity localIdentity;
 }
