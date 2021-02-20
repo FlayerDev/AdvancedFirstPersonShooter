@@ -18,11 +18,9 @@ public class SurfacePropertyLibrary : ScriptableObject
         else return Default;
     }
 }
-#if UNITY_EDITOR
+
 [System.Serializable] public class SurfaceDictionary : SerializableDictionary<string, SurfaceData> { }
-#else
-[System.Serializable] public class SurfaceDictionary : System.Collections.Generic.Dictionary<string, SurfaceData> { }
-#endif
+
 [System.Serializable]
 public class SurfaceData
 {
