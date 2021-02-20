@@ -9,8 +9,8 @@ public class CustomPlayerMovement : Mirror.NetworkBehaviour
 
     [Header("Movement")]
     public float speed = 10f;
-    public float gravity = -25f;
-    public float jumpForce = 2f;
+    public float gravity = -25f; 
+    public float jumpForce = 1.2f; //NOTE jumpForce: Subject to change
 
     [Header("Crouch")]
     public float UprightHeight = 1.8f;
@@ -100,7 +100,8 @@ public class CustomPlayerMovement : Mirror.NetworkBehaviour
         if (!isLocalPlayer) return;
         if (groundTracer.isGrounded)
         {
-            velocity.y /= 1 + (.02f / new Vector2(PlanarMovement.x,PlanarMovement.z).magnitude); //Abs(velocity.y > 0f ? 1f : velocity.y));
+            //velocity.y /= 1 + (.02f / new Vector2(PlanarMovement.x,PlanarMovement.z).magnitude); //Abs(velocity.y > 0f ? 1f : velocity.y));
+            if (velocity.y <= 0) velocity.y = Clamp(velocity.y - 5 * Time.fixedDeltaTime, -10, 10);
             isGrounded = true;
         }
         else

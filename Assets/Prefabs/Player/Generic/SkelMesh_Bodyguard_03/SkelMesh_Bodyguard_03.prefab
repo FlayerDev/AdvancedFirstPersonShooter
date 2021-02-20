@@ -2303,7 +2303,7 @@ MonoBehaviour:
   anim: {fileID: 0}
   speed: 5
   gravity: -25
-  jumpForce: 2
+  jumpForce: 1
   UprightHeight: 1.8
   CrouchedHeight: 0.9
   HeightTransitionSpeed: 0.1
