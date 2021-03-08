@@ -6,7 +6,7 @@ using Mirror;
 
 public class ExtendedRoomPlayer : NobleRoomPlayer
 {
-    [Header("PlayerData")]
+    [Header("PlayerData"),SyncVar]
     public string ClientName;
 
     LobbyManager lobbyManager = LobbyManager.Singleton;
@@ -20,12 +20,14 @@ public class ExtendedRoomPlayer : NobleRoomPlayer
     {
 
     }
-
-    private void Awake()
+    [Command] public void CmdSetName(string name)
     {
-        if (!isLocalPlayer) return;
+        ClientName = name;
+    }
+    public override void OnStartLocalPlayer()
+    {
         if (lobbyManager.lobbyState.Equals(LobbyState.Client))readyToBegin = true;
-        ClientName = lobbyManager.localName;
+        CmdSetName(lobbyManager.localName);
     }
     public void Start()
     {
