@@ -24,6 +24,7 @@ public class PlayerSlotsManager : MonoBehaviour
             var slot = gameObject.transform.GetChild(i);
             slot.gameObject.SetActive(true);
             slot.GetComponent<PlayerSlot>().Name = plList[i].ClientName;
+            slot.GetComponent<PlayerSlot>().Player = plList[i];
         }
         for (int i = plList.Count; i < transform.childCount; i++)
         {

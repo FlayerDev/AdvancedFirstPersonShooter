@@ -92,24 +92,31 @@ public class LobbyManager : NobleRoomManager
     }
     public void Lobby_Leave()
     {
-        switch (lobbyState)
+        if (lobbyState == LobbyState.Client)
         {
-            case LobbyState.None:
-                break;
-            case LobbyState.Client:
-                StopClient();
-                lobbyState = LobbyState.None;
-                break;
-            case LobbyState.Host:
-                StopHost();
-                lobbyState = LobbyState.None;
-                break;
-            default:
-                break;
+            client.Disconnect();
+            //client.connection.Disconnect();
+            lobbyState = LobbyState.None;
+        }
+        else if (lobbyState == LobbyState.Host)
+        {
+            client.Disconnect();
+            NetworkServer.Shutdown();
+            NobleServer.Shutdown();
+            lobbyState = LobbyState.None;
         }
         GUI_State(false);
     }
-    
+    #region overrides
+    public override void OnClientDisconnect(NetworkConnection conn)
+    {
+        Lobby_Leave();
+    }
+    public override void OnRoomClientDisconnect(NetworkConnection conn)
+    {
+        Lobby_Leave();
+    }
+    #endregion
 }
 public enum LobbyState
 {

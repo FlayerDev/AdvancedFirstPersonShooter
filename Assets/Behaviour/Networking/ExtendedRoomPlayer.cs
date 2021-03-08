@@ -6,7 +6,7 @@ using Mirror;
 
 public class ExtendedRoomPlayer : NobleRoomPlayer
 {
-    [Header("PlayerData"),SyncVar]
+    [Header("PlayerData"), SyncVar]
     public string ClientName;
 
     LobbyManager lobbyManager = LobbyManager.Singleton;
@@ -18,7 +18,12 @@ public class ExtendedRoomPlayer : NobleRoomPlayer
 
     public override void OnClientExitRoom()
     {
-
+        lobbyManager.Lobby_Leave();
+    }
+    [Command]
+    public void CmdKickPlayer()
+    {
+        connectionToClient.Disconnect();
     }
     [Command] public void CmdSetName(string name)
     {
