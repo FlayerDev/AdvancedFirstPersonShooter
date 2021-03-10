@@ -95,20 +95,22 @@ public class LobbyManager : NobleRoomManager
     }
     public void Lobby_Leave()
     {
+        Debug.Log("Lobby_Leave");
         if (lobbyState == LobbyState.Client)
         {
             client.Disconnect();
-            //client.connection.Disconnect();
+            StopClient();
             lobbyState = LobbyState.None;
         }
         else if (lobbyState == LobbyState.Host)
         {
             try
             {
-                client.Disconnect();
+                //client.Disconnect();
             }catch { }
             NetworkServer.Shutdown();
             NobleServer.Shutdown();
+            StopHost();
             lobbyState = LobbyState.None;
         }
         GUI_State(false);
@@ -116,10 +118,12 @@ public class LobbyManager : NobleRoomManager
     #region overrides
     public override void OnClientDisconnect(NetworkConnection conn)
     {
+        Debug.Log("ClientLeave");
         Lobby_Leave();
     }
     public override void OnRoomClientDisconnect(NetworkConnection conn)
     {
+        Debug.Log("RoomClientLeave");
         Lobby_Leave();
     }
     #endregion

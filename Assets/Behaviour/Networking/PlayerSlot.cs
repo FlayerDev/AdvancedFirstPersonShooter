@@ -2,20 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerSlot : MonoBehaviour
 {
-    public string Name
+    public bool DisableKickBttn = false;
+    private void OnEnable()
     {
-        set
+        if (LobbyManager.Singleton.lobbyState == LobbyState.Client || DisableKickBttn)
         {
-            transform.GetChild(0).GetComponent<Text>().text = value;
+            transform.GetChild(1).gameObject.SetActive(false);
+        }
+        else if(LobbyManager.Singleton.lobbyState == LobbyState.Host)
+        {
+            transform.GetChild(1).gameObject.SetActive(true);
         }
     }
-    public ExtendedRoomPlayer Player;
-    public void KickClient()
+    /// <summary>
+    /// Sets the name of the Slot Text
+    /// </summary>
+    public string Name
     {
-        //LobbyManager.Singleton.CmdKickPlayer(Player.netIdentity.connectionToClient);
-        LobbyManager.Singleton.LocalRoomPlayer.CmdKickPlayer(Player.netIdentity);
+        set => transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = value;
     }
+    public ExtendedRoomPlayer Player;
+    /// <summary>
+    /// Used to Kick the client associated with this slot
+    /// </summary>
+    public void KickClient() =>
+        LobbyManager.Singleton.LocalRoomPlayer.CmdKickPlayer(Player.netIdentity);
 }

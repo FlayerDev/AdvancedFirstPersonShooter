@@ -18,7 +18,7 @@ public class ExtendedRoomPlayer : NobleRoomPlayer
 
     public override void OnClientExitRoom()
     {
-        lobbyManager.Lobby_Leave();
+
     }
     #region Commands and Rpcs
 #pragma warning disable IDE0060
@@ -30,6 +30,7 @@ public class ExtendedRoomPlayer : NobleRoomPlayer
     [TargetRpc]
     void TargetKickPlayer(NetworkConnection target)
     {
+        Debug.Log("Kicked");
         LobbyManager.Singleton.Lobby_Leave();
     }
     [Command] public void CmdSetName(string name)
