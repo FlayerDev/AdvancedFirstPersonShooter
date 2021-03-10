@@ -15,17 +15,7 @@ public class PlayerSlot : MonoBehaviour
     public ExtendedRoomPlayer Player;
     public void KickClient()
     {
-        try
-        {
-            Player.connectionToServer.Disconnect();
-        }
-        catch
-        {
-            try
-            {
-                Player.connectionToClient.Disconnect();
-            }
-            catch { }
-        }
+        //LobbyManager.Singleton.CmdKickPlayer(Player.netIdentity.connectionToClient);
+        LobbyManager.Singleton.LocalRoomPlayer.CmdKickPlayer(Player.netIdentity);
     }
 }

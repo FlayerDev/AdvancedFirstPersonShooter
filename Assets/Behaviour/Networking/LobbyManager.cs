@@ -8,6 +8,9 @@ public class LobbyManager : NobleRoomManager
 {
     public static LobbyManager Singleton;
     NobleNetworkManager networkManager;
+    /// <summary>
+    /// Returns the Local ExtendedRoomPlayer
+    /// </summary>
     public ExtendedRoomPlayer LocalRoomPlayer
     {
         get
@@ -100,7 +103,10 @@ public class LobbyManager : NobleRoomManager
         }
         else if (lobbyState == LobbyState.Host)
         {
-            client.Disconnect();
+            try
+            {
+                client.Disconnect();
+            }catch { }
             NetworkServer.Shutdown();
             NobleServer.Shutdown();
             lobbyState = LobbyState.None;

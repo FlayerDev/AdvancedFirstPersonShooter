@@ -20,15 +20,24 @@ public class ExtendedRoomPlayer : NobleRoomPlayer
     {
         lobbyManager.Lobby_Leave();
     }
+    #region Commands and Rpcs
+#pragma warning disable IDE0060
     [Command]
-    public void CmdKickPlayer()
+    public void CmdKickPlayer(NetworkIdentity id)
     {
-        connectionToClient.Disconnect();
+        TargetKickPlayer(id.connectionToClient);
+    }
+    [TargetRpc]
+    void TargetKickPlayer(NetworkConnection target)
+    {
+        LobbyManager.Singleton.Lobby_Leave();
     }
     [Command] public void CmdSetName(string name)
     {
         ClientName = name;
     }
+#pragma warning restore IDE0060
+    #endregion
     public override void OnStartLocalPlayer()
     {
         if (lobbyManager.lobbyState.Equals(LobbyState.Client))readyToBegin = true;
