@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ItemPickup : MonoBehaviour
 {
-    public WeaponType weaponType;
+    public ItemType weaponType;
     public GameObject weaponPrefab;
 
     public void pickup(Inventory inventory, bool overtake_slot = true)

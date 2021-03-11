@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 using Unity.Flayer.InputSystem;
 
 public class Inventory : Mirror.NetworkBehaviour
 {
     public GameObject[] weaponHolders = new GameObject[3];
+    public InventorySlot[] inventorySlots = new InventorySlot[0];
     public int enabledIndex = 0;
     [Range(1f, 10f)] public float usableDistance = 5f;
     public bool allowBombPickup = false;

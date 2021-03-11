@@ -2,7 +2,7 @@
 
 public class Item : MonoBehaviour, IUsable
 {
-    public WeaponType weaponType;
+    public ItemType itemType;
     [SerializeField] MonoBehaviour[] DisableOnDrop;
     [SerializeField] bool RigidBodyOnDrop = true;
     [SerializeField] Collider objCollider;
@@ -13,11 +13,11 @@ public class Item : MonoBehaviour, IUsable
     {
         var drop_item = Instantiate<GameObject>(pickupPrefab, transform.position, Quaternion.identity);
         drop_item.CopyComponent(GetComponent<Mag>());
-        drop_item.GetComponent<ItemPickup>().weaponType = weaponType;
+        drop_item.GetComponent<ItemPickup>().weaponType = itemType;
     }
     public void pickup(Inventory inventory, bool overtake_slot = true)
     {
-        Transform slot = inventory.transform.GetChild((int)weaponType);
+        Transform slot = inventory.transform.GetChild((int)itemType);
         if (slot.childCount < 1) gameObject.transform.parent = slot;
         else if (overtake_slot) { 
             slot.GetChild(0).GetComponent<Item>().drop();
@@ -37,18 +37,9 @@ public class Item : MonoBehaviour, IUsable
 
     }
 }
-public enum WeaponType
+public enum ItemType
 {
     Main,
     Secondary,
     Utility
-}
-public enum ItemType
-{
-    None,
-    Melee,
-    Pistol,
-    Rifle,
-    Shotgun,
-
 }
