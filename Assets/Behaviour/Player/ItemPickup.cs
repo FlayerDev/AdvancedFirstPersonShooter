@@ -1,22 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class ItemPickup : MonoBehaviour
+public class ItemPickup : NetworkBehaviour
 {
-    public ItemType weaponType;
+    public ItemType itemType;
     public GameObject weaponPrefab;
 
-    public void pickup(Inventory inventory, bool overtake_slot = true)
+    [Command]
+    public void CmdPickup(Inventory inventory, bool overtake_slot = true)
     {
-        Transform slot = inventory.transform.GetChild((int)weaponType);
-        if (slot.childCount < 1) Instantiate(weaponPrefab,slot).CopyComponent(GetComponent<Mag>());
+        InventorySlot slot = null;
+        for (int i = 0; i < inventory.inventorySlots.Length; i++)
+        {
+            if (inventory[i].itemType == itemType) slot = inventory[i];
+        }
+        if (slot.subslots > slot.transform.childCount)
+        {
+            var wepbuff = Instantiate(weaponPrefab, slot.transform);
+            wepbuff.CopyComponent(GetComponent<Mag>());
+            NetworkServer.Spawn(wepbuff);
+        }
         else if (overtake_slot)
         {
-            slot.GetChild(0).GetComponent<Item>().drop();
-            Instantiate(weaponPrefab, slot).CopyComponent(GetComponent<Mag>());
+            slot.drop();
+            var wepbuff = Instantiate(weaponPrefab, slot.transform);
+            wepbuff.CopyComponent(GetComponent<Mag>());
+            NetworkServer.Spawn(wepbuff);
         }
-        gameObject.transform.localPosition = Vector3.zero;
-        gameObject.transform.localRotation = Quaternion.identity;
     }
 }
