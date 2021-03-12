@@ -143,9 +143,10 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   inventorySlots:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8040112056987855078}
+  - {fileID: 2937889094970494611}
+  - {fileID: 3478959188971228965}
+  - {fileID: 1002770855238839891}
   enabledIndex: 0
   usableDistance: 5
   allowBombPickup: 0

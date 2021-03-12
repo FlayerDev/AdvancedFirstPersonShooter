@@ -31,4 +31,10 @@ public class NetworkSpawner
         NetworkServer.Spawn(gameObject);
         return gameObject;
     }
+    [Command]
+    public void CmdAssignClientAuthority(NetworkIdentity id , NetworkConnection conn)
+    {
+        if (conn == null) Debug.Log("conn null");
+        id.AssignClientAuthority(conn);
+    }
 }

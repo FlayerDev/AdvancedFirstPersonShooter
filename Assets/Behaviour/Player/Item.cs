@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Mirror;
 
-public class Item : MonoBehaviour
+public class Item : NetworkBehaviour
 {
     public ItemType itemType;
     public GameObject pickupPrefab;

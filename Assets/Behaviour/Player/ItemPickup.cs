@@ -9,10 +9,10 @@ public class ItemPickup : NetworkBehaviour
     public GameObject weaponPrefab;
 
     [Command]
-    public void CmdPickup(Inventory inventory, bool overtake_slot = true)
+    public void CmdPickup(Inventory inventory, bool overtake_slot)
     {
         InventorySlot slot = null;
-        for (int i = 0; i < inventory.inventorySlots.Length; i++)
+        for (int i = 0; i < inventory.inventorySlots.Length; i++) //Note: null reference exception
         {
             if (inventory[i].itemType == itemType) slot = inventory[i];
         }

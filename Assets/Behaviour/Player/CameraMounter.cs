@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraMounter : MonoBehaviour
 {
-    Camera MainCamera;
+    public Camera MainCamera;
 
     private void Awake()
     {

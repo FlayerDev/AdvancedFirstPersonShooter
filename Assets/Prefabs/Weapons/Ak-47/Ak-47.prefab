@@ -131,7 +131,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aacfbcf6e7574724aa03a1cfa8d88775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  decalPrefabs: {fileID: 11400000, guid: 39bb95250f7fed246a322d150f01449c, type: 2}
+  syncMode: 0
+  syncInterval: 0.1
+  surfacePropertyLibrary: {fileID: 0}
   isWeaponAutomatic: 1
   baseDamage: 32
   effectiveRange: 500
@@ -161,11 +163,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1a1e0dd0adcf184b9210dd463fb8c98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 0
-  DisableOnDrop:
-  - {fileID: 2196027024392732459}
-  RigidBodyOnDrop: 1
-  objCollider: {fileID: 2318571375709015638}
+  syncMode: 0
+  syncInterval: 0.1
+  itemType: 1
+  pickupPrefab: {fileID: 319120377766980121, guid: b2c948376f474e848a1009f1a00fef65,
+    type: 3}
 --- !u!114 &7640471796853338212
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -9,6 +9,10 @@ public class Inventory : Mirror.NetworkBehaviour
     public int enabledIndex = 0;
     [Range(1f, 10f)] public float usableDistance = 5f;
     public bool allowBombPickup = false;
+    public CameraMounter camount;
+
+    NetworkIdentity ParentNetID;
+
 
     public InventorySlot this[int index]
     {
@@ -17,14 +21,15 @@ public class Inventory : Mirror.NetworkBehaviour
 
     void Start()
     {
-        if (!isLocalPlayer) return;
+        ParentNetID = gameObject.transform.parent.GetComponent<NetworkIdentity>();
+        if (!ParentNetID.isLocalPlayer) return;
         CmdSetIndex(0);
     }
 
 
     void Update()
     {
-        if (!isLocalPlayer) return;
+        if (!ParentNetID.isLocalPlayer) return;
         if (InputManager.GetBindDown("Use") && !LocalInfo.IsPaused) use();
         if (InputManager.GetBindDown("Drop") && !LocalInfo.IsPaused) drop();
         float scrollValue = Input.GetAxis("Mouse ScrollWheel");
@@ -32,8 +37,15 @@ public class Inventory : Mirror.NetworkBehaviour
     }
     void use()
     {
+        /*
         RaycastHit hit = (RaycastHit)LocalInfo.useRaycastHit;
-        if (hit.collider.gameObject.TryGetComponent(out ItemPickup itm)) itm.CmdPickup(this, true);
+        */
+        Physics.Raycast(camount.MainCamera.transform.position, camount.MainCamera.transform.forward, out RaycastHit hit);
+        if (hit.collider.gameObject.TryGetComponent(out ItemPickup itm)) {
+            new NetworkSpawner().CmdAssignClientAuthority(itm.netIdentity, transform.parent.GetComponent<NetworkIdentity>().connectionToClient);
+            itm.CmdPickup(this, true); 
+        }
+
     }
 
     void drop() => inventorySlots[enabledIndex].drop();
