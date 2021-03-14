@@ -10,7 +10,12 @@ public class InventorySlot : MonoBehaviour
     public bool AllowDrop = true;
     [Range(1,9)] public int subslots = 1;
 
-    int activeSubSlot = 1;
+    public int activeSubSlot = 0;
+
+    public GameObject this[int index]
+    {
+        get => transform.GetChild(index).gameObject;
+    }
 
     public void drop()
     {

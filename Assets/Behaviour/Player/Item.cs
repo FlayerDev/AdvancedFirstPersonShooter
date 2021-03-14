@@ -15,6 +15,15 @@ public class Item : NetworkBehaviour
         drop_item.GetComponent<ItemPickup>().itemType = itemType;
         NetworkServer.Spawn(drop_item);
     }
+
+    private void OnEnable()
+    {
+        
+    }
+    private void OnDisable()
+    {
+        
+    }
     /*
     public void pickup(Inventory inventory, bool overtake_slot = true)
     {

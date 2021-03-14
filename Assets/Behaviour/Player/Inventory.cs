@@ -23,7 +23,7 @@ public class Inventory : Mirror.NetworkBehaviour
     {
         ParentNetID = gameObject.transform.parent.GetComponent<NetworkIdentity>();
         if (!ParentNetID.isLocalPlayer) return;
-        CmdSetIndex(0);
+        SetIndex(0);
     }
 
 
@@ -33,31 +33,58 @@ public class Inventory : Mirror.NetworkBehaviour
         if (InputManager.GetBindDown("Use") && !LocalInfo.IsPaused) use();
         if (InputManager.GetBindDown("Drop") && !LocalInfo.IsPaused) drop();
         float scrollValue = Input.GetAxis("Mouse ScrollWheel");
-        if (scrollValue != 0) CmdIncrementIndex(scrollValue < 0);
+        if (scrollValue != 0) IncrementIndex(scrollValue < 0);
     }
     void use()
     {
-        /*
-        RaycastHit hit = (RaycastHit)LocalInfo.useRaycastHit;
-        */
+        //RaycastHit hit = (RaycastHit)LocalInfo.useRaycastHit;
         Physics.Raycast(camount.MainCamera.transform.position, camount.MainCamera.transform.forward, out RaycastHit hit);
         if (hit.collider.gameObject.TryGetComponent(out ItemPickup itm)) {
-            new NetworkSpawner().CmdAssignClientAuthority(itm.netIdentity, transform.parent.GetComponent<NetworkIdentity>().connectionToClient);
-            itm.CmdPickup(this, true); 
+            //new NetworkSpawner().CmdAssignClientAuthority(itm.netIdentity, transform.parent.GetComponent<NetworkIdentity>().connectionToClient);
+            //itm.netIdentity.AssignClientAuthority(transform.parent.GetComponent<NetworkIdentity>().connectionToClient);
+            Pickup(itm.gameObject, false);
         }
 
     }
 
     void drop() => inventorySlots[enabledIndex].drop();
 
-    #region ChangeWeapon
-    [Command]
-    void CmdIncrementIndex(bool dir)
+    public void Drop()
     {
-        RpcIncrementIndex(dir);
+
     }
-    [ClientRpc]
-    void RpcIncrementIndex(bool dir)
+
+    //[Command]
+    public void Pickup(GameObject item, bool overtake_slot)
+    {
+        InventorySlot slot = null;
+        GameObject weaponPrefab = item.GetComponent<ItemPickup>().weaponPrefab;
+        for (int i = 0; i < inventorySlots.Length; i++) 
+        {
+            if (this[i].itemType == item.GetComponent<ItemPickup>().itemType) slot = this[i];
+        }
+        if (slot.subslots > slot.transform.childCount)
+        {
+            var wepbuff = Instantiate(weaponPrefab, slot.transform);
+            //wepbuff.CopyComponent(GetComponent<Mag>());
+            NetworkServer.Spawn(wepbuff, transform.parent.gameObject);
+            NetworkServer.Destroy(item);
+
+        }
+        else if (overtake_slot)
+        {
+            slot.drop();
+            var wepbuff = Instantiate(weaponPrefab, slot.transform);
+            //wepbuff.CopyComponent(GetComponent<Mag>());
+            NetworkServer.Spawn(wepbuff, transform.parent.gameObject);
+            NetworkServer.Destroy(item);
+
+        }
+    }
+
+    #region ChangeWeapon
+
+    void IncrementIndex(bool dir)
     {
         if (inventorySlots[enabledIndex].IncrementIndex(dir)) return;
         int step = (dir ? 1 : -1);
@@ -74,14 +101,9 @@ public class Inventory : Mirror.NetworkBehaviour
             }
         }
     }
-    [Command]
-    void CmdSetIndex(int index)
+    void SetIndex(int index)
     {
-        RpcSetIndex(index);
-    }
-    [ClientRpc]
-    void RpcSetIndex(int index)
-    {
+
         if(index == enabledIndex)
         {
             if (inventorySlots[enabledIndex].IncrementIndex(false)) return;
