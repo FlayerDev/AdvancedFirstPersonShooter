@@ -15,10 +15,7 @@ public class PlayerInfo : NetworkBehaviour, IDamageable
     private void Update()
     {
         if (!isLocalPlayer) return;
-        if (GetComponent<NetworkIdentity>().isLocalPlayer)
-        {
-            LocalInfo.PlayerHealth = hp;
-        }
+        LocalInfo.PlayerHealth = hp;
     }
 
     #region Networking

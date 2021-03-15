@@ -14,13 +14,7 @@ public class InventorySlot : MonoBehaviour
 
     public GameObject this[int index]
     {
-        get => transform.GetChild(index).gameObject;
-    }
-
-    public void drop()
-    {
-        if (subslots == 1) return;
-        transform.GetChild(activeSubSlot).GetComponent<Item>().CmdDrop();
+        get => transform.GetChild(index-1).gameObject;
     }
 
     public bool IncrementIndex(bool dir)

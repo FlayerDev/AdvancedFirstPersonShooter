@@ -46,10 +46,9 @@ public class Weapon : WeaponBehaviour
     #endregion
     private void Awake()
     {
-        if (!isLocalPlayer) return;
         mag = GetComponent<Mag>();
-        mag.ammo = mag.Capacity;
-        muzzle = LocalInfo.muzzle;
+        mag.Ammo = mag.Capacity;
+        muzzle = Camera.main.gameObject;
         update += isWeaponAutomatic
             ? update += () => { if (InputManager.GetBind("Primary")) fire(); }
         : () => { if (InputManager.GetBindDown("Primary")) fire(); };
@@ -57,12 +56,12 @@ public class Weapon : WeaponBehaviour
     }
     public void Update() 
     {
-        if (!isLocalPlayer) return;
+        if (!hasAuthority) return;
         update();
     }
     private void FixedUpdate()
     {
-        if (!isLocalPlayer) return;
+        if (!hasAuthority) return;
         currentRecoil.y /= 1f + recoilReturnSpeed * Time.fixedDeltaTime;
         currentRecoil.x /= 1f + recoilReturnSpeed * Time.fixedDeltaTime;
     }
@@ -78,7 +77,7 @@ public class Weapon : WeaponBehaviour
     public void fire()
     {
         if (!isArmed) return;
-        if (mag.ammo > 0) mag.ammo--; else return;
+        if (mag.Ammo > 0) mag.Ammo--; else return;
         rearm();
         float dmg = baseDamage;
         calculateRecoil();

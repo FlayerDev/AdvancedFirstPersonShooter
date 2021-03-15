@@ -20,7 +20,7 @@ public class ItemPickup : NetworkBehaviour
         }
         else if (overtake_slot)
         {
-            slot.drop();
+            //slot.drop();
             var wepbuff = Instantiate(weaponPrefab, slot.transform);
             wepbuff.CopyComponent(GetComponent<Mag>());
             NetworkServer.Spawn(wepbuff);

@@ -11,7 +11,7 @@ public class Inventory : Mirror.NetworkBehaviour
     public bool allowBombPickup = false;
     public CameraMounter camount;
 
-    NetworkIdentity ParentNetID;
+    //NetworkIdentity ParentNetID;
 
 
     public InventorySlot this[int index]
@@ -21,15 +21,17 @@ public class Inventory : Mirror.NetworkBehaviour
 
     void Start()
     {
-        ParentNetID = gameObject.transform.parent.GetComponent<NetworkIdentity>();
-        if (!ParentNetID.isLocalPlayer) return;
+        //ParentNetID = gameObject.transform.parent.GetComponent<NetworkIdentity>();
+        //if (!ParentNetID.isLocalPlayer) return;
+        if (!hasAuthority) return;
         SetIndex(0);
     }
 
 
     void Update()
     {
-        if (!ParentNetID.isLocalPlayer) return;
+        //if (!ParentNetID.isLocalPlayer) return;
+        if (!hasAuthority) return;
         if (InputManager.GetBindDown("Use") && !LocalInfo.IsPaused) use();
         if (InputManager.GetBindDown("Drop") && !LocalInfo.IsPaused) drop();
         float scrollValue = Input.GetAxis("Mouse ScrollWheel");
@@ -47,11 +49,19 @@ public class Inventory : Mirror.NetworkBehaviour
 
     }
 
-    void drop() => inventorySlots[enabledIndex].drop();
+    void drop() => Drop();
 
     public void Drop()
     {
-
+        GameObject item = inventorySlots[enabledIndex][inventorySlots[enabledIndex].activeSubSlot];
+        Item itm = item.GetComponent<Item>();
+        GameObject drop_item = Instantiate<GameObject>(itm.pickupPrefab, transform.position, Quaternion.identity);
+        drop_item.CopyComponent(item.GetComponent<Mag>());
+        drop_item.GetComponent<ItemPickup>().itemType = itm.itemType;
+        item.SetActive(false);
+        NetworkServer.Destroy(item);
+        NetworkServer.Spawn(drop_item);
+        Debug.Log("Inventory:Drop");
     }
 
     //[Command]
@@ -61,25 +71,29 @@ public class Inventory : Mirror.NetworkBehaviour
         GameObject weaponPrefab = item.GetComponent<ItemPickup>().weaponPrefab;
         for (int i = 0; i < inventorySlots.Length; i++) 
         {
-            if (this[i].itemType == item.GetComponent<ItemPickup>().itemType) slot = this[i];
+            if (this[i].itemType == item.GetComponent<ItemPickup>().itemType) { 
+                slot = this[i];
+                SetIndex(i);
+            }
         }
         if (slot.subslots > slot.transform.childCount)
         {
-            var wepbuff = Instantiate(weaponPrefab, slot.transform);
-            //wepbuff.CopyComponent(GetComponent<Mag>());
+            GameObject wepbuff = Instantiate(weaponPrefab, slot.transform);
+            wepbuff.CopyComponent(item.GetComponent<Mag>());
             NetworkServer.Spawn(wepbuff, transform.parent.gameObject);
             NetworkServer.Destroy(item);
-
+            Debug.Log("Inventory:Slot_PickedUp");
         }
         else if (overtake_slot)
         {
-            slot.drop();
-            var wepbuff = Instantiate(weaponPrefab, slot.transform);
-            //wepbuff.CopyComponent(GetComponent<Mag>());
+            Drop();
+            GameObject wepbuff = Instantiate(weaponPrefab, slot.transform);
+            wepbuff.CopyComponent(item.GetComponent<Mag>());
             NetworkServer.Spawn(wepbuff, transform.parent.gameObject);
             NetworkServer.Destroy(item);
-
+            Debug.Log("Inventory:Slot_Overtaken");
         }
+        Debug.Log("Inventory:Slot_Full");
     }
 
     #region ChangeWeapon

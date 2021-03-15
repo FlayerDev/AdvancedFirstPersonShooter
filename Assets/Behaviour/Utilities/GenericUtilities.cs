@@ -49,22 +49,20 @@ public static class GenericUtilities
         float output = (value - min) / range;
         return output;
     }
-    public static Component CopyComponent(this GameObject destination, Component original)
+
+    public static T CopyComponent<T>(this GameObject destination, T original) where T : Component
     {
-        System.Type type = original.GetType();
-        Component copy;
-
-        if (destination.TryGetComponent(out Component component))
+        System.Type type = typeof(T);
+        T copy;
+        if (destination.TryGetComponent(out T component))
              copy = component;
-        else copy = destination.AddComponent(type);
-
-        // Copied fields can be restricted with BindingFlags
+        else copy = destination.AddComponent(type) as T;
         System.Reflection.FieldInfo[] fields = type.GetFields();
         foreach (System.Reflection.FieldInfo field in fields)
         {
             field.SetValue(copy, field.GetValue(original));
         }
-        return copy;
+        return copy as T;
     }
 }
 public class trigger
