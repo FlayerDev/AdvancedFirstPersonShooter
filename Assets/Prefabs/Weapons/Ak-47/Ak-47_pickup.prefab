@@ -132,7 +132,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fba7f0ceebd840749905f056c5b436e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ammo: 0
+  syncMode: 0
+  syncInterval: 0.1
+  Ammo: 30
   InventoryCapacity: 90
   Capacity: 30
   ReloadAmount: 30

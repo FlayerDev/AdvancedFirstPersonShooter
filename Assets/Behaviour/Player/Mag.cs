@@ -6,30 +6,22 @@ using Mirror;
 [AddComponentMenu("Flayer/Combat/Mag")]
 public class Mag : NetworkBehaviour
 {
-    public int Ammo { 
-        get
-        {
-            return ammo;
-        }
-        set
-        {
-            CmdSetAmmo(value);
-        }
-    }
-    [SerializeField, SyncVar] int ammo;
+    [SyncVar(hook = nameof(OnSetAmmo))] public int Ammo = 30;
     public int InventoryCapacity = 90;
     public int Capacity = 30;
     public int ReloadAmount = 30;
     public float ReloadTime = 2500f;
 
-    private void Start()
+    void OnSetAmmo(int old, int n)
     {
-        ammo = Capacity;
-        //CmdSetAmmo(Capacity);
+        Debug.Log($"ammo: {Ammo}");
+        Debug.Log($"old: {old}");
+        Debug.Log($"new: {n}");
     }
-    [Command]
-    void CmdSetAmmo(int val)
+    [Command(ignoreAuthority = true)]
+    public void CmdSetAmmo(int val)
     {
-        ammo = val;
+        Debug.Log(val);
+        Ammo = val;
     }
 }

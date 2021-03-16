@@ -47,7 +47,7 @@ public class Weapon : WeaponBehaviour
     private void Awake()
     {
         mag = GetComponent<Mag>();
-        mag.Ammo = mag.Capacity;
+        //mag.Ammo = mag.Capacity;
         muzzle = Camera.main.gameObject;
         update += isWeaponAutomatic
             ? update += () => { if (InputManager.GetBind("Primary")) fire(); }
@@ -77,6 +77,7 @@ public class Weapon : WeaponBehaviour
     public void fire()
     {
         if (!isArmed) return;
+        //if (mag.Ammo > 0) mag.Ammo--; else return;
         if (mag.Ammo > 0) mag.Ammo--; else return;
         rearm();
         float dmg = baseDamage;

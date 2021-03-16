@@ -115,6 +115,12 @@ public class LobbyManager : NobleRoomManager
         }
         GUI_State(false);
     }
+
+    public void Play()
+    {
+        ServerChangeScene(GameplayScene);
+    }
+
     #region overrides
     public override void OnClientDisconnect(NetworkConnection conn)
     {
