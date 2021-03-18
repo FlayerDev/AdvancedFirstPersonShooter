@@ -52,6 +52,7 @@ public class Inventory : Mirror.NetworkBehaviour
     public void Drop()
     {
         GameObject item = inventorySlots[enabledIndex][inventorySlots[enabledIndex].activeSubSlot];
+        if (!inventorySlots[enabledIndex].AllowDrop) return;
         Item itm = item.GetComponent<Item>();
         GameObject drop_item = Instantiate<GameObject>(itm.pickupPrefab, transform.position, Quaternion.identity);
         drop_item.GetComponent<ItemPickup>().itemType = itm.itemType;
