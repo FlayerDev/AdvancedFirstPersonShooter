@@ -14,7 +14,7 @@ public class InventorySlot : MonoBehaviour
 
     public GameObject this[int index]
     {
-        get => transform.GetChild(index-1).gameObject;
+        get => transform.GetChild(index).gameObject;
     }
 
     public bool IncrementIndex(bool dir)
