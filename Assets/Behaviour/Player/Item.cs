@@ -5,6 +5,8 @@ public class Item : NetworkBehaviour
 {
     public ItemType itemType;
     public GameObject pickupPrefab;
+    public GameObject FP_Prefab;
+    public GameObject TP_Prefab;
 
 
     [Command]

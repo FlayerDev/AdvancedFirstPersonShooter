@@ -5,6 +5,8 @@ using Mirror;
 
 public class Inventory : Mirror.NetworkBehaviour
 {
+    public static Inventory Local;
+
     public InventorySlot[] inventorySlots = new InventorySlot[0];
     public int enabledIndex = 0;
     [Range(1f, 10f)] public float usableDistance = 5f;
@@ -24,6 +26,7 @@ public class Inventory : Mirror.NetworkBehaviour
         if (hasAuthority) Debug.Log("has auth");
         ParentNetID = gameObject.transform.parent.GetComponent<NetworkIdentity>();
         if (!ParentNetID.isLocalPlayer) return;
+        Local = this;
         //if (!hasAuthority) return;
         SetIndex(0);
     }
