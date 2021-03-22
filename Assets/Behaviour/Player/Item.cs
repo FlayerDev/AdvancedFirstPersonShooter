@@ -5,44 +5,33 @@ public class Item : NetworkBehaviour
 {
     public ItemType itemType;
     public GameObject pickupPrefab;
+    [Header("First Person")]
     public GameObject FP_Prefab;
+    public Vector3 FP_PositionOffset;
+    public Quaternion FP_RotationOffset;
+    [Header("Third Person")]
     public GameObject TP_Prefab;
-
-
-    [Command]
-    public void CmdDrop()
-    {
-        var drop_item = Instantiate<GameObject>(pickupPrefab, transform.position, Quaternion.identity);
-        drop_item.CopyComponent(GetComponent<Mag>());
-        drop_item.GetComponent<ItemPickup>().itemType = itemType;
-        NetworkServer.Spawn(drop_item);
-    }
+    public Vector3 TP_PositionOffset;
+    public Quaternion TP_RotationOffset;
+    [Header("Runtime")]
+    public GameObject FP_Runtime;
+    public GameObject TP_Runtime;
+    [Space]
+    public bool itemSide = true;
 
     private void OnEnable()
     {
-        
+        FP_Runtime = Instantiate(TP_Prefab, itemSide ? Inventory.Local.TP_RProp.transform : Inventory.Local.TP_LProp.transform);
+        //FP_Runtime.transform.localPosition = Vector3.zero;
+        //FP_Runtime.transform.localRotation = Quaternion.identity;
+        FP_Runtime.transform.localPosition = FP_PositionOffset;
+        FP_Runtime.transform.localRotation = FP_RotationOffset;
+        NetworkServer.Spawn(TP_Runtime);
     }
     private void OnDisable()
     {
-        
+        NetworkServer.Destroy(TP_Runtime);
     }
-    /*
-    public void pickup(Inventory inventory, bool overtake_slot = true)
-    {
-        Transform slot = inventory.transform.GetChild((int)itemType);
-        if (slot.childCount < 1) gameObject.transform.parent = slot;
-        else if (overtake_slot) { 
-            slot.GetChild(0).GetComponent<Item>().drop();
-            gameObject.transform.parent = slot;
-        }
-        objCollider.enabled = false;
-        if (RigidBodyOnDrop) Destroy(gameObject.GetComponent<Rigidbody>());
-        if (DisableOnDrop.Length > 0) foreach (MonoBehaviour obj in DisableOnDrop) obj.enabled = true;
-        gameObject.transform.localPosition = Vector3.zero;
-        gameObject.transform.localRotation = Quaternion.identity;
-    }
-    */
-    //public void use(GameObject user) => pickup(user.GetComponent<Inventory>());
 }
 public enum ItemType
 {

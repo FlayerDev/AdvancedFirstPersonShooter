@@ -8,6 +8,8 @@ public class Inventory : Mirror.NetworkBehaviour
     public static Inventory Local;
 
     public InventorySlot[] inventorySlots = new InventorySlot[0];
+    public GameObject TP_RProp;
+    public GameObject TP_LProp;
     public int enabledIndex = 0;
     [Range(1f, 10f)] public float usableDistance = 5f;
     public bool allowBombPickup = false;

@@ -3243,6 +3243,16 @@ PrefabInstance:
       propertyPath: camount
       value: 
       objectReference: {fileID: 5229979238423484317}
+    - target: {fileID: 3175273924046459830, guid: 5ef24727e7b59af459424d3a200d3ce4,
+        type: 3}
+      propertyPath: TP_LProp
+      value: 
+      objectReference: {fileID: 5229979237513573624}
+    - target: {fileID: 3175273924046459830, guid: 5ef24727e7b59af459424d3a200d3ce4,
+        type: 3}
+      propertyPath: TP_RProp
+      value: 
+      objectReference: {fileID: 5229979237513573682}
     - target: {fileID: 6472012769291873858, guid: 5ef24727e7b59af459424d3a200d3ce4,
         type: 3}
       propertyPath: m_AssetId
