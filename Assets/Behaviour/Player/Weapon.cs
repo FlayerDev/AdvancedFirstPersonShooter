@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Unity.Flayer.InputSystem;
 [RequireComponent(typeof(Item))]
-public class Weapon : WeaponBehaviour
+public class Weapon : WeaponBehaviour //VISUAL: Add bullet output on TP Model
 {
     #region Properties
     #region Generic Options

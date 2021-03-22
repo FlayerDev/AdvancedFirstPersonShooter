@@ -21,11 +21,11 @@ public class Item : NetworkBehaviour
 
     private void OnEnable()
     {
-        FP_Runtime = Instantiate(TP_Prefab, itemSide ? Inventory.Local.TP_RProp.transform : Inventory.Local.TP_LProp.transform);
-        //FP_Runtime.transform.localPosition = Vector3.zero;
-        //FP_Runtime.transform.localRotation = Quaternion.identity;
-        FP_Runtime.transform.localPosition = FP_PositionOffset;
-        FP_Runtime.transform.localRotation = FP_RotationOffset;
+        TP_Runtime = Instantiate(TP_Prefab, itemSide ? Inventory.Local.TP_RProp.transform : Inventory.Local.TP_LProp.transform);
+        //TP_Runtime.transform.localPosition = Vector3.zero;
+        //TP_Runtime.transform.localRotation = Quaternion.identity;
+        TP_Runtime.transform.localPosition = TP_PositionOffset;
+        TP_Runtime.transform.localRotation = TP_RotationOffset;
         NetworkServer.Spawn(TP_Runtime);
     }
     private void OnDisable()

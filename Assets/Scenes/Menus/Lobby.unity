@@ -5437,6 +5437,9 @@ MonoBehaviour:
   playerSpawnMethod: 0
   spawnPrefabs:
   - {fileID: 5229979237513573648, guid: b6bef4b15db07474c825abaaed3c5bd7, type: 3}
+  - {fileID: 319120377766980121, guid: f837cee38532e0846bbf246cb19f1590, type: 3}
+  - {fileID: 319120377766980121, guid: 37d5078b015ef2b4784126e10e518a34, type: 3}
+  - {fileID: 319120377766980121, guid: f211cde0648f7324cb3f6d1f41113479, type: 3}
   networkPort: 0
   region: 0
   forceRelayConnection: 0

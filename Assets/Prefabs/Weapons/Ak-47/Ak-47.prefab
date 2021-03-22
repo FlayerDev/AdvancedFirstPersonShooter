@@ -83,12 +83,12 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   itemType: 1
-  pickupPrefab: {fileID: 319120377766980121, guid: b2c948376f474e848a1009f1a00fef65,
+  pickupPrefab: {fileID: 319120377766980121, guid: 37d5078b015ef2b4784126e10e518a34,
     type: 3}
   FP_Prefab: {fileID: 0}
   FP_PositionOffset: {x: 0, y: 0, z: 0}
   FP_RotationOffset: {x: 0, y: 0, z: 0, w: 0}
-  TP_Prefab: {fileID: 319120377766980121, guid: d2321b785844a034cb910a495447593a,
+  TP_Prefab: {fileID: 319120377766980121, guid: f211cde0648f7324cb3f6d1f41113479,
     type: 3}
   TP_PositionOffset: {x: 0, y: 0, z: 0}
   TP_RotationOffset: {x: 0, y: 0, z: 0, w: 0}
@@ -110,10 +110,11 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   Ammo: 30
-  InventoryCapacity: 90
+  InventoryAmmo: 90
   Capacity: 30
+  InventoryCapacity: 90
   ReloadAmount: 30
-  ReloadTime: 2500
+  ReloadTimeMS: 2500
 --- !u!95 &5626469467630197273
 Animator:
   serializedVersion: 3
