@@ -1,11 +1,17 @@
 fileFormatVersion: 2
-guid: 68f21a918f167d24c94541702aee99a0
+guid: 7675d55df4fd02242ba89b3a6c33b80f
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
   - first:
-      74: 5919516187945201185
-    second: Armature|Melee_Enable
+      74: -3868636296387169579
+    second: Armature.001|Melee_Enable
+  - first:
+      74: 5606532334677583644
+    second: Armature.001|TP_Main_Equip
+  - first:
+      74: -4270484735313979154
+    second: Armature.001|TP_Main_Equip.001
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -26,7 +32,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -91,13 +97,13 @@ ModelImporter:
     globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 2
+  animationType: 3
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   additionalBone: 0
   userData: 
