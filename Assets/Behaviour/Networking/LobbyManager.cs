@@ -115,7 +115,17 @@ public class LobbyManager : NobleRoomManager
         }
         GUI_State(false);
     }
-
+    public void Lobby_Paste()
+    {
+        string cliptxt = GUIUtility.systemCopyBuffer;
+        //if (cliptxt == null || !cliptxt.Contains("_")) return;
+        ipField.text = cliptxt.Split('_')[0];
+        portField.text = cliptxt.Split('_')[1];
+    }
+    public void Lobby_Copy()
+    {
+        GUIUtility.systemCopyBuffer = $"{networkManager.HostEndPoint.Address}_{networkManager.HostEndPoint.Port}";
+    }
     public void Play()
     {
         ServerChangeScene(GameplayScene);
