@@ -9,6 +9,7 @@ public class Item : NetworkBehaviour
     public GameObject FP_Prefab;
     public Vector3 FP_PositionOffset;
     public Quaternion FP_RotationOffset;
+    public AnimatorOverrideController FP_HandAnimations;
     [Header("Third Person")]
     public GameObject TP_Prefab;
     public Vector3 TP_PositionOffset;

@@ -17,24 +17,35 @@ public class CameraMounter : MonoBehaviour
     public void Start()
     {
         if (!transform.parent.GetComponent<Mirror.NetworkIdentity>().isLocalPlayer) return;
-        Focus(); //TODO: Implement unfocus or hide FP Hands when not focused
+        Focus();
     }
     private void Update()
-    {
-        if (transform != MainCamera.transform.parent)
+    { 
+        if (transform != MainCamera.transform.parent && Focused) Unfocus();
+        if (Focused)
         {
-            Focused = false;
-            return;
+            FP_Hands.transform.localPosition = HandOffset;
         }
-        FP_Hands.transform.position = MainCamera.transform.position + HandOffset; // Note: this doesnt work!
-        FP_Hands.transform.rotation = MainCamera.transform.rotation;
+    }
+    public void Unfocus()
+    {
+        Focused = false;
+        FP_Hands.transform.parent = transform.parent;
+        FP_Hands.transform.position = Vector3.zero;
+        FP_Hands.SetActive(false);
     }
     public void Focus()
     {
         Focused = true;
+        //Hands
+        FP_Hands.SetActive(true);
+        FP_Hands.transform.parent = MainCamera.transform;
+        FP_Hands.transform.localPosition = HandOffset;
+        //Camera
         MainCamera.transform.parent = transform;
-        transform.parent.GetComponent<CameraRotation>().playerBody = transform.parent.gameObject;
-        transform.parent.GetComponent<CameraRotation>().cameraObj = MainCamera.gameObject;
+        CameraRotation camRot = transform.parent.GetComponent<CameraRotation>();
+        camRot.playerBody = transform.parent.gameObject;
+        camRot.cameraObj = MainCamera.gameObject;
         MainCamera.transform.localPosition = Vector3.zero;
     }
 }
