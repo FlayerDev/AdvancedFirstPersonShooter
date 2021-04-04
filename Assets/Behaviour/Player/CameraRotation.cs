@@ -21,7 +21,7 @@ public class CameraRotation : Mirror.NetworkBehaviour
 
     void Update()
     {
-        if (!isLocalPlayer) return;
+        if (!isLocalPlayer || !cameraObj) return;
         if (!LocalInfo.IsPaused)
         {
             float mouseX, mouseY;

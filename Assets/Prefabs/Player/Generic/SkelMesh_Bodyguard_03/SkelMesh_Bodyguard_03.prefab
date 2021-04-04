@@ -1246,7 +1246,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 392e8936cc6da8e439061607f88fbeae, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -4102,7 +4102,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: bac2ee17e0eabc9438513a90790732e4, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -5025,7 +5025,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5229979238423484319}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.719579, z: 0.2}
+  m_LocalPosition: {x: 0, y: 1.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5229979237513799984}
@@ -5045,7 +5045,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MainCamera: {fileID: 0}
   FP_Hands: {fileID: 2796766196824302938}
-  HandOffset: {x: 0, y: 0, z: 0}
+  BodyParts:
+  - {fileID: 5229979237513573514}
+  - {fileID: 5229979237513573512}
+  - {fileID: 5229979237513573518}
+  - {fileID: 5229979237513573516}
+  - {fileID: 5229979237513573506}
+  HandOffset: {x: 0, y: -0.08, z: 0.015}
   Focused: 0
 --- !u!1 &5322811308716366052
 GameObject:
