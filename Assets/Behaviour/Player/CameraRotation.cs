@@ -17,7 +17,11 @@ public class CameraRotation : Mirror.NetworkBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
-    
+    private void OnDisable()
+    {
+        Cursor.lockState = CursorLockMode.None;
+    }
+
 
     void Update()
     {
