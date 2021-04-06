@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.Flayer.InputSystem;
 using Mirror;
 
@@ -15,7 +16,7 @@ public class Inventory : Mirror.NetworkBehaviour
     public bool allowBombPickup = false;
     public CameraMounter camount;
 
-    NetworkIdentity ParentNetID;
+    public NetworkIdentity ParentNetID;
 
 
     public InventorySlot this[int index]
@@ -25,6 +26,7 @@ public class Inventory : Mirror.NetworkBehaviour
 
     void Start()
     {
+        if (hasAuthority) print("has auth");
         ParentNetID = gameObject.transform.parent.GetComponent<NetworkIdentity>();
         if (!ParentNetID.isLocalPlayer) return;
         Local = this;
@@ -59,7 +61,7 @@ public class Inventory : Mirror.NetworkBehaviour
 
     void drop() => Drop();
 
-    public void Drop()
+    public async void Drop()
     {
         GameObject item = inventorySlots[enabledIndex][inventorySlots[enabledIndex].activeSubSlot];
         if (!inventorySlots[enabledIndex].AllowDrop) return;
@@ -67,20 +69,15 @@ public class Inventory : Mirror.NetworkBehaviour
         GameObject drop_item = Instantiate<GameObject>(itm.pickupPrefab, transform.position, Quaternion.identity);
         drop_item.GetComponent<ItemPickup>().itemType = itm.itemType;
         item.SetActive(false);
-        CmdDrop(drop_item, item.GetComponent<Mag>().Ammo);
-        //drop_item.GetComponent<Mag>().CmdSetAmmo(item.GetComponent<Mag>().Ammo);
+        NetworkServer.Spawn(drop_item);
+        await Task.Delay(10);
+        drop_item.GetComponent<Mag>().CmdSetAmmo(item.GetComponent<Mag>().Ammo);
         NetworkServer.Destroy(item);
         Debug.Log("Inventory:Drop");
     }
-    [Command(ignoreAuthority = true)]
-    void CmdDrop(GameObject go,int ammo)
-    {
-        NetworkServer.Spawn(go);
-        go.GetComponent<Mag>().CmdSetAmmo(ammo);
-    }
 
     //[Command]
-    public void Pickup(GameObject item, bool overtake_slot)
+    public async void Pickup(GameObject item, bool overtake_slot)
     {
         InventorySlot slot = null;
         GameObject weaponPrefab = item.GetComponent<ItemPickup>().weaponPrefab;
@@ -94,8 +91,9 @@ public class Inventory : Mirror.NetworkBehaviour
         if (slot.subslots > slot.transform.childCount)
         {
             GameObject wepbuff = Instantiate(weaponPrefab, slot.transform);
-            //wepbuff.CopyComponent(item.GetComponent<Mag>());
-            CmdPickup(wepbuff, transform.parent.gameObject, item.GetComponent<Mag>().Ammo);
+            NetworkServer.Spawn(wepbuff, transform.parent.gameObject);
+            await Task.Delay(10);
+            wepbuff.GetComponent<Mag>().CmdSetAmmo(item.GetComponent<Mag>().Ammo);
             //wepbuff.GetComponent<Mag>().CmdSetAmmo(item.GetComponent<Mag>().Ammo);
             NetworkServer.Destroy(item);
             Debug.Log("Inventory:Slot_PickedUp");
@@ -104,19 +102,13 @@ public class Inventory : Mirror.NetworkBehaviour
         {
             Drop();
             GameObject wepbuff = Instantiate(weaponPrefab, slot.transform);
-            //wepbuff.CopyComponent(item.GetComponent<Mag>());
-            CmdPickup(wepbuff, transform.parent.gameObject, item.GetComponent<Mag>().Ammo); 
-            //.GetComponent<Mag>().CmdSetAmmo(item.GetComponent<Mag>().Ammo);
+            NetworkServer.Spawn(wepbuff, transform.parent.gameObject);
+            await Task.Delay(10);
+            wepbuff.GetComponent<Mag>().CmdSetAmmo(item.GetComponent<Mag>().Ammo);
             NetworkServer.Destroy(item);
             Debug.Log("Inventory:Slot_Overtaken");
         }
         Debug.Log("Inventory:Slot_Full");
-    }
-    [Command(ignoreAuthority = true)]
-    void CmdPickup(GameObject go, GameObject owner, int ammo)
-    {
-        NetworkServer.Spawn(go, owner);
-        go.GetComponent<Mag>().CmdSetAmmo(ammo);
     }
 
     #region ChangeWeapon

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Mirror;
+using System.Threading.Tasks;
 
 public class Item : NetworkBehaviour
 {
@@ -23,19 +24,17 @@ public class Item : NetworkBehaviour
 
     private void OnEnable()
     {
+        if (!hasAuthority) return;
         TP_Runtime = Instantiate(TP_Prefab, itemSide ? Inventory.Local.TP_RProp.transform : Inventory.Local.TP_LProp.transform);
-        //TP_Runtime.transform.localPosition = Vector3.zero;
-        //TP_Runtime.transform.localRotation = Quaternion.identity;
         TP_Runtime.transform.localPosition = TP_PositionOffset;
         TP_Runtime.transform.localRotation = TP_RotationOffset;
-        //NetworkServer.Spawn(TP_Runtime);
-        CmdSpawnItem(TP_Runtime, Inventory.Local.transform.parent.GetComponent<NetworkIdentity>().connectionToClient);
+        NetworkServer.Spawn(TP_Runtime, Inventory.Local.transform.parent.GetComponent<NetworkIdentity>().connectionToClient);
         Inventory.Local.transform.parent.GetComponent<AnimatorParameterSync>().animIndex = animationIndex;
     }
     [Command(ignoreAuthority = true)]
-    public void CmdSpawnItem(GameObject TPSp, NetworkConnectionToClient owner)
+    public void CmdSpawnItem()
     {
-        NetworkServer.Spawn(TPSp, owner);
+
     }
     private void OnDisable()
     {
