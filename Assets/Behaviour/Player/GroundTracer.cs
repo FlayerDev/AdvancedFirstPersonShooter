@@ -10,7 +10,7 @@ public class GroundTracer : MonoBehaviour
 
     private async void OnTriggerExit(Collider other) {
         var mov = transform.parent.GetComponent<CustomPlayerMovement>();
-        if (mov.velocity.y <= 0) mov.velocity.y = Mathf.Clamp(mov.velocity.y - 5 * Time.fixedDeltaTime, -10, 10);
+        if (mov.velocity.y <= 0) mov.velocity.y = 0f;//Mathf.Clamp(mov.velocity.y - 5 * Time.fixedDeltaTime, -10, 10);
 
         await System.Threading.Tasks.Task.Delay(100);
         isGrounded = false;

@@ -4997,8 +4997,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0113f746214934948994127a906e31f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minimumDamageSpeed: 15
-  fallDamageMultiplier: 10
+  minimumDamageSpeed: 18
+  fallDamageMultiplier: 5
   isGrounded: 0
 --- !u!1 &5229979238423484319
 GameObject:

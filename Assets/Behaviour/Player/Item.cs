@@ -4,6 +4,7 @@ using Mirror;
 public class Item : NetworkBehaviour
 {
     public ItemType itemType;
+    public AnimationIndex animationIndex;
     public GameObject pickupPrefab;
     [Header("First Person")]
     public GameObject FP_Prefab;
@@ -27,7 +28,14 @@ public class Item : NetworkBehaviour
         //TP_Runtime.transform.localRotation = Quaternion.identity;
         TP_Runtime.transform.localPosition = TP_PositionOffset;
         TP_Runtime.transform.localRotation = TP_RotationOffset;
-        NetworkServer.Spawn(TP_Runtime);
+        //NetworkServer.Spawn(TP_Runtime);
+        CmdSpawnItem(TP_Runtime, Inventory.Local.transform.parent.GetComponent<NetworkIdentity>().connectionToClient);
+        Inventory.Local.transform.parent.GetComponent<AnimatorParameterSync>().animIndex = animationIndex;
+    }
+    [Command(ignoreAuthority = true)]
+    public void CmdSpawnItem(GameObject TPSp, NetworkConnectionToClient owner)
+    {
+        NetworkServer.Spawn(TPSp, owner);
     }
     private void OnDisable()
     {
@@ -40,4 +48,12 @@ public enum ItemType
     Main,
     Secondary,
     Utility
+}
+public enum AnimationIndex : byte
+{
+    Melee,
+    Rifle,
+    SMG,
+    Pistol,
+    Throwable
 }

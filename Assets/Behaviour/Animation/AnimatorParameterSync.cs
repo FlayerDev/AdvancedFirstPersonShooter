@@ -8,11 +8,17 @@ public class AnimatorParameterSync : NetworkBehaviour
     public NetworkAnimator networkAnimator;
     public Animator animator;
 
+    [Header("Upper")]
+    public bool Equip = false;
+    public bool Reload = false;
+    public bool Fire = false;
+    public AnimationIndex animIndex;
+
+    [Header("Lower")]
     public float MoveSpeed = 1f;
     Vector2 moveDirection = new Vector2(0, 0);
     [Range(1f, 2f)] public float SmoothDamp = 1.5f;
     public float PlayerAlt = 1f;
-    //public bool Grounded = true;
     public bool Jump = false;
     public bool Grounded = true;
 
@@ -38,13 +44,30 @@ public class AnimatorParameterSync : NetworkBehaviour
         if (!isLocalPlayer) return;
         animator.SetFloat("Y_Velocity", moveDirection.y);
         animator.SetFloat("X_Velocity", moveDirection.x);
+        animator.SetInteger("WeaponType", (int)animIndex);
         //animator.SetBool("Grounded", Grounded);
         animator.SetFloat("PlayerAlt", PlayerAlt);
         if (Jump)
         {
             networkAnimator.SetTrigger("Jump");
             Jump = false;
+        }        
+        if (Fire)
+        {
+            networkAnimator.SetTrigger("Fire");
+            Fire = false;
+        }        
+        if (Reload)
+        {
+            networkAnimator.SetTrigger("Reload");
+            Reload = false;
+        }        
+        if (Equip)
+        {
+            networkAnimator.SetTrigger("Equip");
+            Equip = false;
         }
+
         if (moveDirection.sqrMagnitude < 0.1)
         {
             animator.SetFloat("Speed", 1f);
