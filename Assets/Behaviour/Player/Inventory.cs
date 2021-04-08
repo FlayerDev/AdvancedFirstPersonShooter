@@ -30,11 +30,12 @@ public class Inventory : Mirror.NetworkBehaviour
         ParentNetID = gameObject.transform.parent.GetComponent<NetworkIdentity>();
         if (!ParentNetID.isLocalPlayer) return;
         Local = this;
+
         //CmdGetAuthority(ParentNetID.connectionToClient);
         //if (!hasAuthority) return;
         SetIndex(0);
     }
-    [Command]
+    [Command(ignoreAuthority = true)]
     void CmdGetAuthority(NetworkConnectionToClient conn)
     {
         netIdentity.AssignClientAuthority(conn);
@@ -61,56 +62,69 @@ public class Inventory : Mirror.NetworkBehaviour
 
     void drop() => Drop();
 
-    public async void Drop()
+    public void Drop()
     {
         GameObject item = inventorySlots[enabledIndex][inventorySlots[enabledIndex].activeSubSlot];
         if (!inventorySlots[enabledIndex].AllowDrop) return;
-        Item itm = item.GetComponent<Item>();
-        GameObject drop_item = Instantiate<GameObject>(itm.pickupPrefab, transform.position, Quaternion.identity);
-        drop_item.GetComponent<ItemPickup>().itemType = itm.itemType;
-        item.SetActive(false);
-        NetworkServer.Spawn(drop_item);
-        await Task.Delay(10);
-        drop_item.GetComponent<Mag>().CmdSetAmmo(item.GetComponent<Mag>().Ammo);
+        //Item itm = item.GetComponent<Item>();
+        //GameObject drop_item = Instantiate<GameObject>(itm.pickupPrefab, transform.position, Quaternion.identity);
+        //item.SetActive(false);
+        //NetworkServer.Spawn(drop_item);
+        //drop_item.GetComponent<Mag>().CmdSetAmmo(item.GetComponent<Mag>().Ammo);
+        CmdDrop(item, item.TryGetComponent<Mag>(out Mag mag) ? mag.Ammo : 0);
         NetworkServer.Destroy(item);
         Debug.Log("Inventory:Drop");
     }
+    [Command(ignoreAuthority = true)]
+    void CmdDrop(GameObject item,int ammo)
+    {
+        Item itm = item.GetComponent<Item>();
+        GameObject drop_item = Instantiate<GameObject>(itm.pickupPrefab, transform.position, Quaternion.identity);
+        NetworkServer.Spawn(drop_item);
+        drop_item.GetComponent<Mag>().Ammo = ammo;
+    }
 
-    //[Command]
-    public async void Pickup(GameObject item, bool overtake_slot)
+    public void Pickup(GameObject item, bool overtake_slot)
     {
         InventorySlot slot = null;
+        int slotIndex = 0;
         GameObject weaponPrefab = item.GetComponent<ItemPickup>().weaponPrefab;
         for (int i = 0; i < inventorySlots.Length; i++) 
         {
             if (this[i].itemType == item.GetComponent<ItemPickup>().itemType) { 
                 slot = this[i];
+                slotIndex = i;
                 SetIndex(i);
             }
         }
         if (slot.subslots > slot.transform.childCount)
         {
-            GameObject wepbuff = Instantiate(weaponPrefab, slot.transform);
-            NetworkServer.Spawn(wepbuff, transform.parent.gameObject);
-            await Task.Delay(10);
-            wepbuff.GetComponent<Mag>().CmdSetAmmo(item.GetComponent<Mag>().Ammo);
-            //wepbuff.GetComponent<Mag>().CmdSetAmmo(item.GetComponent<Mag>().Ammo);
+            //GameObject wepbuff = Instantiate(weaponPrefab, slot.transform);
+            //NetworkServer.Spawn(wepbuff, transform.parent.gameObject); //Note: Move to [Command] and transform.parent.gameObject is null 
+            //wepbuff.GetComponent<Mag>().CmdSetAmmo(item.GetComponent<Mag>().Ammo); 
+            CmdPickup(weaponPrefab, slotIndex, item.TryGetComponent<Mag>(out Mag mag) ? mag.Ammo : 0);
             NetworkServer.Destroy(item);
             Debug.Log("Inventory:Slot_PickedUp");
         }
         else if (overtake_slot)
         {
             Drop();
-            GameObject wepbuff = Instantiate(weaponPrefab, slot.transform);
-            NetworkServer.Spawn(wepbuff, transform.parent.gameObject);
-            await Task.Delay(10);
-            wepbuff.GetComponent<Mag>().CmdSetAmmo(item.GetComponent<Mag>().Ammo);
+            //GameObject wepbuff = Instantiate(weaponPrefab, slot.transform);
+            //NetworkServer.Spawn(wepbuff, transform.parent.gameObject);
+            //wepbuff.GetComponent<Mag>().CmdSetAmmo(item.GetComponent<Mag>().Ammo);
+            CmdPickup(weaponPrefab, slotIndex, item.TryGetComponent<Mag>(out Mag mag) ? mag.Ammo : 0);
             NetworkServer.Destroy(item);
             Debug.Log("Inventory:Slot_Overtaken");
         }
         Debug.Log("Inventory:Slot_Full");
     }
-
+    [Command(ignoreAuthority = true)]
+    void CmdPickup(GameObject prefab, int slot, int ammo)
+    {
+        GameObject wepbuff = Instantiate(prefab, this[slot].transform);
+        if (wepbuff.TryGetComponent(out Mag mag)) mag.Ammo = ammo; //mag.CmdSetAmmo(ammo);
+        NetworkServer.Spawn(wepbuff, transform.parent.gameObject);
+    }
     #region ChangeWeapon
 
     void IncrementIndex(bool dir)
