@@ -6,17 +6,18 @@ using Mirror;
 
 public class Inventory : Mirror.NetworkBehaviour
 {
-    public static Inventory Local;
+    public static Inventory Local { get => NetworkClient.connection.identity.gameObject.GetComponentInChildren<Inventory>(); }
 
     public InventorySlot[] inventorySlots = new InventorySlot[0];
-    public GameObject TP_RProp;
-    public GameObject TP_LProp;
+    public GameObject TP_Prop;
+    public GameObject FP_RProp;
+    public GameObject FP_LProp;
     public int enabledIndex = 0;
     [Range(1f, 10f)] public float usableDistance = 5f;
     public bool allowBombPickup = false;
     public CameraMounter camount;
 
-    public NetworkIdentity ParentNetID;
+    public NetworkIdentity ParentNetID { get => NetworkClient.connection.identity; }
 
 
     public InventorySlot this[int index]
@@ -26,10 +27,8 @@ public class Inventory : Mirror.NetworkBehaviour
 
     void Start()
     {
-        if (hasAuthority) print("has auth");
-        ParentNetID = gameObject.transform.parent.GetComponent<NetworkIdentity>();
-        if (!ParentNetID.isLocalPlayer) return;
-        Local = this;
+        if (!hasAuthority) return;
+        //Local = this;
 
         //CmdGetAuthority(ParentNetID.connectionToClient);
         //if (!hasAuthority) return;
@@ -43,8 +42,7 @@ public class Inventory : Mirror.NetworkBehaviour
 
     void Update()
     {
-        if (!ParentNetID.isLocalPlayer) return;
-        //if (!hasAuthority) return;
+        if (!hasAuthority) return;
         if (InputManager.GetBindDown("Use") && !LocalInfo.IsPaused) use();
         if (InputManager.GetBindDown("Drop") && !LocalInfo.IsPaused) drop();
         float scrollValue = Input.GetAxis("Mouse ScrollWheel");
@@ -88,7 +86,7 @@ public class Inventory : Mirror.NetworkBehaviour
     {
         InventorySlot slot = null;
         int slotIndex = 0;
-        GameObject weaponPrefab = item.GetComponent<ItemPickup>().weaponPrefab;
+        //GameObject weaponPrefab = item.GetComponent<ItemPickup>().weaponPrefab;
         for (int i = 0; i < inventorySlots.Length; i++) 
         {
             if (this[i].itemType == item.GetComponent<ItemPickup>().itemType) { 
@@ -102,7 +100,7 @@ public class Inventory : Mirror.NetworkBehaviour
             //GameObject wepbuff = Instantiate(weaponPrefab, slot.transform);
             //NetworkServer.Spawn(wepbuff, transform.parent.gameObject); //Note: Move to [Command] and transform.parent.gameObject is null 
             //wepbuff.GetComponent<Mag>().CmdSetAmmo(item.GetComponent<Mag>().Ammo); 
-            CmdPickup(weaponPrefab, slotIndex, item.TryGetComponent<Mag>(out Mag mag) ? mag.Ammo : 0);
+            CmdPickup(item, slotIndex, item.TryGetComponent<Mag>(out Mag mag) ? mag.Ammo : 0);
             NetworkServer.Destroy(item);
             Debug.Log("Inventory:Slot_PickedUp");
         }
@@ -112,15 +110,16 @@ public class Inventory : Mirror.NetworkBehaviour
             //GameObject wepbuff = Instantiate(weaponPrefab, slot.transform);
             //NetworkServer.Spawn(wepbuff, transform.parent.gameObject);
             //wepbuff.GetComponent<Mag>().CmdSetAmmo(item.GetComponent<Mag>().Ammo);
-            CmdPickup(weaponPrefab, slotIndex, item.TryGetComponent<Mag>(out Mag mag) ? mag.Ammo : 0);
+            CmdPickup(item, slotIndex, item.TryGetComponent<Mag>(out Mag mag) ? mag.Ammo : 0);
             NetworkServer.Destroy(item);
             Debug.Log("Inventory:Slot_Overtaken");
         }
         Debug.Log("Inventory:Slot_Full");
     }
     [Command(ignoreAuthority = true)]
-    void CmdPickup(GameObject prefab, int slot, int ammo)
+    void CmdPickup(GameObject item, int slot, int ammo)
     {
+        var prefab = item.GetComponent<ItemPickup>().weaponPrefab;
         GameObject wepbuff = Instantiate(prefab, this[slot].transform);
         if (wepbuff.TryGetComponent(out Mag mag)) mag.Ammo = ammo; //mag.CmdSetAmmo(ammo);
         NetworkServer.Spawn(wepbuff, transform.parent.gameObject);

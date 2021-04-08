@@ -73,8 +73,12 @@ public class LobbyManager : NobleRoomManager
     }
     public void GUI_State(bool isConnected)
     {
-        MainHUD.SetActive(!isConnected);
-        LobbyHUD.SetActive(isConnected);
+
+        if (SceneManager.GetActiveScene().name != "Lobby")
+        {
+            MainHUD.SetActive(!isConnected);
+            LobbyHUD.SetActive(isConnected);
+        }
     }
     public void Lobby_Join()
     {

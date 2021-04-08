@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpawnComponent : MonoBehaviour
 {
     public List<GameObject> SpawnObjects;
+    public bool ClientAuthority = true;
     private void Start()
     {
         Spawn();
@@ -14,7 +15,8 @@ public class SpawnComponent : MonoBehaviour
     {
         foreach (var item in SpawnObjects)
         {
-            Mirror.NetworkServer.Spawn(item);
+            if (ClientAuthority) Mirror.NetworkServer.Spawn(item, gameObject);
+            else Mirror.NetworkServer.Spawn(item);
         }
         Destroy(this);
     }
