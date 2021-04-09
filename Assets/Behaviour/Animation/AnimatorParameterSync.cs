@@ -8,6 +8,8 @@ public class AnimatorParameterSync : NetworkBehaviour
     public NetworkAnimator networkAnimator;
     public Animator animator;
 
+    public static AnimatorParameterSync Local { get => NetworkClient.connection.identity.gameObject.GetComponent<AnimatorParameterSync>(); }
+
     [Header("Upper")]
     public bool Equip = false;
     public bool Reload = false;

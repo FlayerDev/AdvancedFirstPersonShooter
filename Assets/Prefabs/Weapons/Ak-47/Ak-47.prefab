@@ -83,11 +83,13 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   itemType: 1
+  animationIndex: 1
   pickupPrefab: {fileID: 319120377766980121, guid: 37d5078b015ef2b4784126e10e518a34,
     type: 3}
   FP_Prefab: {fileID: 0}
   FP_PositionOffset: {x: 0, y: 0, z: 0}
   FP_RotationOffset: {x: 0, y: 0, z: 0, w: 0}
+  FP_HandAnimations: {fileID: 0}
   TP_Prefab: {fileID: 319120377766980121, guid: f211cde0648f7324cb3f6d1f41113479,
     type: 3}
   TP_PositionOffset: {x: 0, y: 0, z: 0}

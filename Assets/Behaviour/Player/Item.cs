@@ -42,7 +42,8 @@ public class Item : NetworkBehaviour
         TP_Runtime.transform.localPosition = TP_PositionOffset;
         TP_Runtime.transform.localRotation = TP_RotationOffset;
         NetworkServer.Spawn(TP_Runtime, Inventory.Local.transform.parent.GetComponent<NetworkIdentity>().connectionToClient);
-        Inventory.Local.transform.parent.GetComponent<AnimatorParameterSync>().animIndex = animationIndex;
+        AnimatorParameterSync.Local.animIndex = animationIndex;
+        AnimatorParameterSync.Local.Equip = true;
     }
     private void OnDisable()
     {

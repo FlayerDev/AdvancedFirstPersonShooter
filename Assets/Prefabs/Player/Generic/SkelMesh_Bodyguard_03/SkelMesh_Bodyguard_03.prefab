@@ -4222,8 +4222,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a753f19762b1814c9d27653d4b4235a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   SpawnObjects:
   - {fileID: 2403692430828445622}
+  - {fileID: 2796766196824302938}
+  ClientAuthority: 1
 --- !u!1 &5229979237513573650
 GameObject:
   m_ObjectHideFlags: 0
@@ -6283,6 +6287,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Inventory
       objectReference: {fileID: 0}
+    - target: {fileID: 3175273924046459830, guid: 5ef24727e7b59af459424d3a200d3ce4,
+        type: 3}
+      propertyPath: TP_Prop
+      value: 
+      objectReference: {fileID: 5229979237513573682}
     - target: {fileID: 3175273924046459830, guid: 5ef24727e7b59af459424d3a200d3ce4,
         type: 3}
       propertyPath: camount

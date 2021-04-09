@@ -28,10 +28,6 @@ public class Inventory : Mirror.NetworkBehaviour
     void Start()
     {
         if (!hasAuthority) return;
-        //Local = this;
-
-        //CmdGetAuthority(ParentNetID.connectionToClient);
-        //if (!hasAuthority) return;
         SetIndex(0);
     }
     [Command(ignoreAuthority = true)]
@@ -64,11 +60,6 @@ public class Inventory : Mirror.NetworkBehaviour
     {
         GameObject item = inventorySlots[enabledIndex][inventorySlots[enabledIndex].activeSubSlot];
         if (!inventorySlots[enabledIndex].AllowDrop) return;
-        //Item itm = item.GetComponent<Item>();
-        //GameObject drop_item = Instantiate<GameObject>(itm.pickupPrefab, transform.position, Quaternion.identity);
-        //item.SetActive(false);
-        //NetworkServer.Spawn(drop_item);
-        //drop_item.GetComponent<Mag>().CmdSetAmmo(item.GetComponent<Mag>().Ammo);
         CmdDrop(item, item.TryGetComponent<Mag>(out Mag mag) ? mag.Ammo : 0);
         NetworkServer.Destroy(item);
         Debug.Log("Inventory:Drop");
@@ -86,7 +77,6 @@ public class Inventory : Mirror.NetworkBehaviour
     {
         InventorySlot slot = null;
         int slotIndex = 0;
-        //GameObject weaponPrefab = item.GetComponent<ItemPickup>().weaponPrefab;
         for (int i = 0; i < inventorySlots.Length; i++) 
         {
             if (this[i].itemType == item.GetComponent<ItemPickup>().itemType) { 
@@ -97,9 +87,6 @@ public class Inventory : Mirror.NetworkBehaviour
         }
         if (slot.subslots > slot.transform.childCount)
         {
-            //GameObject wepbuff = Instantiate(weaponPrefab, slot.transform);
-            //NetworkServer.Spawn(wepbuff, transform.parent.gameObject); //Note: Move to [Command] and transform.parent.gameObject is null 
-            //wepbuff.GetComponent<Mag>().CmdSetAmmo(item.GetComponent<Mag>().Ammo); 
             CmdPickup(item, slotIndex, item.TryGetComponent<Mag>(out Mag mag) ? mag.Ammo : 0);
             NetworkServer.Destroy(item);
             Debug.Log("Inventory:Slot_PickedUp");
@@ -107,9 +94,6 @@ public class Inventory : Mirror.NetworkBehaviour
         else if (overtake_slot)
         {
             Drop();
-            //GameObject wepbuff = Instantiate(weaponPrefab, slot.transform);
-            //NetworkServer.Spawn(wepbuff, transform.parent.gameObject);
-            //wepbuff.GetComponent<Mag>().CmdSetAmmo(item.GetComponent<Mag>().Ammo);
             CmdPickup(item, slotIndex, item.TryGetComponent<Mag>(out Mag mag) ? mag.Ammo : 0);
             NetworkServer.Destroy(item);
             Debug.Log("Inventory:Slot_Overtaken");
@@ -121,7 +105,7 @@ public class Inventory : Mirror.NetworkBehaviour
     {
         var prefab = item.GetComponent<ItemPickup>().weaponPrefab;
         GameObject wepbuff = Instantiate(prefab, this[slot].transform);
-        if (wepbuff.TryGetComponent(out Mag mag)) mag.Ammo = ammo; //mag.CmdSetAmmo(ammo);
+        if (wepbuff.TryGetComponent(out Mag mag)) mag.Ammo = ammo;
         NetworkServer.Spawn(wepbuff, transform.parent.gameObject);
     }
     #region ChangeWeapon
