@@ -1207,8 +1207,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3286445363668991968}
   - component: {fileID: 8897952268465595802}
-  - component: {fileID: 7361693009003897094}
-  - component: {fileID: 1862004007200229150}
   m_Layer: 0
   m_Name: SkelMesh_Bodyguard_03_FP
   m_TagString: Untagged
@@ -1252,38 +1250,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &7361693009003897094
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2796766196824302938}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 0
-  serverOnly: 0
-  m_AssetId: 
-  hasSpawned: 0
---- !u!114 &1862004007200229150
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2796766196824302938}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f6f3bf89aa97405989c802ba270f815, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  clientAuthority: 1
-  animator: {fileID: 8897952268465595802}
 --- !u!1 &2944182728855355289
 GameObject:
   m_ObjectHideFlags: 0
@@ -4226,7 +4192,6 @@ MonoBehaviour:
   syncInterval: 0.1
   SpawnObjects:
   - {fileID: 2403692430828445622}
-  - {fileID: 2796766196824302938}
   ClientAuthority: 1
 --- !u!1 &5229979237513573650
 GameObject:

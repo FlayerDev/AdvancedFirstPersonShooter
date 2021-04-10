@@ -107,6 +107,12 @@ public class Inventory : Mirror.NetworkBehaviour
         GameObject wepbuff = Instantiate(prefab, this[slot].transform);
         if (wepbuff.TryGetComponent(out Mag mag)) mag.Ammo = ammo;
         NetworkServer.Spawn(wepbuff, transform.parent.gameObject);
+        RpcPickup(wepbuff, slot);
+    }
+    [ClientRpc]
+    void RpcPickup(GameObject wepbuff, int slot)
+    {
+        wepbuff.transform.parent = this[slot].transform;
     }
     #region ChangeWeapon
 

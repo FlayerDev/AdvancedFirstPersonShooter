@@ -20,7 +20,9 @@ public class CameraRotation : Mirror.NetworkBehaviour
     private void OnDisable()
     {
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
+    private void OnDestroy() => OnDisable();
 
 
     void Update()

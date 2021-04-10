@@ -38,12 +38,21 @@ public class Item : NetworkBehaviour
     [Command(ignoreAuthority = true)]
     public void CmdSpawnItem()
     {
-        TP_Runtime = Instantiate(TP_Prefab, Inventory.Local.TP_Prop.transform);
+        // Third Person
+        TP_Runtime = Instantiate(TP_Prefab);
+        NetworkServer.Spawn(TP_Runtime, Inventory.Local.transform.parent.GetComponent<NetworkIdentity>().connectionToClient);
         TP_Runtime.transform.localPosition = TP_PositionOffset;
         TP_Runtime.transform.localRotation = TP_RotationOffset;
-        NetworkServer.Spawn(TP_Runtime, Inventory.Local.transform.parent.GetComponent<NetworkIdentity>().connectionToClient);
+
         AnimatorParameterSync.Local.animIndex = animationIndex;
         AnimatorParameterSync.Local.Equip = true;
+
+        RpcSpawnItem();
+    }
+    [ClientRpc]
+    void RpcSpawnItem()
+    {
+        TP_Runtime.transform.SetParent(Inventory.Local.TP_Prop.transform);
     }
     private void OnDisable()
     {
