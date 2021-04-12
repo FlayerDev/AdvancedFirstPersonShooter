@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using Mirror;
-using System.Threading.Tasks;
+﻿using Mirror;
+using UnityEngine;
 
 public class Item : NetworkBehaviour
 {
@@ -28,31 +27,32 @@ public class Item : NetworkBehaviour
     private void Start()
     {
         if (!hasAuthority || !gameObject.activeInHierarchy) return;
-        CmdSpawnItem();
+        CmdSpawnItem(Inventory.Local.transform.parent.gameObject,itemSide);
     }
     private void OnEnable()
     {
         if (!hasAuthority) return;
-        CmdSpawnItem();
+        CmdSpawnItem(Inventory.Local.transform.parent.gameObject, itemSide);
     }
     [Command(ignoreAuthority = true)]
-    public void CmdSpawnItem()
+    public void CmdSpawnItem(GameObject player, bool handSide)
     {
         // Third Person
         TP_Runtime = Instantiate(TP_Prefab);
-        NetworkServer.Spawn(TP_Runtime, Inventory.Local.transform.parent.GetComponent<NetworkIdentity>().connectionToClient);
+        NetworkServer.Spawn(TP_Runtime, ownerConnection: player.GetComponent<NetworkIdentity>().connectionToClient);
 
         AnimatorParameterSync.Local.animIndex = animationIndex;
         AnimatorParameterSync.Local.Equip = true;
 
-        RpcSpawnItem();
+        RpcSpawnItem(player, TP_Runtime);
     }
     [ClientRpc]
-    void RpcSpawnItem()
+    void RpcSpawnItem(GameObject player, GameObject TPr)
     {
-        TP_Runtime.transform.SetParent(Inventory.Local.TP_Prop.transform);
-        TP_Runtime.transform.localPosition = TP_PositionOffset;
-        TP_Runtime.transform.localRotation = TP_RotationOffset;
+        TP_Runtime = TPr;
+        TPr.transform.SetParent(player.GetComponent<NetworkInventory>().inventory.TP_Prop.transform);
+        TPr.transform.localPosition = TP_PositionOffset;
+        TPr.transform.localRotation = TP_RotationOffset;
     }
     private void OnDisable()
     {

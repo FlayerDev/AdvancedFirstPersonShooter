@@ -15,7 +15,7 @@ public class NetworkInventory : NetworkBehaviour
     public void CmdDrop(GameObject item, int ammo)
     {
         Item itm = item.GetComponent<Item>();
-        GameObject drop_item = Instantiate<GameObject>(itm.pickupPrefab, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
+        GameObject drop_item = Instantiate<GameObject>(itm.pickupPrefab, transform.position + new Vector3(0, 0.5f, 0), new Quaternion(20,10,30,0));
         NetworkServer.Spawn(drop_item);
         drop_item.GetComponent<Mag>().Ammo = ammo;
     }

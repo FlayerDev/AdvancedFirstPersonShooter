@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5370159455353368530}
   - component: {fileID: -631830843274424446}
   - component: {fileID: 7640471796853338212}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Ak-47_pickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,8 +108,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.13161394, y: 0.59163755, z: 1.7970473}
-  m_Center: {x: 0.0012300769, y: -0.06642025, z: -0.024599843}
+  m_Size: {x: 0.13161394, y: 0.24452917, z: 0.80506724}
+  m_Center: {x: 0.001230076, y: 0.011332175, z: 0.14086561}
 --- !u!54 &-1545063584960796937
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -196,7 +196,7 @@ GameObject:
   - component: {fileID: 5346863923369056876}
   - component: {fileID: 545155281091184724}
   - component: {fileID: 2971187216287082678}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: housing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -277,7 +277,7 @@ GameObject:
   - component: {fileID: 2610263601726383296}
   - component: {fileID: 1269473392737301185}
   - component: {fileID: 5268222840893484869}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: gate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -358,7 +358,7 @@ GameObject:
   - component: {fileID: 627792713007041471}
   - component: {fileID: 5664422490076652035}
   - component: {fileID: 8123818665941821267}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: score
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -439,7 +439,7 @@ GameObject:
   - component: {fileID: 229797922449802166}
   - component: {fileID: 8995604112958446646}
   - component: {fileID: 3198067845573477387}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: mode
   m_TagString: Untagged
   m_Icon: {fileID: 0}

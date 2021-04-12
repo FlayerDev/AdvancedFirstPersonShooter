@@ -57,14 +57,21 @@ public class LobbyManager : NobleRoomManager
             portText.text = $"PORT: {networkManager.HostEndPoint.Port}";
         }
     }
+    override public void Awake()
+    {
+        base.Awake();
+        nameField.text = PlayerPrefs.GetString("LastName", $"Private{Random.Range(1000,9999)}");
+        if (Regex.IsMatch(nameField.text, "[^A-Za-z0-9С-йс-љ_]") || nameField.text.Length < 4) nameField.text = $"Private{Random.Range(1000, 9999)}";
+    }
 
     public void GUI_Refresh()
     {
         var nameBuffer = nameField.text;
-        if (Regex.IsMatch(nameBuffer, "[^A-Za-z1-9С-йс-љ_]") || nameField.text.Length < 4) nameError.SetActive(true);
+        if (Regex.IsMatch(nameBuffer, "[^A-Za-z0-9С-йс-љ_]") || nameField.text.Length < 4) nameError.SetActive(true);
         else
         {
             localName = nameBuffer;
+            PlayerPrefs.SetString("LastName", nameBuffer);
             nameError.SetActive(false);
         }
 

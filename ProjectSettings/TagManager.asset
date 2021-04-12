@@ -19,9 +19,16 @@ TagManager:
   - UI
   - 
   - 
-  - PlayerClipping
-  - Viewmodel
+  - 
+  - 
   - Player
+  - Hitbox
+  - HeadHitbox
+  - BodyHitbox
+  - 
+  - Projectile
+  - Item
+  - Throwable
   - 
   - 
   - 
@@ -32,17 +39,10 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - ItemClipping
+  - ThrowableClipping
+  - BulletClipping
+  - PlayerClipping
   m_SortingLayers:
   - name: Default
     uniqueID: 0

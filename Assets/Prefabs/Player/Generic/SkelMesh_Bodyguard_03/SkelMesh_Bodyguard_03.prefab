@@ -3992,7 +3992,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.001
+  syncInterval: 0.005
   clientAuthority: 1
   excludeOwnerUpdate: 0
   syncPosition: 1
@@ -4092,7 +4092,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0
+  syncInterval: 0.005
   clientAuthority: 1
   animator: {fileID: 5229979237506303818}
 --- !u!114 &5229979237513573659
