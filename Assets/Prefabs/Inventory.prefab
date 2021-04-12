@@ -46,6 +46,7 @@ MonoBehaviour:
   itemType: 2
   AllowDrop: 1
   subslots: 1
+  activeSubSlot: 0
 --- !u!1 &2594553810459389942
 GameObject:
   m_ObjectHideFlags: 0
@@ -92,6 +93,7 @@ MonoBehaviour:
   itemType: 0
   AllowDrop: 0
   subslots: 1
+  activeSubSlot: 0
 --- !u!1 &2780985778197270747
 GameObject:
   m_ObjectHideFlags: 0
@@ -102,7 +104,6 @@ GameObject:
   m_Component:
   - component: {fileID: 549741216808657629}
   - component: {fileID: 3175273924046459830}
-  - component: {fileID: 6472012769291873858}
   m_Layer: 0
   m_Name: Inventory
   m_TagString: Untagged
@@ -140,32 +141,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84e0d8370b2009c4fa96e8941d1bdda3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
+  netInventory: {fileID: 0}
   inventorySlots:
   - {fileID: 8040112056987855078}
   - {fileID: 2937889094970494611}
   - {fileID: 3478959188971228965}
   - {fileID: 1002770855238839891}
+  TP_Prop: {fileID: 0}
+  FP_RProp: {fileID: 0}
+  FP_LProp: {fileID: 0}
   enabledIndex: 0
   usableDistance: 5
   allowBombPickup: 0
---- !u!114 &6472012769291873858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2780985778197270747}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 0
-  serverOnly: 0
-  m_AssetId: 
-  hasSpawned: 0
+  camount: {fileID: 0}
 --- !u!1 &6695117765094125171
 GameObject:
   m_ObjectHideFlags: 0
@@ -212,6 +200,7 @@ MonoBehaviour:
   itemType: 1
   AllowDrop: 1
   subslots: 1
+  activeSubSlot: 0
 --- !u!1 &7089358139047522462
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,3 +247,4 @@ MonoBehaviour:
   itemType: 3
   AllowDrop: 0
   subslots: 3
+  activeSubSlot: 0

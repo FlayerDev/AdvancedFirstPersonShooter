@@ -41,8 +41,6 @@ public class Item : NetworkBehaviour
         // Third Person
         TP_Runtime = Instantiate(TP_Prefab);
         NetworkServer.Spawn(TP_Runtime, Inventory.Local.transform.parent.GetComponent<NetworkIdentity>().connectionToClient);
-        TP_Runtime.transform.localPosition = TP_PositionOffset;
-        TP_Runtime.transform.localRotation = TP_RotationOffset;
 
         AnimatorParameterSync.Local.animIndex = animationIndex;
         AnimatorParameterSync.Local.Equip = true;
@@ -53,12 +51,16 @@ public class Item : NetworkBehaviour
     void RpcSpawnItem()
     {
         TP_Runtime.transform.SetParent(Inventory.Local.TP_Prop.transform);
+        TP_Runtime.transform.localPosition = TP_PositionOffset;
+        TP_Runtime.transform.localRotation = TP_RotationOffset;
     }
     private void OnDisable()
     {
         if (!hasAuthority) return;
         NetworkServer.Destroy(TP_Runtime);
     }
+    private void OnDestroy() => OnDisable();
+
 }
 public enum ItemType
 {
