@@ -1,8 +1,9 @@
 ﻿using Unity.Flayer.InputSystem;
 using UnityEngine;
+using Mirror;
 using static UnityEngine.Mathf;
 
-public class CustomPlayerMovement : Mirror.NetworkBehaviour
+public class CustomPlayerMovement : NetworkBehaviour
 {
     public CharacterController controller;
     public AnimatorParameterSync anim;
@@ -18,25 +19,27 @@ public class CustomPlayerMovement : Mirror.NetworkBehaviour
     public float HeightTransitionSpeed = .1f;
     public float StaminaLossPerCrouch = .5f;
     public float StaminaGainPerSecond = .33f;
+    [Range(0f,1f)]public float CrouchedPlayerSpeedFactor = .4f;
 
     [Header("Others")]
     public GameObject groundCheckSphere;
     public float AnimationSpeedMultiplier = 3f;
-    public float CrouchSpeedMultiplier = 5f;
+    public float CrouchSpeedMultiplier = .5f;
 
     [Header("Runtime")]
     public bool isGrounded = false;
     public Vector3 velocity;
-    public float HeightBuffer = 1.8f;
+    [SyncVar]public float HeightBuffer = 1.8f;
     public float stamina = 1f;
-    Vector3 PlanarMovement = Vector3.zero;
+    internal Vector3 PlanarMovement = Vector3.zero;
 
     Vector3 LastLocation = Vector3.zero;
     private void Awake()
     {
-        LocalInfo.localIdentity = base.netIdentity;
         anim = GetComponent<AnimatorParameterSync>();
         groundTracer = groundCheckSphere.GetComponent<GroundTracer>();
+        if (!isLocalPlayer) return;
+        LocalInfo.localIdentity = base.netIdentity;
     }
     void Update()
     {
@@ -46,7 +49,8 @@ public class CustomPlayerMovement : Mirror.NetworkBehaviour
 
         Vector3 move = transform.right * x + transform.forward * z;
         if (move.magnitude > 1) move.Normalize();
-        controller.Move(move.normalized * move.magnitude * speed * Time.deltaTime);
+        controller.Move(move.normalized * move.magnitude *
+            Lerp(speed * CrouchedPlayerSpeedFactor, speed, GenericUtilities.ToPercent01(CrouchedHeight, UprightHeight, HeightBuffer)) * Time.deltaTime);
 
         if (InputManager.GetBindDown("Jump") && isGrounded && !LocalInfo.IsPaused)
         {
@@ -59,48 +63,28 @@ public class CustomPlayerMovement : Mirror.NetworkBehaviour
 
         if (InputManager.GetBind("Crouch"))
         {
-            HeightBuffer = Clamp(HeightBuffer - ((CrouchSpeedMultiplier * 5) * Time.deltaTime * stamina), CrouchedHeight, UprightHeight);
+            SetHeightBuffer(Clamp(HeightBuffer - ((CrouchSpeedMultiplier * 5) * Time.deltaTime * stamina), CrouchedHeight, UprightHeight));
             stamina = Clamp01(stamina + (StaminaGainPerSecond / 3) * Time.deltaTime);
         }
         else
         {
-            HeightBuffer = Clamp(HeightBuffer + ((CrouchSpeedMultiplier * 5) * Time.deltaTime), CrouchedHeight, UprightHeight);
+            SetHeightBuffer(Clamp(HeightBuffer + ((CrouchSpeedMultiplier * 5) * Time.deltaTime), CrouchedHeight, UprightHeight));
             stamina = Clamp01(stamina + StaminaGainPerSecond * Time.deltaTime);
         }
     }
-
-    private void LateUpdate()
+    [Command]
+    void SetHeightBuffer(float val)
     {
-        if (!isLocalPlayer) return;
-        if (anim != null)
-        {
-            //Planar Movement
-            PlanarMovement = ((transform.position - LastLocation) / Time.deltaTime);
-            var vecmag = PlanarMovement.magnitude / 10;
-            var angle = Atan2(PlanarMovement.x, PlanarMovement.z) - (transform.rotation.eulerAngles.y * Mathf.Deg2Rad);
-            var movDir = new Vector2(Cos(angle), Sin(angle)) * (vecmag > .01 ? vecmag : 0);
-            //var moveDir = new Vector2((transform.right * vec.x).x, (transform.forward * vec.z).z);
-            /*
-            var angle = Vector3.SignedAngle(transform.position, vec, Vector3.up);
-            var movDir = Quaternion.AngleAxis(angle, Vector3.up) * Vector3.zero;
-            */
-            anim.MoveDirection = movDir;
-            anim.MoveSpeed = PlanarMovement.magnitude * (AnimationSpeedMultiplier / 10);
-            anim.PlayerAlt = GenericUtilities.ToPercent01(CrouchedHeight, UprightHeight, HeightBuffer);
-            anim.Grounded = isGrounded;
-
-            LastLocation = transform.position;
-        }
-        //if (JumpParameterMachine.Singleton != null) 
-        //    JumpParameterMachine.Singleton.Grounded = isGrounded;
+        HeightBuffer = val;
     }
     private GroundTracer groundTracer;
     private void FixedUpdate()
     {
+        controller.height = HeightBuffer;
+        controller.center = new Vector3(0, HeightBuffer / 2, 0);
         if (!isLocalPlayer) return;
         if (groundTracer.isGrounded)
         {
-            //velocity.y /= 1 + (.02f / new Vector2(PlanarMovement.x,PlanarMovement.z).magnitude); //Abs(velocity.y > 0f ? 1f : velocity.y));
             if (velocity.y <= 0) velocity.y = Clamp(velocity.y - 5 * Time.fixedDeltaTime, -10, 10);
             isGrounded = true;
         }
@@ -108,6 +92,20 @@ public class CustomPlayerMovement : Mirror.NetworkBehaviour
         {
             velocity.y += gravity * Time.fixedDeltaTime;
             isGrounded = false;
+        }
+        if (anim != null)
+        {
+            //Planar Movement
+            PlanarMovement = ((transform.position - LastLocation) / Time.deltaTime);
+            var vecmag = PlanarMovement.magnitude / 10;
+            var angle = Atan2(PlanarMovement.x, PlanarMovement.z) - (transform.rotation.eulerAngles.y * Mathf.Deg2Rad);
+            var movDir = new Vector2(Cos(angle), Sin(angle)) * (vecmag > .01 ? vecmag : 0);
+            anim.MoveDirection = movDir;
+            anim.MoveSpeed = PlanarMovement.magnitude * (AnimationSpeedMultiplier / 10);
+            anim.PlayerAlt = GenericUtilities.ToPercent01(CrouchedHeight, UprightHeight, HeightBuffer);
+            anim.Grounded = isGrounded;
+
+            LastLocation = transform.position;
         }
     }
 }

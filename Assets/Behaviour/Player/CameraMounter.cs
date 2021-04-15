@@ -31,6 +31,7 @@ public class CameraMounter : MonoBehaviour
         if (Focused)
         {
             FP_Hands.transform.localPosition = HandOffset;
+            MainCamera.transform.localPosition = new Vector3(0, transform.parent.GetComponent<CustomPlayerMovement>().HeightBuffer - 0.1f, 0);
             if (transform.parent.GetComponent<Mirror.NetworkIdentity>().isLocalPlayer) LookAtIKObject.transform.position = MainCamera.transform.position + MainCamera.transform.forward;
         }
     }

@@ -4275,7 +4275,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.95, z: 0}
+  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!114 &5229979237513573655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4300,6 +4300,7 @@ MonoBehaviour:
   HeightTransitionSpeed: 0.1
   StaminaLossPerCrouch: 0.5
   StaminaGainPerSecond: 0.33
+  CrouchedPlayerSpeedFactor: 0.4
   groundCheckSphere: {fileID: 5229979237538529092}
   AnimationSpeedMultiplier: 3
   CrouchSpeedMultiplier: 5
@@ -5082,7 +5083,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5229979237538529092}
   m_LocalRotation: {x: -0, y: -0.7071057, z: -0, w: 0.7071079}
-  m_LocalPosition: {x: 0, y: 0.12, z: 0}
+  m_LocalPosition: {x: 0, y: 0.07, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5229979237513799984}
@@ -5130,7 +5131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minimumDamageSpeed: 18
-  fallDamageMultiplier: 5
+  fallDamageMultiplier: 10
   isGrounded: 0
 --- !u!1 &5229979238423484319
 GameObject:
@@ -5157,7 +5158,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5229979238423484319}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.8, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5229979237513799984}
