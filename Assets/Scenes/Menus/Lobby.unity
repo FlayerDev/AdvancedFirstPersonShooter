@@ -5940,6 +5940,7 @@ MonoBehaviour:
   portText: {fileID: 868306183}
   IP: 
   PORT: 
+  PlayButton: {fileID: 1776741399}
   lobbyState: 0
 --- !u!4 &1599765929
 Transform:
@@ -6326,7 +6327,7 @@ GameObject:
   - component: {fileID: 1776741402}
   - component: {fileID: 1776741401}
   m_Layer: 5
-  m_Name: LeaveButton
+  m_Name: PlayButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

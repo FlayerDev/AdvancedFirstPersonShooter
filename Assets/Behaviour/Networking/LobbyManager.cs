@@ -44,6 +44,8 @@ public class LobbyManager : NobleRoomManager
     public string IP = "";
     public string PORT = "";
 
+    public GameObject PlayButton;
+
     public LobbyState lobbyState = LobbyState.None;
 
 
@@ -55,6 +57,11 @@ public class LobbyManager : NobleRoomManager
         {
             ipText.text = $"IP: {networkManager.HostEndPoint.Address}";
             portText.text = $"PORT: {networkManager.HostEndPoint.Port}";
+        }
+        else
+        {
+            ipText.text = "Connecting...";
+            portText.text = string.Empty;
         }
     }
     override public void Awake()
@@ -96,6 +103,9 @@ public class LobbyManager : NobleRoomManager
         StartClient();
         lobbyState = LobbyState.Client;
         GUI_State(true);
+        PlayButton.GetComponent<Button>().enabled = false;
+        PlayButton.GetComponent<Image>().color = Color.grey;
+        PlayButton.GetComponentInChildren<TMPro.TMP_Text>().text = "Waiting For Host";
     }
     public void Lobby_Host()
     {
@@ -104,6 +114,10 @@ public class LobbyManager : NobleRoomManager
         StartHost();
         lobbyState = LobbyState.Host;
         GUI_State(true);
+        PlayButton.GetComponent<Button>().enabled = true;
+        ColorUtility.TryParseHtmlString("#00FF00", out Color green);
+        PlayButton.GetComponent<Image>().color = green;
+        PlayButton.GetComponentInChildren<TMPro.TMP_Text>().text = "Play";
     }
     public void Lobby_Leave()
     {

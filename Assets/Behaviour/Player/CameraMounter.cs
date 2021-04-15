@@ -13,6 +13,8 @@ public class CameraMounter : MonoBehaviour
     public Vector3 HandOffset;
     public bool Focused;
 
+    public GameObject LookAtIKObject;
+
     private void Awake()
     {
         MainCamera = Camera.main;
@@ -29,6 +31,7 @@ public class CameraMounter : MonoBehaviour
         if (Focused)
         {
             FP_Hands.transform.localPosition = HandOffset;
+            if (transform.parent.GetComponent<Mirror.NetworkIdentity>().isLocalPlayer) LookAtIKObject.transform.position = MainCamera.transform.position + MainCamera.transform.forward;
         }
     }
 
