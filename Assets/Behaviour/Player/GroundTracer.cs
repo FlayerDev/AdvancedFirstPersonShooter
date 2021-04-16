@@ -15,16 +15,12 @@ public class GroundTracer : MonoBehaviour
     private void OnTriggerStay(Collider other) => isGrounded = true;
 
     private async void OnTriggerExit(Collider other) {
-        var mov = transform.parent.GetComponent<CustomPlayerMovement>();
-        if (mov.velocity.y <= 0) mov.velocity.y = 0f;//Mathf.Clamp(mov.velocity.y - 5 * Time.fixedDeltaTime, -10, 10);
-
+        if (mov.velocity.y <= 0) mov.velocity.y = 0f;
         await System.Threading.Tasks.Task.Delay(100);
         isGrounded = false;
     }
 
     private void OnTriggerEnter(Collider other) {
-        var mov = transform.parent.GetComponent<CustomPlayerMovement>();
-
         if (verticalVelocity < -minimumDamageSpeed)
             damagePlayer((Mathf.Abs(verticalVelocity) - minimumDamageSpeed) * fallDamageMultiplier);
     }

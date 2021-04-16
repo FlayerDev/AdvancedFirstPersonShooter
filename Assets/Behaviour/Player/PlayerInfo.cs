@@ -1,16 +1,25 @@
 ﻿using Mirror;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq.Expressions;
+using System.Linq;
 
 public class PlayerInfo : NetworkBehaviour, IDamageable
 {
     [SerializeField, Range(0, 100), SyncVar] private float health = 100;
     public float hp { get => health; }
-    public List<(GameObject, float)> damageHistory = new List<(GameObject, float)>();
+    [SyncVar] public string Name;
+
+    [SyncVar] public List<Offender> DamageRegistry = new List<Offender>();
 
     public void damage(float amount, GameObject offender)
     {
         CmdDamage(amount, offender);
+    }
+    private void Start()
+    {
+        if (!isLocalPlayer) return;
+        CmdSetName(LobbyManager.Singleton.LocalRoomPlayer.ClientName);
     }
     private void Update()
     {
@@ -20,24 +29,63 @@ public class PlayerInfo : NetworkBehaviour, IDamageable
 
     #region Networking
     [Command]
+    void CmdSetName(string name)
+    {
+        Name = name;
+    }
+    [Command(ignoreAuthority = true)]
     public void CmdDamage(float amount, GameObject offender)
     {
         health -= amount > 0f ? amount : 0f;
-        //TargetDamage(gameObject.GetComponent<NetworkIdentity>().connectionToClient, amount, offender);
+        Register(amount, offender);
     }
-    //[TargetRpc]
-    //public void TargetDamage(NetworkConnection target, float amount, GameObject offender)
-    //{
-    //    damage(amount, offender);
-    //}
     #endregion
 
     #region Utilities 
-    public float getDamageByPlayer(GameObject player)
+    void Register(float amount, GameObject offender)
+    {
+        IEnumerable<Offender> ResultList =
+            from item in DamageRegistry
+            where gameObject == offender
+            select item;
+        if (ResultList.Count() == 0)
+        {
+            DamageRegistry.Add(new Offender(amount, offender));
+        }
+        else
+        {
+            ResultList.First().Damage += amount;
+            if (ResultList.Count() > 1) Debug.LogError("Multiple Offender Instances");
+        }
+    }
+
+    public float getDamageByPlayer(GameObject player) // TODO: Implement
     {
         float damage = 0;
-        foreach (var item in damageHistory) if (item.Item1 == player) damage += item.Item2;
+        //foreach (var item in damageHistory) if (item.Item1 == player) damage += item.Item2;
         return damage;
     }
     #endregion
+}
+[System.Serializable]
+public class Offender
+{
+    public uint netId;
+    public NetworkIdentity networkIdentity;
+    public string Name;
+    public GameObject gameObject;
+
+    public float Damage;
+
+    public Offender() {}
+    public Offender(float amount, GameObject offender)
+    {
+        NetworkIdentity identity = offender.GetComponent<NetworkIdentity>();
+        netId = identity.netId;
+        networkIdentity = identity;
+        Name = $"Client[{netId}]";
+        gameObject = offender;
+
+        Damage = amount;
+    }
 }
