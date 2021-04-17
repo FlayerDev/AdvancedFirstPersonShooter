@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &319120377766980121
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7645089367403270687}
+  - component: {fileID: 6298269058889206576}
+  - component: {fileID: 8811047272426347716}
+  m_Layer: 0
+  m_Name: M9-Bayonet
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7645089367403270687
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319120377766980121}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6298269058889206576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319120377766980121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  m_AssetId: 
+  hasSpawned: 0
+--- !u!114 &8811047272426347716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319120377766980121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1a1e0dd0adcf184b9210dd463fb8c98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  itemType: 0
+  animationIndex: 0
+  pickupPrefab: {fileID: 319120377766980121, guid: 0c0b17bbba6b4de459a3436b731033f1,
+    type: 3}
+  FP_Prefab: {fileID: 0}
+  FP_PositionOffset: {x: 0, y: 0, z: 0}
+  FP_RotationOffset: {x: 0, y: 0, z: 0, w: 0}
+  FP_HandAnimations: {fileID: 22100000, guid: 4fd06efa3f831f046a45b1baab05f733, type: 2}
+  TP_Prefab: {fileID: 319120377766980121, guid: fe7597a6b005c1843b50a9873b9ed0b2,
+    type: 3}
+  TP_PositionOffset: {x: 0, y: 0, z: 0}
+  TP_RotationOffset: {x: 0.67510295, y: 0.59184104, z: -0.33116782, w: -0.29032418}
+  FP_Runtime: {fileID: 0}
+  TP_Runtime: {fileID: 0}
+  itemSide: 1

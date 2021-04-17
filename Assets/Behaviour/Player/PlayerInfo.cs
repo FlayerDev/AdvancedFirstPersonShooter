@@ -46,7 +46,7 @@ public class PlayerInfo : NetworkBehaviour, IDamageable
     {
         IEnumerable<Offender> ResultList =
             from item in DamageRegistry
-            where gameObject == offender
+            where item.gameObject == offender
             select item;
         if (ResultList.Count() == 0)
         {

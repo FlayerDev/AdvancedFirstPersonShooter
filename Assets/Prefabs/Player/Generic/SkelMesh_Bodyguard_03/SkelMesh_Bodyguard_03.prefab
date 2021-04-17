@@ -4323,6 +4323,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   health: 100
+  Name: 
+  DamageRegistry: []
 --- !u!114 &5832419684490840487
 MonoBehaviour:
   m_ObjectHideFlags: 0

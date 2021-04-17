@@ -154,6 +154,9 @@ MonoBehaviour:
   usableDistance: 5
   allowBombPickup: 0
   camount: {fileID: 0}
+  UseLayer:
+    serializedVersion: 2
+    m_Bits: 65537
 --- !u!1 &6695117765094125171
 GameObject:
   m_ObjectHideFlags: 0

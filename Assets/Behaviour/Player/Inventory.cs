@@ -19,6 +19,7 @@ public class Inventory : MonoBehaviour
     public bool allowBombPickup = false;
     public CameraMounter camount;
 
+    public LayerMask UseLayer;
 
     public InventorySlot this[int index]
     {
@@ -42,8 +43,8 @@ public class Inventory : MonoBehaviour
     void use()
     {
         //RaycastHit hit = (RaycastHit)LocalInfo.useRaycastHit;
-        Physics.Raycast(camount.MainCamera.transform.position, camount.MainCamera.transform.forward, out RaycastHit hit);
-        if (hit.collider.gameObject.TryGetComponent(out ItemPickup itm)) {
+        Physics.Raycast(camount.MainCamera.transform.position, camount.MainCamera.transform.forward, out RaycastHit hit, usableDistance, UseLayer);
+        if (!default(RaycastHit).Equals(hit) && hit.collider.gameObject.TryGetComponent(out ItemPickup itm)) {
             Pickup(itm.gameObject, false);
         }
 

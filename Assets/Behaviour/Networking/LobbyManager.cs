@@ -18,7 +18,7 @@ public class LobbyManager : NobleRoomManager
         {
             foreach (var item in roomSlots)
             {
-                if (item.isLocalPlayer) return item;
+                if (item.hasAuthority) return item;
             }
             return null;
         }
