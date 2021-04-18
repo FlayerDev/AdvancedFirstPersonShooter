@@ -34,11 +34,11 @@ public class CustomPlayerMovement : NetworkBehaviour
     internal Vector3 PlanarMovement = Vector3.zero;
 
     Vector3 LastLocation = Vector3.zero;
-    private void Awake()
+    private void Start()
     {
+        if (!isLocalPlayer) return;
         anim = GetComponent<AnimatorParameterSync>();
         groundTracer = groundCheckSphere.GetComponent<GroundTracer>();
-        if (!isLocalPlayer) return;
         LocalInfo.localIdentity = base.netIdentity;
     }
     void Update()

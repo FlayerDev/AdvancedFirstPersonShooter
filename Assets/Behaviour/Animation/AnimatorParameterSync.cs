@@ -36,6 +36,11 @@ public class AnimatorParameterSync : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (!isLocalPlayer)
+        {
+            Destroy(this);
+            return;
+        }
         animator = GetComponent<Animator>();
         networkAnimator = GetComponent<NetworkAnimator>();
     }
@@ -43,7 +48,6 @@ public class AnimatorParameterSync : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isLocalPlayer) return;
         animator.SetFloat("Y_Velocity", moveDirection.y);
         animator.SetFloat("X_Velocity", moveDirection.x);
         animator.SetInteger("WeaponType", (int)animIndex);
