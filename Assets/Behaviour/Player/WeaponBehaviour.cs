@@ -36,5 +36,8 @@ public class WeaponBehaviour : Mirror.NetworkBehaviour
         Instantiate(decal, inpoint, Quaternion.LookRotation(hit.normal));
         Instantiate(decal, outpoint, Quaternion.LookRotation(outhit.normal));
     }
-
+    protected void applyDamage(IDamageable dmgable, float amount)
+    {
+        dmgable.damage(amount, gameObject);
+    }
 }

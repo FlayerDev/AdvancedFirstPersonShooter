@@ -83,7 +83,8 @@ public class Weapon : WeaponBehaviour //VISUAL: Add bullet output on TP Model
         float dmg = baseDamage;
         calculateRecoil();
         RaycastHit[] hitarr = Physics.RaycastAll(muzzle.transform.position,
-            muzzle.transform.forward + new Vector3(0f, currentRecoil.x, currentRecoil.y), effectiveRange);
+            muzzle.transform.forward + new Vector3(0f, currentRecoil.x, currentRecoil.y),
+            effectiveRange, LayerMask.NameToLayer("Projectile"));
 
         Array.Sort(hitarr, (x, y) => x.distance.CompareTo(y.distance)); // Sorts hit objects by distance
         foreach (RaycastHit item in hitarr)
@@ -106,16 +107,7 @@ public class Weapon : WeaponBehaviour //VISUAL: Add bullet output on TP Model
             currentRecoil.y -= HorizontalRecoil * HorizontalMultiplierOnMaxVertical;
         }
     }
-    void applyDamage(IDamageable dmgable, float amount)
-    {
-        dmgable.damage(amount, gameObject);
-    }
-    //static RaycastHit findOppositeSide(Ray ray, GameObject gO)
-    //{
-    //    var res = Physics.RaycastAll(ray, 9999f);
-    //    foreach (RaycastHit item in res) if (item.collider.gameObject == gO) return item;
-    //    return new RaycastHit();
-    //}
+
     #endregion
 
 }

@@ -81,7 +81,7 @@ public class CustomPlayerMovement : NetworkBehaviour
     private void FixedUpdate()
     {
         controller.height = HeightBuffer;
-        controller.center = new Vector3(0, HeightBuffer / 2, 0);
+        controller.center = new Vector3(0, (HeightBuffer / 2) + .15f, 0);
         if (!isLocalPlayer) return;
         if (groundTracer.isGrounded)
         {
