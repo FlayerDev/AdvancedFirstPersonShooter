@@ -84,3 +84,23 @@ public class trigger
     public static implicit operator bool(trigger trig) => trig.boolean;
     public static implicit operator trigger(bool boolean) => new trigger { boolean = boolean };
 }
+[System.Serializable]
+public class CloneObject<T> where T : Object
+{
+    [System.NonSerialized] public T Clone;
+    private T @object;
+
+    public static implicit operator T(CloneObject<T> cl) => cl.Clone as T;
+
+    public CloneObject(T obj)
+    {
+        @object = obj;
+        using (MemoryStream stream = new MemoryStream())
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(stream, this);
+            stream.Position = 0;
+            Clone = ((CloneObject<T>)formatter.Deserialize(stream)).@object;
+        }
+    }
+}
