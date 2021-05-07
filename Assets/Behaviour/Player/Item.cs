@@ -32,32 +32,43 @@ public class Item : NetworkBehaviour
     private void OnEnable()
     {
         if (!hasAuthority) return;
+        AnimatorParameterSync.Local.animIndex = animationIndex;
+        AnimatorParameterSync.Local.Equip = true;
         CmdSpawnItem(Inventory.Local.transform.parent.gameObject, itemSide);
     }
     [Command(ignoreAuthority = true)]
     public void CmdSpawnItem(GameObject player, bool handSide)
     {
-        // Third Person
+        // TP
         TP_Runtime = Instantiate(TP_Prefab);
         NetworkServer.Spawn(TP_Runtime, ownerConnection: player.GetComponent<NetworkIdentity>().connectionToClient);
+        // FP
+        FP_Runtime = Instantiate(FP_Prefab);
+        NetworkServer.Spawn(FP_Runtime, ownerConnection: player.GetComponent<NetworkIdentity>().connectionToClient);
 
-        AnimatorParameterSync.Local.animIndex = animationIndex;
-        AnimatorParameterSync.Local.Equip = true;
-
-        RpcSpawnItem(player, TP_Runtime);
+        // ClientRpc
+        RpcSpawnItem(player, TP_Runtime, FP_Runtime, handSide);
     }
     [ClientRpc]
-    void RpcSpawnItem(GameObject player, GameObject TPr)
+    void RpcSpawnItem(GameObject player, GameObject TPr, GameObject FPr, bool handSide)
     {
+        Inventory inv = player.GetComponent<NetworkInventory>().inventory;
+        //TP
         TP_Runtime = TPr;
-        TPr.transform.SetParent(player.GetComponent<NetworkInventory>().inventory.TP_Prop.transform);
+        TPr.transform.SetParent(inv.TP_Prop.transform);
         TPr.transform.localPosition = TP_PositionOffset;
         TPr.transform.localRotation = TP_RotationOffset;
+        //FP
+        FP_Runtime = FPr;
+        FPr.transform.SetParent(handSide? inv.FP_RProp.transform : inv.FP_LProp.transform);
+        FPr.transform.localPosition = FP_PositionOffset;
+        FPr.transform.localRotation = FP_RotationOffset;
     }
     private void OnDisable()
     {
         if (!hasAuthority) return;
         NetworkServer.Destroy(TP_Runtime);
+        NetworkServer.Destroy(FP_Runtime);
     }
     private void OnDestroy() => OnDisable();
 
