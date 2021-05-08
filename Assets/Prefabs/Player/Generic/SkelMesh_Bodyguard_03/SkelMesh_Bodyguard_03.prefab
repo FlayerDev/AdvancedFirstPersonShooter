@@ -6689,6 +6689,16 @@ PrefabInstance:
       objectReference: {fileID: 5229979238423484317}
     - target: {fileID: 3175273924046459830, guid: 5ef24727e7b59af459424d3a200d3ce4,
         type: 3}
+      propertyPath: FP_LProp
+      value: 
+      objectReference: {fileID: 5471678081438733798}
+    - target: {fileID: 3175273924046459830, guid: 5ef24727e7b59af459424d3a200d3ce4,
+        type: 3}
+      propertyPath: FP_RProp
+      value: 
+      objectReference: {fileID: 5649881589223891432}
+    - target: {fileID: 3175273924046459830, guid: 5ef24727e7b59af459424d3a200d3ce4,
+        type: 3}
       propertyPath: TP_LProp
       value: 
       objectReference: {fileID: 5229979237513573624}
@@ -6697,6 +6707,11 @@ PrefabInstance:
       propertyPath: TP_RProp
       value: 
       objectReference: {fileID: 5229979237513573682}
+    - target: {fileID: 3175273924046459830, guid: 5ef24727e7b59af459424d3a200d3ce4,
+        type: 3}
+      propertyPath: FP_HandsAnimator
+      value: 
+      objectReference: {fileID: 8897952268465595802}
     - target: {fileID: 6472012769291873858, guid: 5ef24727e7b59af459424d3a200d3ce4,
         type: 3}
       propertyPath: m_AssetId

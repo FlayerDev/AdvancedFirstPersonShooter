@@ -63,12 +63,20 @@ public class Item : NetworkBehaviour
         FPr.transform.SetParent(handSide? inv.FP_RProp.transform : inv.FP_LProp.transform);
         FPr.transform.localPosition = FP_PositionOffset;
         FPr.transform.localRotation = FP_RotationOffset;
+        Animator anim = player.GetComponentInChildren<Inventory>().FP_HandsAnimator;
+        anim.runtimeAnimatorController = FP_HandAnimations as RuntimeAnimatorController;
+        anim.SetTrigger("Equip");
+    }
+    [Command]
+    void CmdDespawn() //TODO: Doesnt despawn the first object picked up
+    {
+        NetworkServer.Destroy(TP_Runtime);
+        NetworkServer.Destroy(FP_Runtime);
     }
     private void OnDisable()
     {
         if (!hasAuthority) return;
-        NetworkServer.Destroy(TP_Runtime);
-        NetworkServer.Destroy(FP_Runtime);
+        CmdDespawn();
     }
     private void OnDestroy() => OnDisable();
 

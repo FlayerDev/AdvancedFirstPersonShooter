@@ -12,6 +12,7 @@ public class Inventory : MonoBehaviour
 
     public InventorySlot[] inventorySlots = new InventorySlot[0];
     public GameObject TP_Prop;
+    public Animator FP_HandsAnimator;
     public GameObject FP_RProp;
     public GameObject FP_LProp;
     public int enabledIndex = 0;
