@@ -31,10 +31,26 @@ public class Item : NetworkBehaviour
     }
     private void OnEnable()
     {
-        if (!hasAuthority) return;
-        AnimatorParameterSync.Local.animIndex = animationIndex;
-        AnimatorParameterSync.Local.Equip = true;
-        CmdSpawnItem(Inventory.Local.transform.parent.gameObject, itemSide);
+        ToggleActive(true);
+    }
+    [TargetRpc]
+    public void TargetToggleActive(NetworkConnection netConn, bool state) => ToggleActive(state);   
+    public void ToggleActive(bool state)
+    {
+        if (state)
+        {
+            if (!hasAuthority) return;
+            gameObject.SetActive(true);
+            AnimatorParameterSync.Local.animIndex = animationIndex;
+            AnimatorParameterSync.Local.Equip = true;
+            CmdSpawnItem(Inventory.Local.transform.parent.gameObject, itemSide);
+        }
+        else
+        {
+            if (!hasAuthority) return;
+            CmdDespawn();
+            gameObject.SetActive(false);
+        }
     }
     [Command(ignoreAuthority = true)]
     public void CmdSpawnItem(GameObject player, bool handSide)
@@ -54,18 +70,34 @@ public class Item : NetworkBehaviour
     {
         Inventory inv = player.GetComponent<NetworkInventory>().inventory;
         //TP
+        clearHand(inv.TP_Prop);
         TP_Runtime = TPr;
         TPr.transform.SetParent(inv.TP_Prop.transform);
         TPr.transform.localPosition = TP_PositionOffset;
         TPr.transform.localRotation = TP_RotationOffset;
         //FP
+        clearHand(inv.FP_RProp);
+        clearHand(inv.FP_LProp);
         FP_Runtime = FPr;
-        FPr.transform.SetParent(handSide? inv.FP_RProp.transform : inv.FP_LProp.transform);
+        FPr.transform.SetParent(handSide ? inv.FP_RProp.transform : inv.FP_LProp.transform);
         FPr.transform.localPosition = FP_PositionOffset;
         FPr.transform.localRotation = FP_RotationOffset;
         Animator anim = player.GetComponentInChildren<Inventory>().FP_HandsAnimator;
         anim.runtimeAnimatorController = FP_HandAnimations as RuntimeAnimatorController;
         anim.SetTrigger("Equip");
+        //Others
+
+        static void clearHand(GameObject hand)
+            
+        {
+            if (hand.transform.childCount < 1) return;
+            for (int i = 0; i < hand.transform.childCount; i++)
+            {
+                if (hand.transform.GetChild(i).gameObject.CompareTag("Model")) 
+                    Destroy(hand.transform.GetChild(i).gameObject);
+            }
+
+        }
     }
     [Command]
     void CmdDespawn() //TODO: Doesnt despawn the first object picked up
@@ -73,13 +105,6 @@ public class Item : NetworkBehaviour
         NetworkServer.Destroy(TP_Runtime);
         NetworkServer.Destroy(FP_Runtime);
     }
-    private void OnDisable()
-    {
-        if (!hasAuthority) return;
-        CmdDespawn();
-    }
-    private void OnDestroy() => OnDisable();
-
 }
 public enum ItemType
 {

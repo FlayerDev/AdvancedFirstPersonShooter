@@ -18,6 +18,7 @@ public class NetworkInventory : NetworkBehaviour
         GameObject drop_item = Instantiate<GameObject>(itm.pickupPrefab, transform.position + new Vector3(0, 0.5f, 0), new Quaternion(20,10,30,0));
         NetworkServer.Spawn(drop_item);
         drop_item.GetComponent<Mag>().Ammo = ammo;
+        itm.TargetToggleActive(gameObject.GetComponent<NetworkIdentity>().connectionToClient ,false);
     }
 
     [Command(ignoreAuthority = true)]

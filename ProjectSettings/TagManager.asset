@@ -10,6 +10,7 @@ TagManager:
   - CONCRETE
   - SYNTHETIC
   - COBBLE
+  - Model
   layers:
   - Default
   - TransparentFX

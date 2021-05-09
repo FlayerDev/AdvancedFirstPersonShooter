@@ -94,7 +94,7 @@ public class Inventory : MonoBehaviour
 
     void IncrementIndex(bool dir)
     {
-        if (inventorySlots[enabledIndex].IncrementIndex(dir)) return;
+        if (inventorySlots[enabledIndex].TryIncrementIndex(dir)) return;
         int step = (dir ? 1 : -1);
         for (int i = 0,x = enabledIndex; i < inventorySlots.Length; i++)
         {
@@ -114,7 +114,7 @@ public class Inventory : MonoBehaviour
 
         if(index == enabledIndex)
         {
-            if (inventorySlots[enabledIndex].IncrementIndex(false)) return;
+            if (inventorySlots[enabledIndex].TryIncrementIndex(false)) return;
         }
         for (int i = 0, x = index; i < inventorySlots.Length; i++)
         {

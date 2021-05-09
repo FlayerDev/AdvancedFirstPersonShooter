@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: -666417584155499186}
   - component: {fileID: 5626469467630197273}
   m_Layer: 0
-  m_Name: Ak-47_TP
-  m_TagString: Untagged
+  m_Name: Ak-47_FP
+  m_TagString: Model
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
