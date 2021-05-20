@@ -21,17 +21,11 @@ public class InventorySlot : MonoBehaviour
     }
     private void OnEnable()
     {
-        try
-        {
+        if (transform.childCount != 0)
             transform.GetChild(0).gameObject.SetActive(true);
-        }
-        finally
-        {
-
-        }
     }
     /// <summary>
-    /// Attempts to enable another item within the same 
+    /// Attempts to enable another item within the same InventorySlot
     /// </summary>
     /// <param name="dir">Increment Direction</param>
     /// <returns>True if the subslot successfully increment index</returns>

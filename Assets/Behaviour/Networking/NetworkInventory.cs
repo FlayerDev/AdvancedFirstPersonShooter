@@ -35,4 +35,17 @@ public class NetworkInventory : NetworkBehaviour
     {
         wepbuff.transform.parent = inventory[slot].transform;
     }
+
+    #region Animator commands
+    [Command]
+    public void CmdSetTrigger(string trigger)
+    {
+        RpcSetTrigger(trigger);
+    }
+    [ClientRpc]
+    void RpcSetTrigger(string trigger)
+    {
+        inventory.FP_HandsAnimator.SetTrigger(trigger);
+    }
+    #endregion
 }

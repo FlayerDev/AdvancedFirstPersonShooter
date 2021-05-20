@@ -27,16 +27,27 @@ public class Item : NetworkBehaviour
     private void Start()
     {
         if (!hasAuthority || !gameObject.activeInHierarchy) return;
-        CmdSpawnItem(Inventory.Local.transform.parent.gameObject,itemSide);
-    }
-    private void OnEnable()
-    {
         ToggleActive(true);
     }
+    private void Update() //Note: that may cause a bug
+    {
+        if (!(FP_Runtime && TP_Runtime))
+        {
+            FP_Runtime = null;
+            TP_Runtime = null;
+        }
+    }
+    private void OnEnable() 
+    {
+        ToggleActive(true);
+        //ToggleActive(true);
+    }
     [TargetRpc]
-    public void TargetToggleActive(NetworkConnection netConn, bool state) => ToggleActive(state);   
+    public void TargetToggleActive(NetworkConnection netConn, bool state) => ToggleActive(state);
     public void ToggleActive(bool state)
     {
+        //Note: re-enable this
+        //if (state == gameObject.activeInHierarchy) return; //Note: re-enable this
         if (state)
         {
             if (!hasAuthority) return;
@@ -52,6 +63,7 @@ public class Item : NetworkBehaviour
             gameObject.SetActive(false);
         }
     }
+    #region Spawn Item Rpcs  
     [Command(ignoreAuthority = true)]
     public void CmdSpawnItem(GameObject player, bool handSide)
     {
@@ -88,19 +100,19 @@ public class Item : NetworkBehaviour
         //Others
 
         static void clearHand(GameObject hand)
-            
         {
             if (hand.transform.childCount < 1) return;
             for (int i = 0; i < hand.transform.childCount; i++)
             {
-                if (hand.transform.GetChild(i).gameObject.CompareTag("Model")) 
+                if (hand.transform.GetChild(i).gameObject.CompareTag("Model"))
                     Destroy(hand.transform.GetChild(i).gameObject);
             }
 
         }
     }
+    #endregion
     [Command]
-    void CmdDespawn() //TODO: Doesnt despawn the first object picked up
+    void CmdDespawn() //NOTE: Doesnt despawn the first object picked up.  WorkAround: clearHand inline methond above
     {
         NetworkServer.Destroy(TP_Runtime);
         NetworkServer.Destroy(FP_Runtime);

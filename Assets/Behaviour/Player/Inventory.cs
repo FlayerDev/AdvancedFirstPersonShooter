@@ -6,7 +6,7 @@ using Mirror;
 
 public class Inventory : MonoBehaviour
 {
-    public static Inventory Local { get => NetworkClient.connection.identity.gameObject.GetComponentInChildren<Inventory>(); }
+    public static Inventory Local => NetworkClient.connection.identity.gameObject.GetComponentInChildren<Inventory>(); 
     public NetworkInventory netInventory;
 
 
@@ -48,11 +48,11 @@ public class Inventory : MonoBehaviour
         if (!default(RaycastHit).Equals(hit) && hit.collider.gameObject.TryGetComponent(out ItemPickup itm)) {
             Pickup(itm.gameObject, false);
         }
-
     }
 
     void drop() => Drop();
 
+    #region Basic Functions
     public void Drop()
     {
         GameObject item = inventorySlots[enabledIndex][inventorySlots[enabledIndex].activeSubSlot];
@@ -89,9 +89,12 @@ public class Inventory : MonoBehaviour
         }
         Debug.Log("Inventory:Slot_Full");
     }
-
-    #region ChangeWeapon
-
+    #endregion
+    #region Index Methods
+    /// <summary>
+    /// Equips the next nearest item towards the given direction
+    /// </summary>
+    /// <param name="dir">The given direction</param>
     void IncrementIndex(bool dir)
     {
         if (inventorySlots[enabledIndex].TryIncrementIndex(dir)) return;
@@ -109,6 +112,10 @@ public class Inventory : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// Equips the nearest item to the given index
+    /// </summary>
+    /// <param name="index">The given index</param>
     void SetIndex(int index)
     {
 
@@ -138,4 +145,5 @@ public class Inventory : MonoBehaviour
         }
     }
     #endregion
+
 }
