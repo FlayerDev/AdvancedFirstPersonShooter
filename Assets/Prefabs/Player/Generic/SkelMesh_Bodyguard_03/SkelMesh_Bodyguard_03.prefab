@@ -5433,6 +5433,7 @@ MonoBehaviour:
   - {fileID: 5229979237513573518}
   - {fileID: 5229979237513573516}
   - {fileID: 5229979237513573506}
+  - {fileID: 5229979237513573650}
   HandOffset: {x: 0, y: -0.08, z: 0.015}
   Focused: 0
   LookAtIKObject: {fileID: 6087327274394936072}
