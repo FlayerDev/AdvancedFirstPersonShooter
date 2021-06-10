@@ -42,7 +42,9 @@ public class PlayerInfo : NetworkBehaviour, IDamageable
     #endregion
 
     #region Utilities 
-    void Register(float amount, GameObject offender)
+    void Register(float amount, GameObject offender) => CmdRegister(amount, offender);
+    [Command]
+    void CmdRegister(float amount, GameObject offender)
     {
         IEnumerable<Offender> ResultList =
             from item in DamageRegistry
@@ -59,7 +61,7 @@ public class PlayerInfo : NetworkBehaviour, IDamageable
         }
     }
 
-    public float getDamageByPlayer(GameObject player) // TODO: Implement
+    public float getDamageByPlayer(GameObject player) // TODO: Implement Later
     {
         float damage = 0;
         //foreach (var item in damageHistory) if (item.Item1 == player) damage += item.Item2;
@@ -85,7 +87,7 @@ public class Offender
         networkIdentity = identity;
         Name = $"Client[{netId}]";
         gameObject = offender;
-
+        
         Damage = amount;
     }
 }

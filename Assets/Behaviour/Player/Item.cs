@@ -6,6 +6,7 @@ public class Item : NetworkBehaviour
     public ItemType itemType;
     public AnimationIndex animationIndex;
     public GameObject pickupPrefab;
+    public bool allowIdleAnimation; //TODO: Implement
 
     [Header("First Person")]
     public GameObject FP_Prefab;
@@ -96,6 +97,7 @@ public class Item : NetworkBehaviour
         FPr.transform.localRotation = FP_RotationOffset;
         Animator anim = player.GetComponentInChildren<Inventory>().FP_HandsAnimator;
         anim.runtimeAnimatorController = FP_HandAnimations as RuntimeAnimatorController;
+        anim.SetBool("allowIdle", allowIdleAnimation);
         anim.SetTrigger("Equip");
         //Others
 
