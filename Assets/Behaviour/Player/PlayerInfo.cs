@@ -10,7 +10,7 @@ public class PlayerInfo : NetworkBehaviour, IDamageable
     public float hp { get => health; }
     [SyncVar] public string Name;
 
-    [SyncVar] public List<Offender> DamageRegistry = new List<Offender>();
+    public SyncList<Offender> DamageRegistry = new SyncList<Offender>();
 
     public void damage(float amount, GameObject offender)
     {
@@ -43,9 +43,10 @@ public class PlayerInfo : NetworkBehaviour, IDamageable
 
     #region Utilities 
     void Register(float amount, GameObject offender) => CmdRegister(amount, offender);
-    [Command]
+    [Command(ignoreAuthority = true)]
     void CmdRegister(float amount, GameObject offender)
     {
+
         IEnumerable<Offender> ResultList =
             from item in DamageRegistry
             where item.gameObject == offender
@@ -89,5 +90,10 @@ public class Offender
         gameObject = offender;
         
         Damage = amount;
+    }
+    public static explicit operator string(Offender off) => off.ToString();
+    public override string ToString()
+    {
+        return $"{Name} (-{Damage})";
     }
 }

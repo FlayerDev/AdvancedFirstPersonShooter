@@ -158,7 +158,15 @@ namespace Mirror
                         int index = 0;
                         foreach (object item in synclist)
                         {
-                            string itemValue = item != null ? item.ToString() : "NULL";
+                            string itemValue;
+                            try
+                            {
+                                itemValue = item != null ? (string)item : "NULL";
+                            }
+                            catch
+                            {
+                                itemValue = item != null ? item.ToString() : "NULL";
+                            }
                             string itemLabel = "Element " + index;
                             EditorGUILayout.LabelField(itemLabel, itemValue);
 
