@@ -51,7 +51,7 @@ public class Item : NetworkBehaviour
         //if (state == gameObject.activeInHierarchy) return; //Note: re-enable this
         if (state)
         {
-            if (!hasAuthority) return;
+            //if (!hasAuthority) return;
             gameObject.SetActive(true);
             AnimatorParameterSync.Local.animIndex = animationIndex;
             AnimatorParameterSync.Local.Equip = true;
@@ -59,7 +59,7 @@ public class Item : NetworkBehaviour
         }
         else
         {
-            if (!hasAuthority) return;
+            //if (!hasAuthority) return;
             CmdDespawn();
             gameObject.SetActive(false);
         }
@@ -113,7 +113,6 @@ public class Item : NetworkBehaviour
         }
     }
     #endregion
-    [Command]
     void CmdDespawn() //NOTE: Doesnt despawn the first object picked up.  WorkAround: clearHand inline methond above
     {
         NetworkServer.Destroy(TP_Runtime);
