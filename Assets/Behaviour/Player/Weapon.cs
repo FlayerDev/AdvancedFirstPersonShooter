@@ -81,10 +81,11 @@ public class Weapon : WeaponBehaviour //VISUAL: Add bullet output on TP Model
         if (mag.Ammo > 0) mag.Ammo--; else return;
         rearm();
         float dmg = baseDamage;
-        calculateRecoil();
         RaycastHit[] hitarr = Physics.RaycastAll(muzzle.transform.position,
             muzzle.transform.forward + new Vector3(0f, currentRecoil.x, currentRecoil.y),
             effectiveRange, LayerMask.NameToLayer("Projectile"));
+
+        calculateRecoil();
 
         Array.Sort(hitarr, (x, y) => x.distance.CompareTo(y.distance)); // Sorts hit objects by distance
         foreach (RaycastHit item in hitarr)
