@@ -7,7 +7,8 @@ public class ItemPickup : NetworkBehaviour
 {
     public ItemType itemType;
     public GameObject weaponPrefab;
-
+    public bool overtaking = true;
+    /*
     [Command]
     public void CmdPickup(GameObject slotObj, bool overtake_slot)
     {
@@ -26,4 +27,5 @@ public class ItemPickup : NetworkBehaviour
             NetworkServer.Spawn(wepbuff);
         }
     }
+    */ //for some reason inventory handles this
 }

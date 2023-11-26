@@ -46,20 +46,26 @@ public class Inventory : MonoBehaviour
         //RaycastHit hit = (RaycastHit)LocalInfo.useRaycastHit;
         Physics.Raycast(camount.MainCamera.transform.position, camount.MainCamera.transform.forward, out RaycastHit hit, usableDistance, UseLayer);
         if (!default(RaycastHit).Equals(hit) && hit.collider.gameObject.TryGetComponent(out ItemPickup itm)) {
-            Pickup(itm.gameObject, false);
+            Pickup(itm.gameObject, itm.overtaking);
         }
     }
 
     void drop() => Drop();
 
     #region Basic Functions
-    public void Drop()
+    public bool Drop()
     {
         GameObject item = inventorySlots[enabledIndex][inventorySlots[enabledIndex].activeSubSlot];
-        if (!inventorySlots[enabledIndex].AllowDrop) return;
+        if (!inventorySlots[enabledIndex].AllowDrop) return false;
         netInventory.CmdDrop(item, item.TryGetComponent<Mag>(out Mag mag) ? mag.Ammo : 0);
         NetworkServer.Destroy(item);
         Debug.Log("Inventory:Drop");
+        return true;
+    }
+    public bool Drop(int indx)
+    {
+        if (!SetIndex(indx)) return false;
+        return Drop();
     }
 
     public void Pickup(GameObject item, bool overtake_slot)
@@ -82,10 +88,14 @@ public class Inventory : MonoBehaviour
         }
         else if (overtake_slot)
         {
-            Drop();
+            if (!Drop(slotIndex)) { Debug.Log("Inentory:CantDrop-CantPickup " + slotIndex); return; }
             netInventory.CmdPickup(item, slotIndex, item.TryGetComponent<Mag>(out Mag mag) ? mag.Ammo : 0);
             NetworkServer.Destroy(item);
             Debug.Log("Inventory:Slot_Overtaken");
+        }
+        else
+        {
+            Debug.Log("Inventory:DidNotPickUp");
         }
         Debug.Log("Inventory:Slot_Full");
     }
@@ -116,14 +126,15 @@ public class Inventory : MonoBehaviour
     /// Equips the nearest item to the given index
     /// </summary>
     /// <param name="index">The given index</param>
-    void SetIndex(int index)
+    bool SetIndex(int index)
     {
-
+        if (index == enabledIndex) return true;
+        int x = index;
         if(index == enabledIndex)
         {
-            if (inventorySlots[enabledIndex].TryIncrementIndex(false)) return;
+            if (inventorySlots[enabledIndex].TryIncrementIndex(false)) return false;
         }
-        for (int i = 0, x = index; i < inventorySlots.Length; i++)
+        for (int i = 0; i < inventorySlots.Length; i++)
         {
             x += 1;
             if (x >= inventorySlots.Length) x = 0;
@@ -132,9 +143,11 @@ public class Inventory : MonoBehaviour
             {
                 enableIndex(x);
                 enabledIndex = x;
-                return;
+                return x == index;
             }
+            
         }
+        return false;
     }
     void enableIndex(int index)
     {
