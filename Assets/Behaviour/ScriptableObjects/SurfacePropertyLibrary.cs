@@ -27,5 +27,5 @@ public class SurfaceData
     public GameObject Decal;
     public GameObject CollisionParticle;
     public float DamageModifier;
-    //Sound
+    //TODO: Sound
 }

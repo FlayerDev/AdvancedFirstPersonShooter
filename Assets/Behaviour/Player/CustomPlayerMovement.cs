@@ -17,8 +17,8 @@ public class CustomPlayerMovement : NetworkBehaviour
     public float UprightHeight = 1.8f;
     public float CrouchedHeight = .9f;
     public float HeightTransitionSpeed = .1f;
-    public float StaminaLossPerCrouch = .5f;
-    public float StaminaGainPerSecond = .33f;
+    public float StaminaLossPerCrouch = .25f; //Note: Adjust in editor to 0.25f 
+    public float StaminaGainPerSecond = .10f; // and 0.1f
     [Range(0f,1f)]public float CrouchedPlayerSpeedFactor = .4f;
 
     [Header("Others")]

@@ -28,7 +28,8 @@ public class Mag : NetworkBehaviour
     public async void Reload()
     {
         await System.Threading.Tasks.Task.Delay(ReloadTimeMS);
+        var ammobuffer = Ammo;
         CmdSetAmmo(Mathf.Clamp(Ammo + Mathf.Clamp(ReloadAmount, 0, InventoryAmmo), 0, Capacity));
-        CmdSetInvAmmo(InventoryAmmo - ReloadAmount);
+        CmdSetInvAmmo(InventoryAmmo - (ReloadAmount - ammobuffer));
     }
 }
