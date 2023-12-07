@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-
+/*
 [InitializeOnLoad]
 public class AutoSave
 {
@@ -39,4 +39,5 @@ public class AutoSave
         AssetDatabase.SaveAssets();
     }
 }
-#endif
+*/
+#endif 

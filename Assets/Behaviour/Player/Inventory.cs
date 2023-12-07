@@ -45,8 +45,11 @@ public class Inventory : MonoBehaviour
     {
         //RaycastHit hit = (RaycastHit)LocalInfo.useRaycastHit;
         Physics.Raycast(camount.MainCamera.transform.position, camount.MainCamera.transform.forward, out RaycastHit hit, usableDistance, UseLayer);
-        if (!default(RaycastHit).Equals(hit) && hit.collider.gameObject.TryGetComponent(out ItemPickup itm)) {
-            Pickup(itm.gameObject, itm.overtaking);
+        if (!default(RaycastHit).Equals(hit)) 
+        {
+            if (hit.collider.gameObject.TryGetComponent(out IUsable usable)) usable.use(this);
+            //else if (hit.collider.gameObject.TryGetComponent(out ItemPickup itm)) Pickup(itm.gameObject, itm.overtaking);
+            else Debug.Log("Player: Nothing to use");
         }
     }
 

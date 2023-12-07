@@ -1,4 +1,4 @@
 ﻿public interface IUsable
 {
-    void use(UnityEngine.GameObject user);
+    void use(Inventory userInventory);
 }

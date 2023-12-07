@@ -9,7 +9,7 @@ namespace Unity.Flayer.InputSystem
     {
         public static KeyCode[] KeyCodes = (KeyCode[])System.Enum.GetValues(typeof(KeyCode));
 
-        public static Dictionary<string, KeyCode> KeyBinds = new Dictionary<string, KeyCode>()
+        public static Dictionary<string, KeyCode> KeyBinds = new Dictionary<string, KeyCode>() // These are the default key binds
         {
             {"None" , KeyCode.None},
             {"Primary", KeyCode.Mouse0 },
@@ -37,7 +37,7 @@ namespace Unity.Flayer.InputSystem
 
         public static void ChangeValue(string key)
         {
-
+            KeyBinds[key] = GetKeyPressed(true);
         }
 
         static KeyCode GetKeyPressed(bool GetKeyDown = false)

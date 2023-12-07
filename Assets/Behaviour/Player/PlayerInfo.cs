@@ -9,6 +9,7 @@ public class PlayerInfo : NetworkBehaviour, IDamageable
     [SerializeField, Range(0, 100), SyncVar] private float health = 100;
     public float hp { get => health; }
     [SyncVar] public string Name;
+    [SyncVar] public int playerTeam;
 
     public SyncList<Offender> DamageRegistry = new SyncList<Offender>();
 
@@ -20,6 +21,7 @@ public class PlayerInfo : NetworkBehaviour, IDamageable
     {
         if (!isLocalPlayer) return;
         CmdSetName(LobbyManager.Singleton.LocalRoomPlayer.ClientName);
+        LocalInfo.activePlayerInfo = this;
     }
     private void Update()
     {
@@ -80,13 +82,14 @@ public class Offender
 
     public float Damage;
 
-    public Offender() {}
+    public Offender() {} // DO NOT USE. It exists only becase unity cant display it in the editor without a def. const.
     public Offender(float amount, GameObject offender)
     {
         NetworkIdentity identity = offender.GetComponent<NetworkIdentity>();
+        PlayerInfo playerInfo = offender.GetComponent<PlayerInfo>();
         netId = identity.netId;
         networkIdentity = identity;
-        Name = $"Client[{netId}]";
+        Name = playerInfo.Name;
         gameObject = offender;
         
         Damage = amount;
@@ -96,4 +99,9 @@ public class Offender
     {
         return $"{Name} (-{Damage})";
     }
+}
+
+public enum Team
+{
+    CT, T
 }

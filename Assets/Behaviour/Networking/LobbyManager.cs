@@ -33,6 +33,9 @@ public class LobbyManager : NobleRoomManager
     public GameObject MainHUD;
     public GameObject LobbyHUD;
 
+    public GameObject CT_Player_Prefab;
+    public GameObject T_Player_Prefab;
+
     public GameObject nameError;
     public string localName;
 

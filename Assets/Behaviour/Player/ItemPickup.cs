@@ -3,29 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class ItemPickup : NetworkBehaviour
+public class ItemPickup : NetworkBehaviour, IUsable
 {
     public ItemType itemType;
     public GameObject weaponPrefab;
     public bool overtaking = true;
-    /*
-    [Command]
-    public void CmdPickup(GameObject slotObj, bool overtake_slot)
+
+    public void use(Inventory userInventory)
     {
-        InventorySlot slot = slotObj.GetComponent<InventorySlot>();
-        if (slot.subslots > slot.transform.childCount)
-        {
-            var wepbuff = Instantiate(weaponPrefab, slot.transform);
-            wepbuff.CopyComponent(GetComponent<Mag>());
-            NetworkServer.Spawn(wepbuff);
-        }
-        else if (overtake_slot)
-        {
-            //slot.drop();
-            var wepbuff = Instantiate(weaponPrefab, slot.transform);
-            wepbuff.CopyComponent(GetComponent<Mag>());
-            NetworkServer.Spawn(wepbuff);
-        }
+        userInventory.Pickup(gameObject, overtaking);
     }
-    */ //for some reason inventory handles this
+    /*
+[Command]
+public void CmdPickup(GameObject slotObj, bool overtake_slot)
+{
+   InventorySlot slot = slotObj.GetComponent<InventorySlot>();
+   if (slot.subslots > slot.transform.childCount)
+   {
+       var wepbuff = Instantiate(weaponPrefab, slot.transform);
+       wepbuff.CopyComponent(GetComponent<Mag>());
+       NetworkServer.Spawn(wepbuff);
+   }
+   else if (overtake_slot)
+   {
+       //slot.drop();
+       var wepbuff = Instantiate(weaponPrefab, slot.transform);
+       wepbuff.CopyComponent(GetComponent<Mag>());
+       NetworkServer.Spawn(wepbuff);
+   }
+}
+*/ //for some reason inventory handles this
 }

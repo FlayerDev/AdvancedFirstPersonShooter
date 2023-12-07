@@ -5991,6 +5991,8 @@ MonoBehaviour:
   - {fileID: 319120377766980121, guid: 2a2a6167f44a0994592d857ffb131fc2, type: 3}
   - {fileID: 319120377766980121, guid: 0c0b17bbba6b4de459a3436b731033f1, type: 3}
   - {fileID: 319120377766980121, guid: fe7597a6b005c1843b50a9873b9ed0b2, type: 3}
+  - {fileID: 6818698260540550241, guid: 857aba60b76fa3842907cb44ef98a930, type: 3}
+  - {fileID: 0}
   networkPort: 0
   region: 0
   forceRelayConnection: 0
@@ -6010,6 +6012,10 @@ MonoBehaviour:
   roomSlots: []
   MainHUD: {fileID: 1539845667}
   LobbyHUD: {fileID: 1493484367}
+  CT_Player_Prefab: {fileID: 5229979237513573648, guid: b6bef4b15db07474c825abaaed3c5bd7,
+    type: 3}
+  T_Player_Prefab: {fileID: 5229979237513573648, guid: b6bef4b15db07474c825abaaed3c5bd7,
+    type: 3}
   nameError: {fileID: 1234722050}
   localName: 
   ipField: {fileID: 114546122160692144}
