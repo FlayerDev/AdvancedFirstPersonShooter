@@ -10,6 +10,7 @@ public class Observer : NetworkBehaviour
     {
         if (!hasAuthority) return;
         LocalInfo.Observer = this;
+        LocalInfo.localIdentity = netIdentity;
     }
 
     public void RemoveObserver()

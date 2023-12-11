@@ -80,9 +80,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  InitializeComponents:
-  - {fileID: 6673114624393932901}
-  - {fileID: 2853858560562073941}
 --- !u!114 &2853858560562073941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90,7 +87,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6818698260540550241}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aef07a4f44b8bb940b64d1b9cbc16dda, type: 3}
   m_Name: 

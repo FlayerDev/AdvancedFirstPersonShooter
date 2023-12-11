@@ -21,14 +21,15 @@ public class PlayerSpawner : NetworkBehaviour
 
     public void SelectTeam(int team)
     {
-        CmdSelectTeam(team, connectionToClient as NetworkConnectionToClient);
+        Debug.Log((NetworkConnectionToClient)LocalInfo.localIdentity.connectionToClient);
+        CmdSelectTeam(team, LocalInfo.localIdentity.connectionToClient);
 
-        if (LocalInfo.Observer != null) LocalInfo.Observer.RemoveObserver();
+        //if (LocalInfo.Observer != null) LocalInfo.Observer.RemoveObserver();
         TeamSelectionHUD.SetActive(false);
         // TODO: Set player info team
     }
 
-    [Command(ignoreAuthority =true)]
+    //[Command(ignoreAuthority =true)]
     public void CmdSelectTeam(int team, NetworkConnectionToClient owner)
     {
         GameObject pref = LobbyManager.Singleton.playerPrefab;
@@ -44,10 +45,11 @@ public class PlayerSpawner : NetworkBehaviour
                 pref = LobbyManager.Singleton.playerPrefab;
                 break;
         }
-        Debug.Log(pref);
         var gO = Instantiate(pref, GetSpawnPosition((Team)team, 1), Quaternion.identity);
-        Debug.Log(gO);
         NetworkServer.Spawn(gO, owner);
+        print(NetworkServer.ReplacePlayerForConnection(owner, gameObject, true));
+        gO.GetComponent<ReplacePlayerObj>().Replace(owner);
+
         //gO.GetComponent<> 
         //NetworkServer.ReplacePlayerForConnection(this.connectionToClient, gO);
     }

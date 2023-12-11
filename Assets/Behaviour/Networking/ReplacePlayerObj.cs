@@ -8,20 +8,34 @@ public class ReplacePlayerObj : NetworkBehaviour
 
     private void Awake()
     {
-        if (!hasAuthority) Destroy(this);
+        //if (!hasAuthority) Destroy(this);
     }
-
-    //[ServerCallback]
-    [Command]
     public void Replace(NetworkConnectionToClient ownerConn)
     {
-        NetworkServer.ReplacePlayerForConnection(this.connectionToClient, gameObject);
-        IComponentInitializable[] comps = GetComponents<IComponentInitializable>();
-        foreach(IComponentInitializable comp in comps)
+        print(NetworkServer.ReplacePlayerForConnection(ownerConn, gameObject, true));
+        CmdReplace(ownerConn);
+    }
+    [Command(ignoreAuthority = true)]
+    public void CmdReplace(NetworkConnectionToClient ownerConn)
+    {
+        RpcReplace();
+        TargetReplace(ownerConn);
+        //Destroy(this);
+    }
+    [ClientRpc]
+    public void RpcReplace()
+    {
+        List<IComponentInitializable> comps = new List<IComponentInitializable>(); ;
+        comps.AddRange(GetComponents<IComponentInitializable>());
+        comps.AddRange(GetComponentsInChildren<IComponentInitializable>());        
+        foreach (IComponentInitializable comp in comps)
         {
             comp.Init();
         }
-        GetComponent<CameraMounter>().Focus();
-        Destroy(this);
+    }
+    [TargetRpc]
+    public void TargetReplace(NetworkConnection conn)
+    {
+        if (LocalInfo.Observer != null) LocalInfo.Observer.RemoveObserver();
     }
 }
