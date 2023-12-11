@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Linq.Expressions;
 using System.Linq;
 
-public class PlayerInfo : NetworkBehaviour, IDamageable
+public class PlayerInfo : NetworkBehaviour, IDamageable, IComponentInitializable
 {
     [SerializeField, Range(0, 100), SyncVar] private float health = 100;
     public float hp { get => health; }
@@ -17,6 +17,8 @@ public class PlayerInfo : NetworkBehaviour, IDamageable
     {
         CmdDamage(amount, offender);
     }
+
+    public void Init() => Start();
     private void Start()
     {
         if (!isLocalPlayer) return;

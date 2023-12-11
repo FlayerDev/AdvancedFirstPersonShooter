@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using Unity.Flayer.InputSystem;
 using Mirror;
 
-public class Inventory : MonoBehaviour
+public class Inventory : MonoBehaviour, IComponentInitializable
 {
-    public static Inventory Local => NetworkClient.connection.identity.gameObject.GetComponentInChildren<Inventory>(); 
+    public static Inventory Local => NetworkClient.connection.identity.gameObject.GetComponentInChildren<Inventory>();
     public NetworkInventory netInventory;
 
 
@@ -27,6 +27,8 @@ public class Inventory : MonoBehaviour
         get => inventorySlots[index];
     }
 
+    public void Init() => Start();
+
     void Start()
     {
         if (!netInventory.hasAuthority) return;
@@ -45,7 +47,7 @@ public class Inventory : MonoBehaviour
     {
         //RaycastHit hit = (RaycastHit)LocalInfo.useRaycastHit;
         Physics.Raycast(camount.MainCamera.transform.position, camount.MainCamera.transform.forward, out RaycastHit hit, usableDistance, UseLayer);
-        if (!default(RaycastHit).Equals(hit)) 
+        if (!default(RaycastHit).Equals(hit))
         {
             if (hit.collider.gameObject.TryGetComponent(out IUsable usable)) usable.use(this);
             //else if (hit.collider.gameObject.TryGetComponent(out ItemPickup itm)) Pickup(itm.gameObject, itm.overtaking);
@@ -75,9 +77,10 @@ public class Inventory : MonoBehaviour
     {
         InventorySlot slot = null;
         int slotIndex = 0;
-        for (int i = 0; i < inventorySlots.Length; i++) 
+        for (int i = 0; i < inventorySlots.Length; i++)
         {
-            if (this[i].itemType == item.GetComponent<ItemPickup>().itemType) { 
+            if (this[i].itemType == item.GetComponent<ItemPickup>().itemType)
+            {
                 slot = this[i];
                 slotIndex = i;
                 SetIndex(i);
@@ -112,7 +115,7 @@ public class Inventory : MonoBehaviour
     {
         if (inventorySlots[enabledIndex].TryIncrementIndex(dir)) return;
         int step = (dir ? 1 : -1);
-        for (int i = 0,x = enabledIndex; i < inventorySlots.Length; i++)
+        for (int i = 0, x = enabledIndex; i < inventorySlots.Length; i++)
         {
             x += step;
             if (x >= inventorySlots.Length) x = 0;
@@ -133,7 +136,7 @@ public class Inventory : MonoBehaviour
     {
         if (index == enabledIndex) return true;
         int x = index;
-        if(index == enabledIndex)
+        if (index == enabledIndex)
         {
             if (inventorySlots[enabledIndex].TryIncrementIndex(false)) return false;
         }
@@ -148,7 +151,7 @@ public class Inventory : MonoBehaviour
                 enabledIndex = x;
                 return x == index;
             }
-            
+
         }
         return false;
     }

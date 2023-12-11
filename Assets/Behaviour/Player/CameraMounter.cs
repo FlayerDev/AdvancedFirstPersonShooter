@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-public class CameraMounter : MonoBehaviour
+public class CameraMounter : MonoBehaviour, IComponentInitializable
 {
+    public bool isPlayer = true;
     public Camera MainCamera;
     public GameObject FP_Hands;
     [Space]
@@ -14,6 +15,12 @@ public class CameraMounter : MonoBehaviour
     public bool Focused;
 
     public GameObject LookAtIKObject;
+
+    public void Init()
+    {
+        Awake();
+        Start();
+    }
 
     private void Awake()
     {
@@ -32,21 +39,25 @@ public class CameraMounter : MonoBehaviour
         {
             FP_Hands.transform.localPosition = HandOffset;
             MainCamera.transform.localPosition = new Vector3(0, transform.parent.GetComponent<CustomPlayerMovement>().HeightBuffer - 0.1f, 0);
-            if (transform.parent.GetComponent<Mirror.NetworkIdentity>().isLocalPlayer) LookAtIKObject.transform.position = MainCamera.transform.position + MainCamera.transform.forward;
+            if (transform.parent.GetComponent<Mirror.NetworkIdentity>().isLocalPlayer && isPlayer) 
+                LookAtIKObject.transform.position = MainCamera.transform.position + MainCamera.transform.forward;
         }
     }
 
     [ButtonGroup]
     public void Focus()
     {
-        Focused = true;
-        //Hands
-        FP_Hands.SetActive(true);
-        FP_Hands.transform.parent = MainCamera.transform;
-        FP_Hands.transform.localPosition = HandOffset;
-        FP_Hands.transform.localRotation = Quaternion.identity;
-        //Body
-        setActiveBodyParts(false);
+        if (isPlayer)
+        {
+            Focused = true;
+            //Hands
+            FP_Hands.SetActive(true);
+            FP_Hands.transform.parent = MainCamera.transform;
+            FP_Hands.transform.localPosition = HandOffset;
+            FP_Hands.transform.localRotation = Quaternion.identity;
+            //Body
+            setActiveBodyParts(false);
+        }
         //Camera
         MainCamera.transform.parent = transform;
         CameraRotation camRot = transform.parent.GetComponent<CameraRotation>();
@@ -60,12 +71,15 @@ public class CameraMounter : MonoBehaviour
         Focused = false;
         if(MainCamera.transform.parent == transform) MainCamera.transform.parent = null;
         transform.parent.GetComponent<CameraRotation>().cameraObj = null;
-        //Hands
-        FP_Hands.transform.parent = transform.parent;
-        FP_Hands.transform.position = Vector3.zero;
-        FP_Hands.SetActive(false);
-        //Body
-        setActiveBodyParts(true);
+        if (isPlayer)
+        {
+            //Hands
+            FP_Hands.transform.parent = transform.parent;
+            FP_Hands.transform.position = Vector3.zero;
+            FP_Hands.SetActive(false);
+            //Body
+            setActiveBodyParts(true);
+        }
     }
     void setActiveBodyParts(bool state)
     {

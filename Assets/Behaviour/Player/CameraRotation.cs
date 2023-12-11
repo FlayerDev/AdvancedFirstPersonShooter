@@ -2,17 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraRotation : Mirror.NetworkBehaviour
+public class CameraRotation : Mirror.NetworkBehaviour, IComponentInitializable
 {
     [Header("ReferencedObjects")]
     public GameObject cameraObj;
     public GameObject playerBody;
 
-    public float mouseSensitivity = 1f;
-
     float xRoatation = 0f;
     
+    public void Init() => OnEnable();
+
     void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+    private void OnEnable()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -31,8 +36,8 @@ public class CameraRotation : Mirror.NetworkBehaviour
         if (!LocalInfo.IsPaused)
         {
             float mouseX, mouseY;
-            mouseX = Input.GetAxis("Mouse X") * (mouseSensitivity * 10) * Time.deltaTime;
-            mouseY = Input.GetAxis("Mouse Y") * (mouseSensitivity * 10) * Time.deltaTime;
+            mouseX = Input.GetAxis("Mouse X") * (LocalInfo.Sensitivity * 10) * Time.deltaTime;
+            mouseY = Input.GetAxis("Mouse Y") * (LocalInfo.Sensitivity * 10) * Time.deltaTime;
 
             xRoatation -= mouseY;
             xRoatation = Mathf.Clamp(xRoatation, -90f, 90f);

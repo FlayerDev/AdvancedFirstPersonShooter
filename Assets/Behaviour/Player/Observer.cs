@@ -1,18 +1,20 @@
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Observer : MonoBehaviour
+public class Observer : NetworkBehaviour
 {
     // Start is called before the first frame update
     void Start()
     {
-        LocalInfo.Observer = this.gameObject;
+        if (!hasAuthority) return;
+        LocalInfo.Observer = this;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void RemoveObserver()
     {
-        
+        GetComponentInChildren<CameraMounter>().Unfocus();
+        NetworkServer.Destroy(gameObject);
     }
 }
