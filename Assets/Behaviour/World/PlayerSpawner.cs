@@ -23,7 +23,7 @@ public class PlayerSpawner : NetworkBehaviour
     {
         CmdSelectTeam(team, connectionToClient as NetworkConnectionToClient);
 
-        LocalInfo.Observer.RemoveObserver();
+        if (LocalInfo.Observer != null) LocalInfo.Observer.RemoveObserver();
         TeamSelectionHUD.SetActive(false);
         // TODO: Set player info team
     }
