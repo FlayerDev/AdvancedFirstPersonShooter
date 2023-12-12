@@ -48,10 +48,14 @@ public class PlayerSpawner : NetworkBehaviour
         var gO = Instantiate(pref, GetSpawnPosition((Team)team, 1), Quaternion.identity);
         NetworkServer.Spawn(gO, owner);
         print(NetworkServer.ReplacePlayerForConnection(owner, gameObject, true));
-        gO.GetComponent<ReplacePlayerObj>().Replace(owner);
 
-        //gO.GetComponent<> 
-        //NetworkServer.ReplacePlayerForConnection(this.connectionToClient, gO);
+        List<IComponentInitializable> comps = new List<IComponentInitializable>(); ;
+        comps.AddRange(GetComponents<IComponentInitializable>());
+        comps.AddRange(GetComponentsInChildren<IComponentInitializable>());
+
+        foreach (IComponentInitializable comp in comps) comp.Init();
+
+        if (LocalInfo.Observer != null) LocalInfo.Observer.RemoveObserver();
     }
 
     public Vector3 GetSpawnPosition(Team team, int seed)

@@ -4072,7 +4072,6 @@ GameObject:
   - component: {fileID: 5229979237513573655}
   - component: {fileID: 5229979237513573649}
   - component: {fileID: 5832419684490840487}
-  - component: {fileID: 8019212843607441015}
   m_Layer: 10
   m_Name: SkelMesh_Bodyguard_03
   m_TagString: Untagged
@@ -4627,7 +4626,6 @@ MonoBehaviour:
   syncInterval: 0.1
   cameraObj: {fileID: 0}
   playerBody: {fileID: 5229979237513573648}
-  mouseSensitivity: 10
 --- !u!143 &5229979237513573653
 CharacterController:
   m_ObjectHideFlags: 0
@@ -4718,20 +4716,6 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   inventory: {fileID: 3158004777088326875}
---- !u!114 &8019212843607441015
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5229979237513573648}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 371568db62e204145a3d95133ed83360, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
 --- !u!1 &5229979237513573650
 GameObject:
   m_ObjectHideFlags: 0
@@ -5614,6 +5598,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23d8706f14ec63341a4e6606ef52bd33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayer: 1
   MainCamera: {fileID: 0}
   FP_Hands: {fileID: 2796766196824302938}
   BodyParts:
