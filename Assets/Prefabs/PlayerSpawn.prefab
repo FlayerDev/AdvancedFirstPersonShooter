@@ -190,7 +190,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -765,7 +765,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -811,6 +811,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9028690777544678872}
   - component: {fileID: 2538326105678954372}
+  - component: {fileID: 7374178004932813111}
   m_Layer: 0
   m_Name: PlayerSpawn
   m_TagString: Untagged
@@ -848,9 +849,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d3084f19c068d84ca6a42fa97a23bea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   CT_Spawner: {fileID: 8415756588538124893}
   T_Spawner: {fileID: 2723698608833786566}
   TeamSelectionHUD: {fileID: 4383608761485622285}
+--- !u!114 &7374178004932813111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6916570971697277960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!1 &7263416085219102677
 GameObject:
   m_ObjectHideFlags: 0

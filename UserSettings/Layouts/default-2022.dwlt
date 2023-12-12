@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 2560
     height: 1357
   m_ShowMode: 4
-  m_Title: Game
+  m_Title: Hierarchy
   m_RootView: {fileID: 6}
   m_MinSize: {x: 875, y: 321}
   m_MaxSize: {x: 10000, y: 10000}
@@ -322,7 +322,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scenes/Menus
+    - Assets/Prefabs
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -330,16 +330,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scenes/Menus
+  - Assets/Prefabs
   m_LastFoldersGridSize: -1
   m_LastProjectPath: G:\Documents\UnityProjects\AdvancedFirstPersonShooter
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 357}
-    m_SelectedIDs: da9d0000
-    m_LastClickedID: 40410
-    m_ExpandedIDs: 000000002c9d00002e9d0000309d0000329d0000349d0000369d0000389d00003a9d00003c9d00003e9d0000409d0000429d0000449d0000469d0000489d000000ca9a3b
+    scrollPos: {x: 0, y: 165}
+    m_SelectedIDs: 349d0000
+    m_LastClickedID: 40244
+    m_ExpandedIDs: 000000002c9d00002e9d0000309d0000329d0000349d0000369d0000389d00003a9d00003c9d00003e9d0000409d0000429d0000449d0000469d0000489d0000a49d000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -392,8 +392,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 7c9d0000
-    m_LastClickedInstanceID: 40316
+    m_SelectedInstanceIDs: 
+    m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000
     m_RenameOverlay:
@@ -411,7 +411,7 @@ MonoBehaviour:
       m_IsRenaming: 0
       m_OriginalEventType: 11
       m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 5}
+      m_ClientGUIView: {fileID: 4}
     m_CreateAssetUtility:
       m_EndAction: {fileID: 0}
       m_InstanceID: 0
@@ -509,23 +509,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 7c9d0000
+      m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 0ceeffff5af5ffff12fbffff
+      m_ExpandedIDs: c68ffdff3aaffdff6ab4fdff5edcfdffe8fcfdffb82efeffa640feff4c56feffd66bfeff9a78fefff07dfeff588efeff9a93feff02a2feffd4b3feffb0c5feffc8d7feff60e8feff22e9feffd4edfeff6804ffffdc05ffff8e0affff5246ffff6653ffff1454ffff2054ffffd258ffff7a64ffffee65ffff9c66ffffa866ffff5a6bffff1279ffff1e79ffffd07dffff22a3ffffd4a7ffff12fbfffff4ffffffaac5000042c60000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: 
-        m_OriginalName: 
+        m_Name: CameraMount
+        m_OriginalName: CameraMount
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 0
+        m_UserData: -39814
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 11
+        m_OriginalEventType: 0
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 4}
       m_SearchString: 
@@ -959,7 +959,7 @@ MonoBehaviour:
   m_Position:
     m_Target: {x: -0.17637277, y: 1.9097693, z: -4.091575}
     speed: 2
-    m_Value: {x: -0.17637277, y: 1.9097693, z: -4.091575}
+    m_Value: {x: 701.47, y: 319.6911, z: -552.82526}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -989,7 +989,7 @@ MonoBehaviour:
       m_Fade:
         m_Target: 0
         speed: 2
-        m_Value: 0
+        m_Value: 1
       m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.4}
       m_Pivot: {x: 0, y: 0, z: 0}
       m_Size: {x: 1, y: 1}
@@ -1011,7 +1011,7 @@ MonoBehaviour:
   m_Size:
     m_Target: 5.993758
     speed: 2
-    m_Value: 5.993758
+    m_Value: 74.06543
   m_Ortho:
     m_Target: 1
     speed: 2

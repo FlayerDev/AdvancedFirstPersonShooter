@@ -1,16 +1,18 @@
-﻿using System;
-using System.Collections;
-using System.Diagnostics;
-using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 public static class LocalInfo
 {
-    public static bool IsPaused = false;
     public static GameObject muzzle { get => GameObject.Find("WorldCamera").transform.GetChild(0).gameObject; }
-    public static float PlayerHealth = 100f;
-    public static float Sensitivity = 10f;
+
+    //UI
+    public static bool IsPaused = false;
     public static PlayerInfo activePlayerInfo;
+
+    //Controls
+    public static float Sensitivity = 10f;
+
+    //Info
     public static Observer Observer;
+    public static Team localTeam = Team.None;
     public static Mirror.NetworkIdentity localIdentity;
 }

@@ -6,13 +6,10 @@ using Mirror;
 
 public class PlayerSpawner : NetworkBehaviour
 {
-
     public GameObject CT_Spawner;
     public GameObject T_Spawner;
 
     public GameObject TeamSelectionHUD;
-
-
 
     private void Start()
     {
@@ -21,33 +18,39 @@ public class PlayerSpawner : NetworkBehaviour
 
     public void SelectTeam(int team)
     {
-        Debug.Log((NetworkConnectionToClient)LocalInfo.localIdentity.connectionToClient);
-        CmdSelectTeam(team, LocalInfo.localIdentity.connectionToClient);
+        //CmdSelectTeam(team, LocalInfo.localIdentity.connectionToClient);
 
-        //if (LocalInfo.Observer != null) LocalInfo.Observer.RemoveObserver();
+        SpawnPlayer((Team)team, LocalInfo.localIdentity.connectionToClient);
+
         TeamSelectionHUD.SetActive(false);
+
         // TODO: Set player info team
     }
 
-    //[Command(ignoreAuthority =true)]
-    public void CmdSelectTeam(int team, NetworkConnectionToClient owner)
+    [Command(ignoreAuthority = true)]
+    void CmdSetTeam(Team team) 
+    { 
+        if (LocalInfo.localIdentity.gameObject.TryGetComponent(out PlayerInfo inf)) inf.playerTeam = (int)team; 
+    }
+
+    public void SpawnPlayer(Team team, NetworkConnectionToClient owner)
     {
         GameObject pref = LobbyManager.Singleton.playerPrefab;
         switch (team)
         {
-            case 0:
+            case Team.CT:
                 pref = LobbyManager.Singleton.CT_Player_Prefab;
                 break;
-            case 1:
+            case Team.T:
                 pref = LobbyManager.Singleton.T_Player_Prefab;
                 break;
             default:
                 pref = LobbyManager.Singleton.playerPrefab;
                 break;
         }
-        var gO = Instantiate(pref, GetSpawnPosition((Team)team, 1), Quaternion.identity);
+        var gO = Instantiate(pref, getSpawnPosition(team, 1), Quaternion.identity);
         NetworkServer.Spawn(gO, owner);
-        print(NetworkServer.ReplacePlayerForConnection(owner, gameObject, true));
+        NetworkServer.ReplacePlayerForConnection(owner, gameObject, true);
 
         List<IComponentInitializable> comps = new List<IComponentInitializable>(); ;
         comps.AddRange(GetComponents<IComponentInitializable>());
@@ -55,10 +58,12 @@ public class PlayerSpawner : NetworkBehaviour
 
         foreach (IComponentInitializable comp in comps) comp.Init();
 
-        if (LocalInfo.Observer != null) LocalInfo.Observer.RemoveObserver();
+        CmdSetTeam(team);
+
+        if (LocalInfo.Observer != null && team != Team.None) LocalInfo.Observer.RemoveObserver();
     }
 
-    public Vector3 GetSpawnPosition(Team team, int seed)
+    Vector3 getSpawnPosition(Team team, int seed)
     {
         switch (team)
         {

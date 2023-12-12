@@ -28,7 +28,7 @@ public class PlayerInfo : NetworkBehaviour, IDamageable, IComponentInitializable
     private void Update()
     {
         if (!isLocalPlayer) return;
-        LocalInfo.PlayerHealth = hp;
+        //LocalInfo.PlayerHealth = hp;
     }
 
     #region Networking
@@ -105,5 +105,5 @@ public class Offender
 
 public enum Team
 {
-    CT, T
+    None, CT, T
 }

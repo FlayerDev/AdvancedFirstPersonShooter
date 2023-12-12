@@ -18,9 +18,10 @@ public class PlayerInfoUI : MonoBehaviour
     }
     private void Update()
     {
-        hpText.text = Mathf.CeilToInt(LocalInfo.PlayerHealth).ToString();
-        hpText.color = TextGradient.Evaluate(GenericUtilities.ToPercent01(0, 100, LocalInfo.PlayerHealth));
-        HealthBar.GetComponent<Image>().color = HpGradient.Evaluate(GenericUtilities.ToPercent01(0, 100, LocalInfo.PlayerHealth));
-        hpBarParent.localScale = new Vector3(Mathf.Clamp(LocalInfo.PlayerHealth, 0, 100) / 100, hpBarParent.localScale.y, hpBarParent.localScale.z);
+        float _hp = LocalInfo.activePlayerInfo.hp;
+        hpText.text = Mathf.CeilToInt(_hp).ToString();
+        hpText.color = TextGradient.Evaluate(GenericUtilities.ToPercent01(0, 100, _hp));
+        HealthBar.GetComponent<Image>().color = HpGradient.Evaluate(GenericUtilities.ToPercent01(0, 100, _hp));
+        hpBarParent.localScale = new Vector3(Mathf.Clamp(_hp, 0, 100) / 100, hpBarParent.localScale.y, hpBarParent.localScale.z);
     }
 }

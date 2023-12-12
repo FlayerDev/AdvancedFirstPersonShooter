@@ -94,7 +94,7 @@ public class Inventory : MonoBehaviour, IComponentInitializable
         }
         else if (overtake_slot)
         {
-            if (!Drop(slotIndex)) { Debug.Log("Inentory:CantDrop-CantPickup " + slotIndex); return; }
+            if (!Drop(slotIndex)) { Debug.Log("Inventory:CantDrop-CantPickup " + slotIndex); return; }
             netInventory.CmdPickup(item, slotIndex, item.TryGetComponent<Mag>(out Mag mag) ? mag.Ammo : 0);
             NetworkServer.Destroy(item);
             Debug.Log("Inventory:Slot_Overtaken");
