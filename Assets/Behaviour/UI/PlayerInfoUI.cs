@@ -18,7 +18,7 @@ public class PlayerInfoUI : MonoBehaviour
     }
     private void Update()
     {
-        float _hp = LocalInfo.activePlayerInfo.hp;
+        float _hp = LocalInfo.activePlayerInfo != null ? LocalInfo.activePlayerInfo.hp : 0f;
         hpText.text = Mathf.CeilToInt(_hp).ToString();
         hpText.color = TextGradient.Evaluate(GenericUtilities.ToPercent01(0, 100, _hp));
         HealthBar.GetComponent<Image>().color = HpGradient.Evaluate(GenericUtilities.ToPercent01(0, 100, _hp));

@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawnPrefab : Mirror.NetworkBehaviour
 {
     public GameObject SpawnObject;
-    private void Start()
+    public override void OnStartServer()
     {
         Spawn();
     }
