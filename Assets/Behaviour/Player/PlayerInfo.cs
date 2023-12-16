@@ -21,14 +21,10 @@ public class PlayerInfo : NetworkBehaviour, IDamageable, IComponentInitializable
     public void Init() => Start();
     private void Start()
     {
-        if (!isLocalPlayer) return;
+        if (!hasAuthority) return;
         CmdSetName(LobbyManager.Singleton.LocalRoomPlayer.ClientName);
         LocalInfo.activePlayerInfo = this;
-    }
-    private void Update()
-    {
-        if (!isLocalPlayer) return;
-        //LocalInfo.PlayerHealth = hp;
+        print("LocalInformation:SetPlayer");
     }
 
     #region Networking

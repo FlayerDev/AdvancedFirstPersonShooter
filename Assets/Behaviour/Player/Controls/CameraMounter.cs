@@ -29,7 +29,11 @@ public class CameraMounter : MonoBehaviour, IComponentInitializable
     // Start is called before the first frame update
     public void Start()
     {
-        if (!transform.parent.GetComponent<Mirror.NetworkIdentity>().isLocalPlayer) return;
+        if (!transform.parent.GetComponent<Mirror.NetworkIdentity>().hasAuthority)
+        {
+            print("CameraMounter:QuittingInit(Is'nt local player)");
+            return;
+        }
         Focus();
     }
     private void Update()
@@ -49,6 +53,7 @@ public class CameraMounter : MonoBehaviour, IComponentInitializable
     {
         if (isPlayer)
         {
+            print("CameraMounter:isPlayer");
             Focused = true;
             //Hands
             FP_Hands.SetActive(true);
@@ -64,6 +69,7 @@ public class CameraMounter : MonoBehaviour, IComponentInitializable
         camRot.playerBody = transform.parent.gameObject;
         camRot.cameraObj = MainCamera.gameObject;
         MainCamera.transform.localPosition = Vector3.zero;
+        print("CameraMounter:Focused");
     }
     [ButtonGroup]
     public void Unfocus()
@@ -80,6 +86,7 @@ public class CameraMounter : MonoBehaviour, IComponentInitializable
             //Body
             setActiveBodyParts(true);
         }
+        print("CameraMounter:Unfocused");
     }
     void setActiveBodyParts(bool state)
     {

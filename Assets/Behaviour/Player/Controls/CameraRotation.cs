@@ -32,8 +32,7 @@ public class CameraRotation : Mirror.NetworkBehaviour, IComponentInitializable
 
     void Update()
     {
-        if (!isLocalPlayer || !cameraObj) return;
-        if (!LocalInfo.IsPaused)
+        if (isLocalPlayer && cameraObj && !LocalInfo.IsPaused)
         {
             float mouseX, mouseY;
             mouseX = Input.GetAxis("Mouse X") * (LocalInfo.Sensitivity * 10) * Time.deltaTime;
@@ -44,6 +43,10 @@ public class CameraRotation : Mirror.NetworkBehaviour, IComponentInitializable
 
             cameraObj.transform.localRotation = Quaternion.Euler(xRoatation, 0, 0);
             playerBody.transform.Rotate(Vector3.up * mouseX);
+        }
+        else
+        {
+            print($"CameraRotation:UpdateSuspended loc:{isLocalPlayer} camnotnull:{(bool)cameraObj} notpaused:{!LocalInfo.IsPaused}");
         }
     }
 }

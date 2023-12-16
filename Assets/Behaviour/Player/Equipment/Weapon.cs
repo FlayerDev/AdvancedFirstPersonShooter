@@ -26,7 +26,7 @@ public class Weapon : WeaponBehaviour //VISUAL: Add bullet output on TP Model
     #region Recoil
     [Header("Recoil")]
     public bool doRecoil = true;
-    [Range(.01f, 1f)] public float recoilReturnSpeed = 1f;
+    [Range(.01f, 10f)] public float recoilReturnSpeed = 1f;
     public float VerticalRecoil = .4f;
     public float MaximumVerticalRecoil = 1f;
     public float HorizontalRecoil = .1f;

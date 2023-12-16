@@ -33,6 +33,7 @@ public class Inventory : MonoBehaviour, IComponentInitializable
     {
         if (!netInventory.hasAuthority) return;
         SetIndex(0);
+        print("Inventory:Set");
     }
 
     void Update()

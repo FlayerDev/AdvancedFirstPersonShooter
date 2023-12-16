@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class AnimatorParameterSync : NetworkBehaviour
+public class AnimatorParameterSync : NetworkBehaviour, IComponentInitializable
 {
     public NetworkAnimator networkAnimator;
     public Animator animator;
@@ -33,14 +33,20 @@ public class AnimatorParameterSync : NetworkBehaviour
         }
     }
 
+    public void Init()
+    {
+        Start();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        if (!isLocalPlayer)
+        if (!hasAuthority)
         {
-            Destroy(this);
+            this.enabled = false;
             return;
         }
+        enabled = true;
         animator = GetComponent<Animator>();
         networkAnimator = GetComponent<NetworkAnimator>();
     }
