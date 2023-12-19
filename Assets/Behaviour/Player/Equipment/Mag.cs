@@ -13,6 +13,7 @@ public class Mag : NetworkBehaviour
     /// This is the instance of the held magazine
     /// </summary>
     public static Mag MagSingleton; 
+    public bool IsEquipped { get => transform.parent != null; }
 
     [SyncVar] public int Ammo = 30;
     [SyncVar] public int InventoryAmmo = 90;
@@ -26,14 +27,16 @@ public class Mag : NetworkBehaviour
 
     private void OnEnable()
     {
-        if (GetComponentInParent<Inventory>().isLocalInventory) MagSingleton = this;
+        if (IsEquipped && transform.parent.parent.TryGetComponent(out Inventory inv))
+            if (inv.isLocalInventory) MagSingleton = this;
     }
     private void OnDisable()
     {
         if (reloadCancellationToken != null)
             try { reloadCancellationToken.Cancel(); } catch { print("Mag:CouldNotCancelReload"); }
 
-        if (GetComponentInParent<Inventory>().isLocalInventory) MagSingleton = null;
+        if (IsEquipped && transform.parent.parent.TryGetComponent(out Inventory inv))
+            if (inv.isLocalInventory) MagSingleton = null;
     }
 
     private void Update()

@@ -5,7 +5,7 @@ using UnityEngine;
 public class WeaponBehaviour : Mirror.NetworkBehaviour
 {
     public SurfacePropertyLibrary surfacePropertyLibrary;
-    protected float calculateDamage(float dmg, RaycastHit hit, GameObject muzzle, float effectiveRange, float PenetrationPower)
+    protected float calculateDamage(float dmg, RaycastHit hit, GameObject muzzle, float effectiveRange, float PenetrationPower, bool printDecal = true)
     {
         if (dmg == 0) return 0;
 

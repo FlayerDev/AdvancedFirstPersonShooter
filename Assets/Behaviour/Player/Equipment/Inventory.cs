@@ -7,6 +7,8 @@ using Mirror;
 public class Inventory : MonoBehaviour, IComponentInitializable
 {
     public static Inventory Local => NetworkClient.connection.identity.gameObject.GetComponentInChildren<Inventory>();
+    public bool isLocalInventory => netInventory.isLocalInventory;
+    public static Inventory Singleton;
     public NetworkInventory netInventory;
 
 
@@ -31,7 +33,7 @@ public class Inventory : MonoBehaviour, IComponentInitializable
 
     void Start()
     {
-        if (!netInventory.hasAuthority) return;
+        if (!isLocalInventory) return;
         SetIndex(0);
         print("Inventory:Set");
     }

@@ -17,10 +17,11 @@ public class Weapon : WeaponBehaviour //VISUAL: Add bullet output on TP Model
     public float bulletWeight = 1f;
     public bool allowADS = false;
     [SerializeField] int RPM = 200; // Rounds Per Minute: MS between shots = 1000 / (RPM / 60)
+    public int EquipDelayMS = 1000;
     #endregion
     #region Runtime
     [Header("Runtime")]
-    [SerializeField] bool isArmed = true; // If enabled weapon will fire upon Fire button click
+    bool isArmed = false; // If enabled weapon will fire upon Fire button click
     GameObject muzzle;
     #endregion
     #region Recoil
@@ -44,20 +45,23 @@ public class Weapon : WeaponBehaviour //VISUAL: Add bullet output on TP Model
     private Action update;
     //private Thread fireThread;
     #endregion
-    private void Awake()
+    private void Start()
     {
         mag = GetComponent<Mag>();
-        //mag.Ammo = mag.Capacity;
         muzzle = Camera.main.gameObject;
-        update += isWeaponAutomatic
-            ? update += () => { if (InputManager.GetBind("Primary")) fire(); }
-        : () => { if (InputManager.GetBindDown("Primary")) fire(); };
-        //if (allowADS) update += () => { // };
+        armafter(EquipDelayMS);
     }
-    public void Update() 
+    public void Update()
     {
         if (!hasAuthority) return;
-        update();
+        if (isWeaponAutomatic)
+        {
+            if (InputManager.GetBind("Primary")) fire();
+        }
+        else
+        {
+            if (InputManager.GetBindDown("Primary")) fire();
+        }
     }
     private void FixedUpdate()
     {
@@ -65,11 +69,15 @@ public class Weapon : WeaponBehaviour //VISUAL: Add bullet output on TP Model
         currentRecoil.y /= 1f + recoilReturnSpeed * Time.fixedDeltaTime;
         currentRecoil.x /= 1f + recoilReturnSpeed * Time.fixedDeltaTime;
     }
-    async void rearm()
+    void RearmAfterShot()
+    {
+        int ms = RPM / 60;
+        ms = 1000 / ms;
+        armafter(ms);
+    }
+    async void armafter(int ms)
     {
         isArmed = false;
-        var ms = RPM / 60;
-        ms = 1000 / ms;
         await System.Threading.Tasks.Task.Delay(ms);
         isArmed = true;
     }
@@ -79,7 +87,7 @@ public class Weapon : WeaponBehaviour //VISUAL: Add bullet output on TP Model
         if (!isArmed) return;
         //if (mag.Ammo > 0) mag.Ammo--; else return;
         if (mag.Ammo > 0) mag.Ammo--; else return;
-        rearm();
+        RearmAfterShot();
         float dmg = baseDamage;
         RaycastHit[] hitarr = Physics.RaycastAll(muzzle.transform.position,
             muzzle.transform.forward + new Vector3(0f, currentRecoil.x, currentRecoil.y),

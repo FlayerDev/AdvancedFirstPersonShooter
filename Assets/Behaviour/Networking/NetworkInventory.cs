@@ -5,6 +5,8 @@ using Mirror;
 
 public class NetworkInventory : NetworkBehaviour
 {
+    public bool isLocalInventory => GetComponentInParent<NetworkIdentity>().isLocalPlayer;
+
     public Inventory inventory;
     private void Start()
     {
