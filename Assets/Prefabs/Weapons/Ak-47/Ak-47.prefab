@@ -75,7 +75,7 @@ MonoBehaviour:
   bulletWeight: 1
   allowADS: 0
   RPM: 600
-  isArmed: 1
+  EquipDelayMS: 1000
   doRecoil: 1
   recoilReturnSpeed: 3
   VerticalRecoil: 0.45
@@ -105,8 +105,8 @@ MonoBehaviour:
   allowIdleAnimation: 0
   FP_Prefab: {fileID: 319120377766980121, guid: ee0586efa25a7c14c8b46d330490b4c7,
     type: 3}
-  FP_PositionOffset: {x: 0, y: 0, z: 0}
-  FP_RotationOffset: {x: 0, y: 0, z: 0, w: 0}
+  FP_PositionOffset: {x: 0, y: -0.02, z: -0.05}
+  FP_RotationOffset: {x: 0.20968656, y: -0.06470142, z: 0.6753011, w: 0.7041404}
   FP_HandAnimations: {fileID: 22100000, guid: 78acca6849aa6834d92479716310131c, type: 2}
   TP_Prefab: {fileID: 319120377766980121, guid: f211cde0648f7324cb3f6d1f41113479,
     type: 3}

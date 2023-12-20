@@ -85,6 +85,7 @@ public class Weapon : WeaponBehaviour //VISUAL: Add bullet output on TP Model
     public void fire()
     {
         if (!isArmed) return;
+        AnimatorParameterSync.Local.Fire = true;
         //if (mag.Ammo > 0) mag.Ammo--; else return;
         if (mag.Ammo > 0) mag.Ammo--; else return;
         RearmAfterShot();

@@ -67,6 +67,7 @@ public class Inventory : MonoBehaviour, IComponentInitializable
         if (!inventorySlots[enabledIndex].AllowDrop) return false;
         netInventory.CmdDrop(item, item.TryGetComponent<Mag>(out Mag mag) ? mag.Ammo : 0);
         NetworkServer.Destroy(item);
+        SetIndex(enabledIndex + 1);
         Debug.Log("Inventory:Drop");
         return true;
     }
@@ -152,10 +153,12 @@ public class Inventory : MonoBehaviour, IComponentInitializable
             {
                 enableIndex(x);
                 enabledIndex = x;
+                print("Inventory:ActivatedSubstituteSlot");
                 return x == index;
             }
 
         }
+        print("Inventory:FailedToFindIndexToActivate");
         return false;
     }
     void enableIndex(int index)
