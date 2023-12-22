@@ -7,6 +7,7 @@ public class AnimatorParameterSync : NetworkBehaviour, IComponentInitializable
 {
     public NetworkAnimator networkAnimator;
     public Animator animator;
+    public Animator handAnimator;
 
     public static AnimatorParameterSync Local { get => NetworkClient.connection.identity.gameObject.GetComponent<AnimatorParameterSync>(); }
 
@@ -67,11 +68,13 @@ public class AnimatorParameterSync : NetworkBehaviour, IComponentInitializable
         if (Fire)
         {
             networkAnimator.SetTrigger("Fire");
+            CmdSetHandTrigger("Fire");
             Fire = false;
         }        
         if (Reload)
         {
             networkAnimator.SetTrigger("Reload");
+            CmdSetHandTrigger("Reload");
             Reload = false;
         }        
         if (Equip)
@@ -90,5 +93,15 @@ public class AnimatorParameterSync : NetworkBehaviour, IComponentInitializable
         }
 
         animator.SetBool("Grounded", Grounded);
+    }
+    [Command]
+    public void CmdSetHandTrigger(string trig)
+    {
+        SetHandTriggerRpc(trig);
+    }
+    [ClientRpc]
+    void SetHandTriggerRpc(string trig)
+    {
+        handAnimator.SetTrigger(trig);
     }
 }

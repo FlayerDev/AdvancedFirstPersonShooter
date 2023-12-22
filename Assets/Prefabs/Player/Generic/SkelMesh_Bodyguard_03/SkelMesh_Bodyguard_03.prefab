@@ -4196,6 +4196,7 @@ MonoBehaviour:
   syncInterval: 0.1
   networkAnimator: {fileID: 0}
   animator: {fileID: 0}
+  handAnimator: {fileID: 8897952268465595802}
   Equip: 0
   Reload: 0
   Fire: 0
