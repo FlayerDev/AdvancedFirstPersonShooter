@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-public class CameraMounter : MonoBehaviour, IComponentInitializable
+public class CameraMounter : MonoBehaviour
 {
     public bool isPlayer = true;
     public Camera MainCamera;
@@ -16,12 +16,6 @@ public class CameraMounter : MonoBehaviour, IComponentInitializable
 
     public GameObject LookAtIKObject;
 
-    public void Init()
-    {
-        Awake();
-        Start();
-    }
-
     private void Awake()
     {
         MainCamera = Camera.main;
@@ -29,12 +23,14 @@ public class CameraMounter : MonoBehaviour, IComponentInitializable
     // Start is called before the first frame update
     public void Start()
     {
+        unfocusHandler = () => { Unfocus(); };
         if (!transform.parent.GetComponent<Mirror.NetworkIdentity>().hasAuthority)
         {
             print("CameraMounter:QuittingInit(Is'nt local player)");
             return;
         }
         Focus();
+        if(transform.parent.TryGetComponent<PlayerInfo>(out PlayerInfo plInf)) plInf.OnPlayerResurrection += () => Focus();
     }
     private void Update()
     { 
@@ -47,6 +43,8 @@ public class CameraMounter : MonoBehaviour, IComponentInitializable
                 LookAtIKObject.transform.position = MainCamera.transform.position + MainCamera.transform.forward;
         }
     }
+
+    System.Action unfocusHandler;
 
     [ButtonGroup]
     public void Focus()
@@ -62,6 +60,9 @@ public class CameraMounter : MonoBehaviour, IComponentInitializable
             FP_Hands.transform.localRotation = Quaternion.identity;
             //Body
             setActiveBodyParts(false);
+            var plInf = transform.parent.GetComponent<PlayerInfo>();
+            LocalInfo.focusedPlayerInfo = plInf;
+            plInf.OnPlayerDeath += unfocusHandler;
         }
         //Camera
         MainCamera.transform.parent = transform;
@@ -85,7 +86,10 @@ public class CameraMounter : MonoBehaviour, IComponentInitializable
             FP_Hands.SetActive(false);
             //Body
             setActiveBodyParts(true);
+            transform.parent.GetComponent<PlayerInfo>().OnPlayerDeath -= unfocusHandler;
         }
+        LocalInfo.focusedPlayerInfo = null;
+        
         print("CameraMounter:Unfocused");
     }
     void setActiveBodyParts(bool state)

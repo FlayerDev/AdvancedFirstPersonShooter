@@ -7,6 +7,7 @@ public static class LocalInfo
     //UI
     public static bool IsPaused = false;
     public static PlayerInfo activePlayerInfo;
+    public static PlayerInfo focusedPlayerInfo;
 
     //Controls
     public static float Sensitivity = 10f;

@@ -3,7 +3,7 @@ using UnityEngine;
 using Mirror;
 using static UnityEngine.Mathf;
 
-public class CustomPlayerMovement : NetworkBehaviour, IComponentInitializable
+public class CustomPlayerMovement : NetworkBehaviour
 {
     public CharacterController controller;
     public AnimatorParameterSync anim;
@@ -34,8 +34,6 @@ public class CustomPlayerMovement : NetworkBehaviour, IComponentInitializable
     internal Vector3 PlanarMovement = Vector3.zero;
 
     Vector3 LastLocation = Vector3.zero;
-
-    public void Init() => Start();
 
     private void Start()
     {

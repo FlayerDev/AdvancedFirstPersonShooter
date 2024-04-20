@@ -21,6 +21,7 @@ public class InventorySlot : MonoBehaviour
     }
     private void OnEnable()
     {
+        print(transform.childCount);
         if (transform.childCount != 0)
             transform.GetChild(0).gameObject.SetActive(true);
     }
@@ -49,6 +50,14 @@ public class InventorySlot : MonoBehaviour
     public void SetActive(bool b) {
         if (!b) foreach (Item item in GetComponentsInChildren<Item>()) item.ToggleActive(false);
         gameObject.SetActive(b); 
+    }
+
+    public void flushSlot()
+    {
+        while (transform.childCount != 0)
+        {
+            NetworkServer.Destroy(transform.GetChild(0).gameObject);
+        }
     }
 }
  

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Unity.Flayer.InputSystem;
 using Mirror;
 
-public class Inventory : MonoBehaviour, IComponentInitializable
+public class Inventory : MonoBehaviour
 {
     public static Inventory Local => NetworkClient.connection.identity.gameObject.GetComponentInChildren<Inventory>();
     public bool isLocalInventory => netInventory.isLocalInventory;
@@ -29,13 +29,12 @@ public class Inventory : MonoBehaviour, IComponentInitializable
         get => inventorySlots[index];
     }
 
-    public void Init() => Start();
-
     void Start()
     {
         if (!isLocalInventory) return;
         SetIndex(0);
         print("Inventory:Set");
+        transform.parent.GetComponent<PlayerInfo>().OnPlayerDeath += () => KillInventory();
     }
 
     void Update()
@@ -60,9 +59,28 @@ public class Inventory : MonoBehaviour, IComponentInitializable
 
     void drop() => Drop();
 
+    public void KillInventory()
+    {
+        print("Inv:KillPl");
+        Drop(0);
+        flushInv();
+    }
+    void flushInv()
+    {
+        foreach (var slot in inventorySlots)
+        {
+            slot.flushSlot();
+        }
+    }
+
     #region Basic Functions
     public bool Drop()
     {
+        if (inventorySlots[enabledIndex].transform.childCount == 0)
+        {
+            print("Inv:NothingToDrop_SubslotsEmpty");
+            return false;
+        }
         GameObject item = inventorySlots[enabledIndex][inventorySlots[enabledIndex].activeSubSlot];
         if (!inventorySlots[enabledIndex].AllowDrop) return false;
         netInventory.CmdDrop(item, item.TryGetComponent<Mag>(out Mag mag) ? mag.Ammo : 0);

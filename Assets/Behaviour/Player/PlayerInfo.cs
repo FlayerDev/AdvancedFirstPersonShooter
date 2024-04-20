@@ -3,11 +3,46 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq.Expressions;
 using System.Linq;
+using System;
 
-public class PlayerInfo : NetworkBehaviour, IDamageable, IComponentInitializable
+public class PlayerInfo : NetworkBehaviour, IDamageable
 {
     [SerializeField, Range(0, 100), SyncVar] private float health = 100;
     public float hp { get => health; }
+
+    [SyncVar] public int expMagAmmo = 0;
+    [SyncVar] public int expInvAmmo = 0;
+    [Command]
+    public void CmdSetExpAmmo(int mag, int inv)
+    {
+        expInvAmmo = inv;
+        expMagAmmo = mag;
+    }
+
+    [SyncVar] public bool PlayerAlive = true;
+    public void SetPlayerAliveState(bool state)
+    {
+        if (state == PlayerAlive) return;
+        try
+        {
+            if (state) OnPlayerResurrection();
+            else OnPlayerDeath();
+        }
+        catch (Exception ex)
+        {
+            print("DeathEventFailed" + ex.ToString());
+        }
+        CmdSetPlayerAliveState(state);
+    }
+    [Command] public void CmdSetPlayerAliveState(bool state)
+    {
+        PlayerAlive = state;
+    }
+
+
+    public event Action OnPlayerDeath;
+    public event Action OnPlayerResurrection;
+
     [SyncVar] public string Name;
     [SyncVar] public int playerTeam;
 
@@ -18,13 +53,17 @@ public class PlayerInfo : NetworkBehaviour, IDamageable, IComponentInitializable
         CmdDamage(amount, offender);
     }
 
-    public void Init() => Start();
     private void Start()
     {
         if (!hasAuthority) return;
         CmdSetName(LobbyManager.Singleton.LocalRoomPlayer.ClientName);
         LocalInfo.activePlayerInfo = this;
         print("LocalInformation:SetPlayer");
+    } 
+    private void Update()
+    {
+        if (!hasAuthority) return;
+        if (health <= 0 && PlayerAlive) SetPlayerAliveState(false);
     }
 
     #region Networking
@@ -43,10 +82,22 @@ public class PlayerInfo : NetworkBehaviour, IDamageable, IComponentInitializable
 
     #region Utilities 
     void Register(float amount, GameObject offender) => CmdRegister(amount, offender);
+
     [Command(ignoreAuthority = true)]
     void CmdRegister(float amount, GameObject offender)
     {
+        localRegister(amount, offender);
+        RpcRegister(amount, offender);
+    }
 
+    [ClientRpc]
+    void RpcRegister(float amount, GameObject offender)
+    {
+        localRegister(amount, offender);
+    }
+
+    void localRegister(float amount, GameObject offender)
+    {
         IEnumerable<Offender> ResultList =
             from item in DamageRegistry
             where item.gameObject == offender
@@ -98,6 +149,7 @@ public class Offender
         return $"{Name} (-{Damage})";
     }
 }
+
 
 public enum Team
 {
