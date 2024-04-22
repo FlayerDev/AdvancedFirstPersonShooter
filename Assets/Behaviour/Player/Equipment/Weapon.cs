@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Unity.Flayer.InputSystem;
 [RequireComponent(typeof(Item))]
+[AddComponentMenu("Flayer/Combat/Weapon")]
 public class Weapon : WeaponBehaviour //VISUAL: Add bullet output on TP Model
 {
     #region Properties

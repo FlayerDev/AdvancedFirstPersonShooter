@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
+[AddComponentMenu("Flayer/Controls/Camera Mounter")]
 public class CameraMounter : MonoBehaviour
 {
     public bool isPlayer = true;
@@ -30,7 +31,7 @@ public class CameraMounter : MonoBehaviour
             return;
         }
         Focus();
-        if(transform.parent.TryGetComponent<PlayerInfo>(out PlayerInfo plInf)) plInf.OnPlayerResurrection += () => Focus();
+        if(transform.parent.TryGetComponent<PlayerInfo>(out PlayerInfo plInf)) plInf.OnPlayerResurrectionEvent += () => Focus();
     }
     private void Update()
     { 
@@ -62,7 +63,7 @@ public class CameraMounter : MonoBehaviour
             setActiveBodyParts(false);
             var plInf = transform.parent.GetComponent<PlayerInfo>();
             LocalInfo.focusedPlayerInfo = plInf;
-            plInf.OnPlayerDeath += unfocusHandler;
+            plInf.OnPlayerDeathEvent += unfocusHandler;
         }
         //Camera
         MainCamera.transform.parent = transform;
@@ -86,7 +87,7 @@ public class CameraMounter : MonoBehaviour
             FP_Hands.SetActive(false);
             //Body
             setActiveBodyParts(true);
-            transform.parent.GetComponent<PlayerInfo>().OnPlayerDeath -= unfocusHandler;
+            transform.parent.GetComponent<PlayerInfo>().OnPlayerDeathEvent -= unfocusHandler;
         }
         LocalInfo.focusedPlayerInfo = null;
         

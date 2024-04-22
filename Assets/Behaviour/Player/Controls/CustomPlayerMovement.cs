@@ -3,6 +3,7 @@ using UnityEngine;
 using Mirror;
 using static UnityEngine.Mathf;
 
+[AddComponentMenu("Flayer/Controls/Custom Player Movement")]
 public class CustomPlayerMovement : NetworkBehaviour
 {
     public CharacterController controller;

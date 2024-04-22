@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Unity.Flayer.InputSystem;
 using Mirror;
 
+[AddComponentMenu("Flayer/Inventory/Inventory")]
 public class Inventory : MonoBehaviour
 {
     public static Inventory Local => NetworkClient.connection.identity.gameObject.GetComponentInChildren<Inventory>();
@@ -34,7 +35,7 @@ public class Inventory : MonoBehaviour
         if (!isLocalInventory) return;
         SetIndex(0);
         print("Inventory:Set");
-        transform.parent.GetComponent<PlayerInfo>().OnPlayerDeath += () => KillInventory();
+        transform.parent.GetComponent<PlayerInfo>().OnPlayerDeathEvent += () => KillInventory();
     }
 
     void Update()

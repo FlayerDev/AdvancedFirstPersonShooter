@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
+[AddComponentMenu("Flayer/Inventory/Inventory Slot")]
 [System.Serializable]
 public class InventorySlot : MonoBehaviour
 {

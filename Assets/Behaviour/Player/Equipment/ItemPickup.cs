@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
+[AddComponentMenu("Flayer/Inventory/Item Pickup")]
 public class ItemPickup : NetworkBehaviour, IUsable
 {
     public ItemType itemType;

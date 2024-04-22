@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[AddComponentMenu("Flayer/Combat/Weapon Behaviour")]
 public class WeaponBehaviour : Mirror.NetworkBehaviour
 {
     public SurfacePropertyLibrary surfacePropertyLibrary;

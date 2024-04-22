@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[AddComponentMenu("Flayer/Controls/Ground Tracer")]
 public class GroundTracer : MonoBehaviour
 {
     public float minimumDamageSpeed = 15f;
@@ -11,7 +12,7 @@ public class GroundTracer : MonoBehaviour
     CustomPlayerMovement mov;
 
     private void Awake() => mov = transform.parent.GetComponent<CustomPlayerMovement>();
-    private void Update() => verticalVelocity = mov.PlanarMovement.y != 0 ? mov.PlanarMovement.y : verticalVelocity;
+    private void FixedUpdate() => verticalVelocity = mov.PlanarMovement.y != 0 ? mov.PlanarMovement.y : verticalVelocity;
     private void OnTriggerStay(Collider other) => isGrounded = true;
 
     private async void OnTriggerExit(Collider other) {

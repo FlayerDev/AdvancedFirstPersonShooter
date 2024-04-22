@@ -25,8 +25,8 @@ public class PlayerInfo : NetworkBehaviour, IDamageable
         if (state == PlayerAlive) return;
         try
         {
-            if (state) OnPlayerResurrection();
-            else OnPlayerDeath();
+            if (state) OnPlayerResurrectionEvent();
+            else OnPlayerDeathEvent();
         }
         catch (Exception ex)
         {
@@ -40,8 +40,8 @@ public class PlayerInfo : NetworkBehaviour, IDamageable
     }
 
 
-    public event Action OnPlayerDeath;
-    public event Action OnPlayerResurrection;
+    public event Action OnPlayerDeathEvent;
+    public event Action OnPlayerResurrectionEvent;
 
     [SyncVar] public string Name;
     [SyncVar] public int playerTeam;

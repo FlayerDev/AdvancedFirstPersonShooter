@@ -1,6 +1,7 @@
 ﻿using Mirror;
 using UnityEngine;
 
+[AddComponentMenu("Flayer/Inventory/Item")]
 public class Item : NetworkBehaviour
 {
     public ItemType itemType;

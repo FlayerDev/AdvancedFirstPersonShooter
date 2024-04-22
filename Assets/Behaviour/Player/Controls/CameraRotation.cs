@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[AddComponentMenu("Flayer/Controls/Camera Rotation")]
 public class CameraRotation : Mirror.NetworkBehaviour
 {
     [Header("ReferencedObjects")]
