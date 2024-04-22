@@ -56,15 +56,18 @@ public class LobbyManager : NobleRoomManager
     override public void Update()
     {
         base.Update();
-        if (networkManager.HostEndPoint != null)
+        if (ipText)
         {
-            ipText.text = $"IP: {networkManager.HostEndPoint.Address}";
-            portText.text = $"PORT: {networkManager.HostEndPoint.Port}";
-        }
-        else
-        {
-            ipText.text = "Connecting...";
-            portText.text = string.Empty;
+            if (networkManager.HostEndPoint != null)
+            {
+                ipText.text = $"IP: {networkManager.HostEndPoint.Address}";
+                portText.text = $"PORT: {networkManager.HostEndPoint.Port}";
+            }
+            else
+            {
+                ipText.text = "Connecting...";
+                portText.text = string.Empty;
+            }
         }
     }
     override public void Awake()
