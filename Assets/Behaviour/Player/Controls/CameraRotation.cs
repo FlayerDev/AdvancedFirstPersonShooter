@@ -29,8 +29,6 @@ public class CameraRotation : Mirror.NetworkBehaviour
         }
     }
 
-    void Start() => setCursorLockState(true);
-    private void OnEnable() => setCursorLockState(true);
     private void OnDisable() => setCursorLockState(false);
     private void OnDestroy() => OnDisable();
 

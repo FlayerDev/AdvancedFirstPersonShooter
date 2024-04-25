@@ -63,7 +63,7 @@ public class CustomPlayerMovement : NetworkBehaviour
 
         if (InputManager.GetBindDown("Crouch")) stamina -= StaminaLossPerCrouch;
 
-        if (InputManager.GetBind("Crouch"))
+        if (InputManager.GetBind("Crouch") && !LocalInfo.IsPaused)
         {
             SetHeightBuffer(Clamp(HeightBuffer - ((CrouchSpeedMultiplier * 5) * Time.deltaTime * stamina), CrouchedHeight, UprightHeight));
             stamina = Clamp01(stamina + (StaminaGainPerSecond / 3) * Time.deltaTime);

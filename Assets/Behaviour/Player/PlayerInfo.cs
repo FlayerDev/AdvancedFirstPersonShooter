@@ -41,7 +41,7 @@ public class PlayerInfo : NetworkBehaviour, IDamageable
     [SyncVar] public string Name;
     [SyncVar] public int playerTeam;
 
-    public SyncList<Offender> DamageRegistry = new SyncList<Offender>();
+    public List<Offender> DamageRegistry = new List<Offender>();
 
     public void damage(float amount, GameObject offender)
     {
@@ -70,8 +70,9 @@ public class PlayerInfo : NetworkBehaviour, IDamageable
     [Command(ignoreAuthority = true)]
     public void CmdDamage(float amount, GameObject offender)
     {
+        var health_buffer = health;
         health -= amount > 0f ? amount : 0f;
-        Register(amount, offender);
+        Register(health_buffer - health, offender);
     }
     #endregion
 
@@ -80,13 +81,6 @@ public class PlayerInfo : NetworkBehaviour, IDamageable
 
     [Command(ignoreAuthority = true)]
     void CmdRegister(float amount, GameObject offender)
-    {
-        localRegister(amount, offender);
-        RpcRegister(amount, offender);
-    }
-
-    [ClientRpc]
-    void RpcRegister(float amount, GameObject offender)
     {
         localRegister(amount, offender);
     }

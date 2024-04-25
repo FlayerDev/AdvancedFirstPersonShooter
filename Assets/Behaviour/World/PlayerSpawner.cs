@@ -16,6 +16,11 @@ public class PlayerSpawner : NetworkBehaviour
         TeamSelectionHUD.SetActive(true);
     }
 
+    private void Update()
+    {
+        if (TeamSelectionHUD.activeInHierarchy) LocalInfo.IsPaused = true;
+    }
+
     public void SelectTeam(int team)
     {
         //CmdSelectTeam(team, LocalInfo.localIdentity.connectionToClient);
@@ -23,6 +28,8 @@ public class PlayerSpawner : NetworkBehaviour
         SpawnPlayer((Team)team, LocalInfo.localIdentity.connectionToClient);
 
         TeamSelectionHUD.SetActive(false);
+
+        LocalInfo.IsPaused = false;
 
         // TODO: Set player info team
     }

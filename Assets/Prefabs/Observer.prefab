@@ -72,7 +72,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6818698260540550241}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aef07a4f44b8bb940b64d1b9cbc16dda, type: 3}
   m_Name: 
@@ -81,6 +81,7 @@ MonoBehaviour:
   syncInterval: 0.1
   cameraObj: {fileID: 0}
   playerBody: {fileID: 6818698260540550241}
+  isCursorLocked: 0
 --- !u!1001 &3750048591953171869
 PrefabInstance:
   m_ObjectHideFlags: 0
