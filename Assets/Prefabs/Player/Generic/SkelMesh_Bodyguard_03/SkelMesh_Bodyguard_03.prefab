@@ -4627,6 +4627,7 @@ MonoBehaviour:
   syncInterval: 0.1
   cameraObj: {fileID: 0}
   playerBody: {fileID: 5229979237513573648}
+  isCursorLocked: 0
 --- !u!143 &5229979237513573653
 CharacterController:
   m_ObjectHideFlags: 0
@@ -4700,6 +4701,9 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   health: 100
+  expMagAmmo: 0
+  expInvAmmo: 0
+  isPlayerAlive: 1
   Name: 
   playerTeam: 0
 --- !u!114 &5832419684490840487
@@ -5553,7 +5557,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minimumDamageSpeed: 18
-  fallDamageMultiplier: 10
+  fallDamageMultiplier: 20
   isGrounded: 0
 --- !u!1 &5322811308716366052
 GameObject:

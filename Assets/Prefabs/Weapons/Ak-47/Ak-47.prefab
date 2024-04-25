@@ -102,7 +102,7 @@ MonoBehaviour:
   animationIndex: 1
   pickupPrefab: {fileID: 319120377766980121, guid: 37d5078b015ef2b4784126e10e518a34,
     type: 3}
-  allowIdleAnimation: 0
+  allowIdleAnimation: 1
   FP_Prefab: {fileID: 319120377766980121, guid: ee0586efa25a7c14c8b46d330490b4c7,
     type: 3}
   FP_PositionOffset: {x: 0, y: -0.02, z: -0.05}

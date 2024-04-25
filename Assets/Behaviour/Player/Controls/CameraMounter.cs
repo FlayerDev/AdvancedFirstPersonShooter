@@ -31,7 +31,6 @@ public class CameraMounter : MonoBehaviour
             return;
         }
         Focus();
-        if(transform.parent.TryGetComponent<PlayerInfo>(out PlayerInfo plInf)) plInf.OnPlayerResurrectionEvent += () => Focus();
     }
     private void Update()
     { 
@@ -43,6 +42,10 @@ public class CameraMounter : MonoBehaviour
             if (transform.parent.GetComponent<Mirror.NetworkIdentity>().isLocalPlayer && isPlayer) 
                 LookAtIKObject.transform.position = MainCamera.transform.position + MainCamera.transform.forward;
         }
+        else if (LocalInfo.activePlayerInfo && LocalInfo.activePlayerInfo.isPlayerAlive)
+        {
+            Focus();
+        }
     }
 
     System.Action unfocusHandler;
@@ -50,6 +53,7 @@ public class CameraMounter : MonoBehaviour
     [ButtonGroup]
     public void Focus()
     {
+        if (Focused) Unfocus();
         if (isPlayer)
         {
             print("CameraMounter:isPlayer");

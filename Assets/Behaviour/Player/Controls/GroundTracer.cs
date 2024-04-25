@@ -9,10 +9,17 @@ public class GroundTracer : MonoBehaviour
     public float fallDamageMultiplier = 1f;
     public bool isGrounded = false;
     float verticalVelocity = 0;
+    float verticalMomentum = 0;
+
     CustomPlayerMovement mov;
 
     private void Awake() => mov = transform.parent.GetComponent<CustomPlayerMovement>();
-    private void FixedUpdate() => verticalVelocity = mov.PlanarMovement.y != 0 ? mov.PlanarMovement.y : verticalVelocity;
+    private void Update() 
+    { 
+        verticalVelocity = mov.PlanarMovement.y != 0 ? mov.PlanarMovement.y : verticalVelocity;
+        verticalMomentum += (verticalVelocity - verticalMomentum)/10;
+    }
+
     private void OnTriggerStay(Collider other) => isGrounded = true;
 
     private async void OnTriggerExit(Collider other) {
@@ -22,13 +29,14 @@ public class GroundTracer : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other) {
-        if (verticalVelocity < -minimumDamageSpeed)
-            damagePlayer((Mathf.Abs(verticalVelocity) - minimumDamageSpeed) * fallDamageMultiplier);
+        if (verticalMomentum < -minimumDamageSpeed)
+            damagePlayer((Mathf.Abs(verticalMomentum) - minimumDamageSpeed) * fallDamageMultiplier);
     }
 
     void damagePlayer(float amount)
     {
         verticalVelocity = 0;
+        verticalMomentum = 0;
         if (!transform.parent.GetComponent<Mirror.NetworkIdentity>().isLocalPlayer) return;
         transform.parent.GetComponent<IDamageable>().damage(amount, transform.parent.gameObject);
     }

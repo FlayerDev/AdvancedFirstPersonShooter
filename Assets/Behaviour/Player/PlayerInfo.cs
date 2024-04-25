@@ -19,24 +19,19 @@ public class PlayerInfo : NetworkBehaviour, IDamageable
         expMagAmmo = mag;
     }
 
-    [SyncVar] public bool PlayerAlive = true;
+    [SyncVar] public bool isPlayerAlive = true;
     public void SetPlayerAliveState(bool state)
     {
-        if (state == PlayerAlive) return;
-        try
-        {
-            if (state) OnPlayerResurrectionEvent();
-            else OnPlayerDeathEvent();
-        }
-        catch (Exception ex)
-        {
-            print("DeathEventFailed" + ex.ToString());
-        }
+        if (state == isPlayerAlive) return;
+
+        if (state) OnPlayerResurrectionEvent();
+        else OnPlayerDeathEvent();
+
         CmdSetPlayerAliveState(state);
     }
     [Command] public void CmdSetPlayerAliveState(bool state)
     {
-        PlayerAlive = state;
+        isPlayerAlive = state;
     }
 
 
@@ -63,7 +58,7 @@ public class PlayerInfo : NetworkBehaviour, IDamageable
     private void Update()
     {
         if (!hasAuthority) return;
-        if (health <= 0 && PlayerAlive) SetPlayerAliveState(false);
+        if (health <= 0 && isPlayerAlive) SetPlayerAliveState(false);
     }
 
     #region Networking

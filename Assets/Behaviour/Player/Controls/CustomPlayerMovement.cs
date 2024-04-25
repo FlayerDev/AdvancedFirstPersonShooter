@@ -45,7 +45,7 @@ public class CustomPlayerMovement : NetworkBehaviour
     }
     void Update()
     {
-        if (!isLocalPlayer) return;
+        if (!(isLocalPlayer && LocalInfo.activePlayerInfo.isPlayerAlive)) return;
         float x = Input.GetAxis("Horizontal");      // X- = A ,X+ = D
         float z = Input.GetAxis("Vertical");        // Z- = S ,Z+ = W
 
